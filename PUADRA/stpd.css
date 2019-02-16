@@ -1,0 +1,514 @@
+@charset "UTF-8";
+@import url("stpd_z.css");
+
+/* android chrome 向け */
+h1, h2, h3, h4, p, ul, ol {
+    max-height: 100%; 
+} 
+
+body{
+	font-family:"メイリオ","meiryo","Ubuntu","ヒラギノ角ゴ";
+	background-color: gray;
+}
+header, main, footer{
+	margin:0 auto;
+	width:900px;
+	background-color: white;
+}
+header h1{
+	font-size: 36px;
+	border:solid 5px #66c;
+	background-color: #99f;
+	margin:0;
+	padding:5px;
+	text-align: center;
+	text-shadow:2px 3px 4px;
+	box-shadow:2px 3px 4px inset;
+}
+header p{
+	color: #933;
+	text-align: center;
+	margin: 0;
+	padding: 10px 0;
+	font-size:14px;
+}
+header abbr, header dfn{
+	font-style:normal;
+	border-bottom:none;
+}
+#tm h4{
+	background:linear-gradient(#aaa 1px, #999 1px), repeat;
+	background-size:2px 2px;
+	text-shadow:1px 2px 2px black;
+	font-size:14px;
+	color:white;
+	padding:5px 15px 5px 5px;
+}
+#tm h4::before{
+	content:"";
+	border-left:solid 10px #5a5;
+	margin:0px 0px 10px 0px;
+	padding-left:15px;
+}
+#tm > p {
+	margin: 10px auto;
+	width:700px;
+	padding:15px;
+	text-align:center;
+	background-color:#969;
+	color:#eee;
+	border-radius:5px;
+	line-height:2em;
+}
+#ld_type{
+	display:none;
+}
+#tm > p > label{
+	border:blue;
+	color:blue;
+	background-color:white;
+	border-radius:5px;
+	box-shadow:1px 1px 1px 1px inset;
+	padding:4px 15px 0px;
+	cursor:pointer;
+}
+table#team{
+	border: solid 3px black;
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+#team caption{
+	text-align:center;
+	padding:10px 0px;
+}
+#team th,#team td{
+	text-align: center;
+	border-collapse: collapse;
+	border:solid 1px #ccc;
+	padding: 3px 5px;
+	font-weight: 400;
+	font-size: 10px;
+}
+#team th{
+	background-color: #ddd;
+}
+select{
+	border:none;
+	background-color: rgba(255, 255, 255, 200);
+}
+select[name^=nm]{
+	font-size: 10px;
+}
+#nm1{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#nm2{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#nm3{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#nm4{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#nm5{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#nm6{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm1{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm2{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm3{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm4{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm5{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+#asis_nm6{
+	position:relative;
+	cursor:pointer;
+	width:120px;
+}
+dl{
+	overflow:auto;
+	padding:15px;
+	margin:15px;
+	background:linear-gradient(40deg, #aaa, #ccc);
+	border-radius: 12px;
+}
+dt{
+	float:left;
+	width:40px;
+	height:24px;
+	padding:7px 0 7px 10px; 
+	color:white;
+	background-color:darkgray;
+	border-radius: 5px 0 0 5px;
+	margin:3px 0 3px 3px;
+}
+dd{
+	float:left;
+	width:18px;
+	padding:8px 10px 8px 0;
+	color:white;
+	background-color: darkgray;
+	border-radius:0 5px 5px 0;
+	margin:3px 3px 3px -1px;
+}
+dt.status{
+	color:ivory;
+	text-shadow:1px 1px 2px lightcyan;
+	width:65px;
+	margin-left: 57px;
+}
+dd.status{
+	color:ivory;
+	text-shadow:1px 1px 2px lightcyan;
+	text-align: center;
+	width:70px;
+	margin-right: 57px;
+}
+section > div:first-child{
+	background-color: #ddc;
+	padding:1px;
+}
+/*
+section > div:last-child{
+	background-color: #deb;
+	padding:1px;
+}
+	*/
+#dp_but{
+	display:block;
+	margin: 0 auto;
+}
+
+#calc_but{
+	display:block;
+	margin: 0 auto;
+}
+#dir{
+	padding: 10px 0px;
+	overflow: auto;
+}
+#dir table{
+	margin: 15px auto;
+	background-color: #8a8;
+}
+#dir td{
+	padding:2px;
+}
+#dir th{
+	padding-left:10px;
+	font-weight:400;
+}
+#dir td:last-child{
+	padding-right:10px;
+}
+#dir p{
+	padding: 0px 10px 0px;
+	margin:0 100px 10px;
+	text-align:center;
+	font-size:13px;
+}
+#dir_but{
+	display:block;
+	border-radius:1em;
+	box-shadow:1px 2px 3px 2px;
+	margin:10px auto;
+}
+#dir_but:active{
+	box-shadow:1px 2px 3px 1px inset;
+}
+#rst h4{
+	padding:5px;
+	color:white;
+	background:linear-gradient(#aaa 1px, #999 1px), repeat;
+	background-size:2px 2px;
+	font-size:14px;
+	margin:15px 0 10px;
+	text-shadow:1px 2px 2px black;
+}
+#rst h4::before{
+	content:"";
+	border-left:solid 10px #252;
+	margin:0 7px 0 0;
+}
+#cmb_zone h4, #dir h4{
+	position: relative;
+	padding:10px 0px 10px 25px;
+	cursor:pointer;
+	background:linear-gradient(#aac 1px, #77a 1px), repeat;
+	background-size:2px 2px;
+	font-size:14px;
+	color:white;
+	text-shadow:2px 3px 4px black;
+}
+#cmb_zone span, #dir span{
+	display:block;
+	position:absolute;
+	top:9px;
+	left:5px;
+	text-shadow:none;
+}
+
+.dm_hyou{
+	border:solid 2px black;
+	background-color: #ddf;
+	margin:0 auto;
+	text-align: center;
+}
+.dm_hyou th{
+	background-color: #966;
+	padding:5px;
+}
+.dm_hyou td{
+	padding:5px;
+}
+#dm_sum, #cmb_sum{
+	text-align: right;
+	padding: 0 100px 0 0;
+	background: maroon;
+	color: whitesmoke;
+	margin: 15px 200px;
+}
+#each_sum {
+	border-top:solid 2px black;
+}
+.cmb_hyou{
+	border:solid 2px black;
+	background-color: #ddf;
+	margin:0 auto;
+	text-align: center;
+}
+.cmb_hyou th, .cmb_hyou td{
+	padding: 5px;
+}
+
+#rst_bm{
+	margin: 5px;
+}
+#rst_bm table{
+	margin:0 auto;
+}
+input[type=text]{
+	width:35px;
+	border:none;
+	border-radius:6px;
+}
+input[type=button]{
+	width:200px;
+	height:50px;
+}
+.banmen{
+	overflow:auto;
+	width:354px;
+	height:320px;
+}
+
+.banmen p{
+	float:left;
+	width:59px;
+	height:59px;
+	margin:0;
+	padding:0;
+	background-color:#322;
+}
+
+#cmb_zone{
+	overflow:hidden;
+}
+#cmb_zone small{
+	font-size:10px;
+	color:honeydew;
+}
+#cmb_zone > div{
+	float:left;
+	padding:10px;
+	width:420px;
+}
+#dp_gene{
+	width:420px;
+}
+#dp_gene table{
+	border-collapse:collapse;
+	border:none;
+}
+#dp_gene thead{
+	border:2px ridge black;
+	box-shadow:1px 1px 1px inset;
+}
+#dp_gene tbody{
+	border:2px ridge black;
+	box-shadow:1px 1px 1px inset;
+}
+#dp_gene th{
+	margin:0;
+	padding:5px;
+	min-width:100px;
+	font-weight:500;
+	background-color:#aaa;
+	color:black;
+}
+#dp_gene td{
+	padding:5px;
+	text-align:center;
+}
+#dp_gene input[type=text]{
+	width:40px;
+	border:none;
+	text-align:center;
+}
+#dp_gene select{
+	border:none;
+	border-radius:5px;
+}
+#dp_gene p{
+	width:250px;
+	margin:0 auto;
+	padding:20px;
+}
+#cmb_calc{
+	display:block;
+	margin-left:55px;
+}
+
+.bgc_hi{
+	background-color: #c66;
+}
+.bgc_mz{
+	background-color: #88f;
+}
+.bgc_ki{
+	background-color: #6a6;
+}
+.bgc_hk{
+	background-color: #cc6;
+}
+.bgc_ym{
+	background-color: #959;
+}
+.bgc_kh{
+	background-color: pink;
+}
+
+/* セレクトの代わりに採用した中身 */
+.bk{
+	background-color: rgba(0,0,0, .6);
+	padding:30px 100px 0;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:100;
+}
+/*CSS3 Flexboxはwrapが使えない*/
+.bk ul{
+	opacity:1;
+	/*display:flex;*/
+	overflow:auto;
+	width:800px;
+	margin:0 auto;
+}
+.bk li{
+	float:left;
+	list-style-type:none;
+	text-shadow:1px 1px 2px white;
+	font-size:12px;
+	font-weight:700;
+	padding:6px;
+	margin:6px;
+	border-radius:10px;
+	box-shadow:2px 3px 4px white;
+	cursor:pointer;
+	min-width:100px;
+}
+.mns_list li{
+	/*flex-wrap:wrap;
+	align-content:stretch;*/
+	min-width:190px;
+}
+.bk li:active{
+	box-shadow:2px 3px 4px white inset;
+}
+.bk span{
+	text-shadow:1px 1px 1px;
+	font-size:10px;
+}
+
+.tgl_btn li{
+	margin-bottom:25px;
+	text-align:center;
+}
+
+.off_btn{
+	border:solid 2px #222;
+	background-color:#555;
+	color:azure;
+}
+.on_btn{
+	border:solid 2px #33f;
+	background-color:#ddd;
+	color:#33f;
+}
+.page li{
+	background-color:snow;
+	width:65px;
+	margin:30px;
+	text-align:center;
+	justify-content:center;
+}
+.tgl_btn_sub li{
+	margin:10px 15px 40px 4px;
+	text-align:center;
+	min-width:73px;
+}
+.page li:first-child{
+	margin-left:170px;
+}
+
+.trn{
+	transform:rotate(90deg);
+	display:block;
+	position:absolute;
+	top:3px;
+	left:100px;
+}
+.trn:hover{
+	background-color:#aaa;
+}
+main{
+	padding-bottom: 1px;
+}
+footer{
+	height:50px;
+}

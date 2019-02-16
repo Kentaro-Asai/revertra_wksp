@@ -1,0 +1,177 @@
+@charset "UTF-8";
+
+body {background-color: #EEEEEE }
+
+
+
+#container {
+	left: auto;
+	width: 920px;
+	height: auto;
+	margin: 0 auto;
+	min-height: 800px;
+	border-left: solid 3px #999;
+	border-right: solid 3px #999;
+}
+
+h1 {
+	margin: 0 auto; 
+	text-align: center;
+	width: 800px;
+	background-color: maroon;
+	color: white;
+	border: ridge #C33 5px;
+	box-shadow: 15px 15px 10px gray;
+	padding: 0.2em;
+}
+
+header > p {
+	width: 700px;
+	margin: 22px auto;
+	text-align: center;
+	background-color: #FCE;
+	color: red;
+	border: solid 3px;
+	border-color: maroon;
+	border-radius: 2em;
+	font-weight: bold;
+	padding: 0.5em;
+}
+header > p > a{
+	font-size: 13px;
+}
+
+.img-box {
+	margin: 0 auto 25px;
+    width: 475px;
+    height: 101px;
+}
+
+#output-data{
+	width: 100%;
+	overflow: auto;
+	display: none;
+}
+#output-data > div{
+	float: left;
+	width: calc(50% - 20px);
+    margin: 0 0 0 20px;
+}
+#output-data > div:first-child{
+	font-size: small;
+	color: #0AA; 
+}
+#output-data > div:last-child{
+	font-size: medium;
+	color: #D36;
+}
+#output-data h6{
+	font-size: small;
+	font-weight: 400;
+	margin: 0;
+}
+#output-data h5{
+	font-size: 14px;
+	font-weight: 400;
+	margin: 0;
+}
+#inputed_text{
+	font-family: "MS Gothic", "Arial";
+    font-size: 10px;
+    color: #777;
+    margin: 3px 0 3px 7px;
+    line-height: 16px;
+}
+#outputed_text{
+	font-family: "MS Gothic", "Arial";
+    font-size: 13px;
+    color: black;
+    margin: 3px 0 3px 7px;
+    line-height: 19px;
+}
+#to-clipboard{
+	display: inline-block;
+    border-radius: 20px;
+    background: radial-gradient(#900,#f22);
+    padding: 5px 11px;
+    color: #d97;
+    text-shadow: 1px 1px 1px #c22;
+}
+
+.tools{
+	margin: 10px 17% 15px;
+}
+.tools h3{
+	font-size: 16px;
+	font-weight: 400;
+	padding: 10px;
+	border: solid silver 3px;
+	border-left: solid silver 30px;
+	background-color: white;
+}
+.tools textarea{
+	display: block;
+	margin: 0 auto;
+	width: 96%;
+	height: 140px;
+}
+.tools button{
+	display: block;
+	margin: 10px 0 0 auto;
+	width: 200px;
+	height: 36px;
+}
+
+table.usage {
+	border: ridge silver 4px;
+	border-collapse: collapse;
+	text-align: center;
+	margin-top: 30px;
+	background-color: gray;
+	padding: 1em;
+	color: white;
+}
+caption {
+	text-align: left;
+	border: solid silver 3px;
+	border-left: solid silver 30px;
+	background-color: white;
+	color: black;
+	padding: 0.5em;
+	margin: 0.5em;
+}
+
+table {
+	margin: 0 auto;
+}
+
+th {
+	background-color: black;
+	padding: 0.5em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+td {
+	padding: 0.5em;
+	padding-left: 1em;
+	padding-right: 1em;
+	border: solid 1px black;
+}
+
+.clearfix.before, 
+.clearfix.after {
+	content: " ";
+	display: table;
+}
+.clearfix.after {
+	clear: both;
+}
+.clearfix {
+	display: inline-table;
+} 
+
+footer{
+	text-align: center;
+	color: #333;
+}

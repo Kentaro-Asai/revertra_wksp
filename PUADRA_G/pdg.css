@@ -1,0 +1,387 @@
+@charset "UTF-8";
+/*  @import url("stpd_z.css");
+ レイアウト崩れたらheader,main,footerのwidthを書き換える */
+
+body{
+	font-family:"メイリオ","meiryo","Ubuntu","ヒラギノ角ゴ";
+	background-color: gray;
+	min-height: 600px;
+}
+header, main, footer{
+	margin:0 auto;
+	width:700px;
+	background-color: white;
+}
+header h1{
+	font-size: 36px;
+	border:solid 5px #6c6;
+	background-color: #9f9;
+	margin:0;
+	padding:5px;
+	text-align: center;
+	text-shadow:2px 3px 4px;
+	box-shadow:2px 3px 4px inset;
+}
+h1 > a{
+	color:black;
+	text-decoration: none;
+}
+hi > a:hover{
+	text-shadow:3px 4px 5px gray;
+}
+header p{
+	color: #939;
+	text-align: center;
+	margin: 0;
+	padding: 10px 0;
+	font-size:14px;
+}
+header abbr, header dfn{
+	font-style:normal;
+	border-bottom:none;
+}
+nav{
+	border:solid 1px #6c6;
+	padding:3px;
+	position: relative; /* for #nav_toggle */
+}
+nav > ul{
+	overflow:hidden;
+	border:solid 1px #171;
+	padding:3px;
+}
+nav li{
+	float: left;
+	width:209px;
+	height:50px;
+	font-size: 12px;
+	border-left:solid 1px green;
+	background: linear-gradient(#8c8, #7a7);
+	cursor:pointer;
+}
+#nav_other {
+	border-right:solid 1px green;
+	width:52px;
+	font-size:16px;
+	position:relative;
+}
+nav a{
+	text-decoration: none;
+	color:darkgreen;
+	text-align: center;
+	padding:15px 0;
+	display:block;
+	font-weight: 600;
+	text-shadow:1px 1px 1px white;
+}
+nav li:hover{
+	background: linear-gradient(#7a7, #8c8);
+}
+nav a:hover{
+	text-shadow:1px 1px 1px red;
+}
+nav span{
+	display: block;
+	color:darkgreen;
+	text-shadow:0px 0px 5px white;
+	font-weight: 700;
+	transform: rotate(90deg);
+	padding-left: 15px;
+}
+#nav_other{
+	position: relative;
+}
+#nav_other > div{
+	position:absolute;
+	top:50px;
+	left:-50px;
+}
+#nav_other a{
+	display:block;
+	width:200px;
+	height:50px;
+}
+#nav_toggle{
+	position: absolute;
+	top:58px;
+	right: 6px;
+	width:210px;
+}
+#nav_toggle a{
+	height:25px;
+	background:linear-gradient(#8c8, #7a7);
+	border:solid 1px green;
+	margin:1px;
+}
+#nav_toggle a:hover{
+	background: linear-gradient(#7a7, #8c8);
+}
+section{
+	overflow:auto;
+	padding:5px 0px;
+}
+h2{
+	background:linear-gradient(45deg, black 1px, #222 1px),repeat;
+	background-size:2px 2px;
+	text-shadow:1px 1px 2px lightgoldenrodyellow;
+	color:lightgoldenrodyellow;
+	padding:5px 5px 5px 15px;
+	margin:5px 0px;
+	font-size:18px;
+}
+section > h5{
+	margin: 10px 15px 0;
+	border-radius:8px 8px 0 0;
+	background:linear-gradient(90deg, #000, #777);
+	color:ivory;
+	padding:10px;
+}
+h5 > small{
+	text-shadow:1px 1px 3px white;
+	color:bisque;
+	font-size: 12px;
+}
+section > dl{
+	border-radius:0 0 8px 8px;
+	background:linear-gradient(90deg, #000, #777);
+	margin:0px 15px 10px;
+	overflow: hidden;
+	padding:7px 17px;
+}
+section > dl > dt{
+	float: left;
+	width:26px;
+	margin:10px 0 10px 10px;
+	padding:7px;
+	border-radius:5px 0 0 5px;
+}
+section > dl > dd{
+	float: left;
+	width:135px;
+	margin:10px 10px 10px 0px;
+	padding:7px;
+	border-radius:0 5px 5px 0;
+}
+/*h2::before{
+	content:'';
+	border-left:solid 5px darkcyan; 
+}*/
+section > ul, section > div{
+	float:left;
+}
+.mns_box{
+	width:260px;
+	list-style-type: none;
+}
+.mns_box li{
+	padding:5px;
+	margin:5px;
+	border-radius:6px;
+	overflow:hidden;
+}
+.mns_box li > h4{
+	height:25px;
+	font-weight:400;
+	font-size:14px;
+	text-shadow:1px 1px 1px white;
+	margin: 0 0 0 5px;
+} 
+.mns_box li > p:nth-child(2){
+	float:left;
+	width:33px;
+	height:33px;
+	font-size:12px;
+	padding:1px;
+	background-color:#522;
+	border:solid 1px #b66;
+	margin:0 0 0 20px;
+}
+
+.rare{
+	float:left;
+	width:150px;
+	font-size:12px;
+	padding: 0px 0px 0px 10px;
+}
+input[type=text]{
+	width:38px;
+	height:13px;
+	border-radius: 8px;
+	text-align:center;
+}
+.rare input[type=text]{
+	width:72px;
+}
+.rst_box{
+	width:400px;
+	padding:5px 0 0 10px;
+}
+.rst_box > p:first-child{
+	padding: 15px;
+	overflow:auto;
+}
+.rst_box input {
+	display:block;
+	margin:10px;
+	float:left;
+	box-shadow:1px 1px 1px;
+	width:103px;
+}
+.rst_box input:active{
+	box-shadow:2px 2px 2px inset;
+}
+.rst_cnt{
+	color: #515;
+	padding:10px;
+	background:linear-gradient(45deg, #c9c, white);
+	margin:10px;
+	overflow:auto;
+	border-radius: 3px;
+}
+.rst_cnt dt{
+	float: left;
+}
+.rst_cnt dd{
+	float:left;
+}
+.not_encount{
+	color:#551;
+	margin:10px;
+	padding:5px;
+	background: linear-gradient(160deg, #cc7, #ddd);
+	border-radius: 3px;
+}
+.not_encount dt{
+	width:200px;
+	background-color:#aa5;
+	border-radius: 6px;
+	text-align: center;
+	margin-bottom: 5px;
+	padding:3px;
+	border:solid 1px #ccc;
+}
+.not_encount dd{
+	padding:2px;
+}
+.encount{
+	color:#155;
+	margin:10px;
+	padding:5px;
+	background: linear-gradient(160deg, #7cc, #ddd);
+	border-radius: 3px;
+}
+.encount dt{
+	width:200px;
+	background-color:#5aa;
+	border-radius: 6px;
+	text-align: center;
+	margin-bottom: 5px;
+	padding:3px;
+	border:solid 1px #ccc;
+}
+.encount dd{
+	line-height: 40px;
+	overflow:hidden;
+}
+.encount span{
+	display:block;
+	width:72px;
+	height:44px;
+	float:left;
+	font-size:14px;
+}
+.shoki{  /*ここに結果を示します。の文言*/
+	margin:15px;
+	color:#939;
+	font-weight:700;
+	text-align: center;
+	text-shadow:1px 1px 1px #b6b;
+}
+#rst ul, #rst_usr ul{
+	list-style-type: none;
+	border:solid 1px #aaa;
+	padding:10px;
+}
+li.output{
+	overflow: auto;
+	margin: 5px 0px;
+	border-radius:0 3px 15px 0;
+}
+h3{
+	background:linear-gradient(45deg, black 1px, #222 1px),repeat;
+	background-size:2px 2px;
+	text-shadow:1px 1px 2px lightgoldenrodyellow;
+	color:snow;
+	padding:5px 5px 5px 15px;
+	font-size:18px;
+}
+h4 > input[type=text]{
+	width:220px;
+}
+#usr > li{
+	background-color:#bbb;
+	border-radius: 6px;
+}
+#usr > li:last-child{
+	border-radius: 0;
+	background-color: snow;
+}
+#usr input[type=button]{
+	width:240px;
+	height:70px;
+	box-shadow:1px 1px 1px black;
+	cursor:pointer;
+}
+#rst_usr > p{
+	text-align:center;
+	text-shadow:1px 2px 3px gray;
+}
+
+.output > p{
+	width:50px;
+	height:50px;
+	float:left;
+}
+.output > div{
+	width:310px;
+	margin-left:15px;
+	float:left;
+}
+.output h5{
+	font-size:16px;
+	margin: 5px 0 0;
+	text-shadow:1px 1px 1px white;
+}
+.output > div > p{
+	font-size:12px;
+}
+
+footer p{
+	font-size:8px;
+	text-align:center;
+}
+.dia_clr{
+	background: linear-gradient(60deg, #eee, #88f, #7f7, #fd8, #f97, #f88);
+}
+.dia_clr_head{
+	background: linear-gradient(85deg, #eee, #88f);
+}
+.dia_clr_tail{
+	background: linear-gradient(85deg, #88f, #7f7, #fd8, #f97, #f88);
+}
+.gold_clr{
+	background-color:#ba0;
+}
+.silver_clr{
+	background-color:silver;
+}
+
+.rare4{
+	background:linear-gradient(130deg, #98d, #438);
+}
+.rare5{
+	background:linear-gradient(130deg, #9d8, #483);
+}
+.rare6, .rare7, .rare8{
+	background:linear-gradient(130deg, #d98, #843);
+}

@@ -1,0 +1,199 @@
+/* 
+    Document   : st
+    Created on : 2013/10/24, 17:59:04
+    Author     : ubuntu@kentaro
+    Description:
+        Purpose of the stylesheet follows.
+*/
+body {
+	background-color: silver;
+}
+
+#container {
+	background-color: whitesmoke;
+	width: 640px;
+	min-height: 750px;
+	margin: 0 auto;
+	border-bottom-left-radius: 30px 20px;
+	border-bottom-right-radius: 30px 20px;
+}
+
+h1{
+	border: solid 5px #555;
+	background-color: #222;
+	text-align: center;
+	font-size: 2em;
+	color: white;
+	width: 630px;
+}
+header p {
+	text-align: center;
+	padding: 5px;
+	color: #c36;
+}
+
+#chb div {
+	margin: 10px;
+	float: left;
+	width: 100px;
+}
+
+#chb div:last-child {
+	margin: 10px;
+	float: left;
+	width: 200px;
+}
+
+#rdo div label input {
+	display: none;
+}
+#rdo div label {
+	padding: 0.5em;
+	text-align: center;
+}
+#rdo div {
+	margin: 15px;
+	float: left;
+	width: 80px;
+	border: outset 2px #36b;
+	border-radius: 1em;
+	background-color: #69f;
+}
+
+#amu {
+	margin: 10px;
+	border: ridge 3px red;
+	background-color: #f99;
+	padding: 5px;
+}
+#amu p {
+	float: left;
+	width: 90px;
+	margin: 5px;
+	font-size: 0.9em;
+}
+#amu div {
+	float: left;
+	width: 100px;
+	margin: 5px;
+}
+#amu div + div {
+	width: 60px;
+}
+
+#weapon {
+	margin: 10px;
+	border: ridge 3px maroon;
+	background-color: #d77;
+	
+	padding: 5px;
+}
+#weapon p {
+	float: left;
+	width: 90px;
+	margin: 5px;
+	font-size: 0.9em;
+}
+#weapon div {
+	float: left;
+	width: 100px;
+	margin: 5px;
+}
+
+#hatu {
+	border: ridge 3px green;
+	margin: 10px;
+	background-color: #afa;
+	padding: 10px;
+}
+#hatu p {
+	text-align: center;
+	margin: 10px;
+}
+#hatu div div {
+	float: left;
+	width: 150px;
+	margin: 3px;
+	margin-left: 30px;
+}
+
+#sub {
+	width: 150px;
+	margin: 0 auto;
+}
+input[type=submit] {
+	width: 150px;
+	height: 30px;
+}
+
+
+#ms {
+	display: none;
+	text-align: center;
+	background-color: #9ff;
+	border: ridge 3px #6cc;
+	margin: 15px;
+	padding: 5px;
+}
+
+.messe {
+	text-align: center;
+	margin: 10px;
+	padding: 5px;
+	background-color: #9ff;
+	border: ridge 3px #6cc;
+	border-radius: 1em;
+}
+
+.result {
+	margin: 15px;
+	padding: 5px;
+	border: ridge 3px #3a3;
+	background-color: #5c5;
+	
+}
+.result div div {
+	float: left;
+	min-width: 110px;
+	margin: 10px;
+}
+table {
+	border: solid 3px gray;
+	background-color: silver;
+	margin: 0 auto;
+	min-width: 110px;
+}
+
+.slttbl {
+	margin-left: 60px;
+	margin-top: 30px;
+}
+
+caption {
+	border: solid 2px #36c;
+	border-left: solid 10px #36b;
+	background-color: white;
+}
+
+th {
+	padding: 0.3em;
+	background-color: black;
+	color: white;
+}
+td {
+	padding: 0.3em;
+	text-align: center;
+	border: solid 1px #000;
+	font-weight: 600;
+}
+td:nth-child(2n+1) {
+	background-color: #ddd;
+}
+td:first-child {
+	background-color: #333;
+	color: white;
+}
+
+footer {
+	height: 0.5em;
+}

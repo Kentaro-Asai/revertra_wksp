@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset=UTF-8>
+	<meta name=description content=MH4の欲しい発動スキルの組合わせを実現するためのサイトです。インストール不要です。良い護石を手に入れたら試してみましょう^^>
+	<meta name=keywords content=MH4,スキル調整,モンスターハンター4>
+	<link rel=stylesheet href=../css/str.css>
+	<link rel=stylesheet href=../css/st.css>
+	<title>MH4スキル調整システム(ガンナー)</title>
+</head>
+<body>
+	<div id="container">
+	<header>
+		<h1>MH4 スキルシミュレータ(ガンナー)</h1>
+		<p>ガンナー装備の検索ができます。バグ修正しました（1/11）。<br>剣士向けはこちら<a href="../../mh4/docs/index.html">MH4 スキルシミュレータ（剣士）</a>。</p>
+	</header>
+
+	<div id="chb" class="clearfix">
+		<div><label><input type="checkbox" id="s1" value="1" checked />下位装備</label></div>
+		<div><label><input type="checkbox" id="s2" value="2" checked />上位装備</label></div>
+		<!--<div><label><input type="checkbox" id="s3" value="3" checked />G級装備</label></div>-->
+		<div><select id="gun">
+				<option value="0" selected>ガンナー頭部装備のみ</option>
+				<option value="1">剣士頭部装備のみ</option>
+				<option value="2">剣士頭部装備含む</option>
+			</select>
+		</div>
+	</div>
+
+	<div id="rdo" class="clearfix">
+	<div><label><input type="radio" name="sex" value="1" checked />男性装備</label></div>
+	<div><label><input type="radio" name="sex" value="2" />女性装備</label></div>
+	</div>
+
+	<div id="amu" class="clearfix">
+		<p>護石スキル1</p>
+		<div><select id="amusk1"></select></div>
+		<div><select id="skval1"></select></div>
+		<p>護石スキル2</p>
+		<div><select id="amusk2"></select></div>
+		<div><select id="skval2"></select></div>
+
+		<p>護石スロット</p>
+		<div><select id="amuslot">
+				<option value="0" selected>0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+	</div>
+	
+	<div id="weapon" class="clearfix">
+		<p>武器スロット</p>
+		<div><select id="wepslot">
+				<option value="0" selected>0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">発掘武器 -怒2-</option>
+				<option value="5">発掘武器 -怒3-</option>
+				<option value="6">発掘武器 -怒4-</option>
+				<option value="7">発掘武器 -一心2-</option>
+				<option value="8">発掘武器 -一心3-</option>
+				<option value="9">発掘武器 -一心4-</option>
+				<option value="10">発掘武器 -回避術3-</option>
+				<option value="11">発掘武器 -回避術4-</option>
+				<option value="12">発掘武器 -回避術5-</option>
+				<option value="13">発掘武器 -頑強2-</option>
+				<option value="14">発掘武器 -頑強3-</option>
+				<option value="15">発掘武器 -頑強4-</option>
+				<option value="16">発掘武器 -潔癖2-</option>
+				<option value="17">発掘武器 -潔癖3-</option>
+				<option value="18">発掘武器 -潔癖4-</option>
+				<option value="19">発掘武器 -剛撃2-</option>
+				<option value="20">発掘武器 -剛撃3-</option>
+				<option value="21">発掘武器 -剛撃4-</option>
+				<option value="22">発掘武器 -強欲2-</option>
+				<option value="23">発掘武器 -強欲4-</option>
+				<option value="24">発掘武器 -強欲6-</option>
+				<option value="25">発掘武器 -護石収集2-</option>
+				<option value="26">発掘武器 -護石収集4-</option>
+				<option value="27">発掘武器 -護石収集6-</option>
+				<option value="28">発掘武器 -指揮2-</option>
+				<option value="29">発掘武器 -指揮3-</option>
+				<option value="30">発掘武器 -指揮4-</option>
+				<option value="31">発掘武器 -射手2-</option>
+				<option value="32">発掘武器 -射手3-</option>
+				<option value="33">発掘武器 -射手4-</option>
+				<option value="34">発掘武器 -状態耐性2-</option>
+				<option value="35">発掘武器 -状態耐性3-</option>
+				<option value="36">発掘武器 -状態耐性4-</option>
+				<option value="37">発掘武器 -増幅2-</option>
+				<option value="38">発掘武器 -増幅3-</option>
+				<option value="39">発掘武器 -増幅4-</option>
+			</select>
+		</div>
+	</div>
+
+	<div id="hatu">
+		<p>欲しい発動スキルを選択してください（最大6種）</p>
+		<div class="clearfix">
+			<div><select id="wntsk1"></select></div>
+			<div><select id="wntsk2"></select></div>
+			<div><select id="wntsk3"></select></div>
+			<div><select id="wntsk4"></select></div>
+			<div><select id="wntsk5"></select></div>
+			<div><select id="wntsk6"></select></div>
+		</div>
+	</div>
+	<div id="sub"><input type="submit" value="結果を表示" /></div>
+	<p id="ms"></p>
+	<div id="res"></div>
+	<footer></footer>
+	</div>
+	<script src="../js/jquery-1.8.3.min.js"></script>
+	<script src="../js/mh.js"></script>
+</body>
+</html>

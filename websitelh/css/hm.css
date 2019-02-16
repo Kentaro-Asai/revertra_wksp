@@ -1,0 +1,110 @@
+body{
+	background-color:gray
+}
+header, main ,footer{
+	width:744px;
+	background-color:white;
+	margin:0 auto;
+	overflow:hidden
+}
+header{
+	border-radius:20px 20px 0 0px;
+}
+footer{
+	border-radius: 0 0px 20px 20px;
+}
+h1{
+	border:ridge 3px #6a6;
+	background-color:#262;
+	margin:20px 0;
+	font-size:30px;
+	color:white;
+	text-align:center
+}
+h1 > a{
+	color:white;
+	font-size:30px;
+	text-decoration:none;
+}
+header p{
+	border:solid 3px #6a6;
+	border-radius:10px;
+	background-color:#474;
+	margin:0 auto;
+	padding:5px;
+	width:500px;
+	font-size:15px;
+	color:#9c9;
+	text-align:center
+}
+nav{
+	margin:25px 0
+}
+nav ul{
+	list-style-type:none;
+	margin:0;
+	padding:0
+}
+nav li{
+	float:left;
+	width:122px;
+	height:40px;
+	border:solid 1px #ada;
+	background:linear-gradient(#dfd,#8b8)
+}
+nav li:hover{
+	background:linear-gradient(#8b8,#dfd)
+}
+nav a{
+	display:block;
+	width:120px;
+	text-align:center;
+	text-decoration:none;
+	padding:10px 0;
+	font-size:15px;
+	font-weight:400;
+	color:#252
+}
+#side{
+	float: left;
+	width: 160px;
+	min-height: 300px;
+	margin: 5px 40px 0 25px;
+	list-style-type: none;
+}
+#side li{
+	border:solid 1px #ada;
+	background-color:#474;
+	color:#ada;
+	padding:5px;
+	text-align:center;
+	font-size:15px
+}
+#side li:hover{
+	border:solid 1px #7a7;
+	background-color:#ada;
+	color:#141;
+	cursor:pointer
+}
+#atcl{
+	float:left;
+	width: 410px;
+	margin:5px 20px
+}
+#atcl article h4{
+	border:solid 2px #262;
+	border-radius:10px;
+	background-color:#dfd;
+	padding:5px;
+	text-align:center
+}
+#atcl article p{
+	padding:5px;margin:10px 0;
+	text-indent:1em
+}
+#atcl article ol{
+	margin:10px;
+	margin-left:25px
+}
+#underline{text-decoration:underline}
+footer p{text-align:center}

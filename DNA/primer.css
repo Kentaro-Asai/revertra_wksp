@@ -1,0 +1,246 @@
+@charset "UTF-8";
+
+body {background-color: #EEEEEE }
+
+#container {
+	left: auto;
+	width: 920px;
+	height: auto;
+	margin: 0 auto;
+	min-height: 800px;
+	border-left: solid 3px #999;
+	border-right: solid 3px #999;
+}
+
+h1 {
+	margin: 0 auto; 
+	text-align: center;
+	width: 800px;
+	background-color: maroon;
+	color: white;
+	border: ridge #C33 5px;
+	box-shadow: 15px 15px 10px gray;
+	padding: 0.2em;
+}
+
+header > p {
+	width: 700px;
+	margin: 32px auto 12px;
+	text-align: center;
+	background-color: #FCE;
+	color: red;
+	border: solid 3px;
+	border-color: maroon;
+	border-radius: 2em;
+	font-weight: bold;
+	padding: 0.5em;
+}
+header > p > a{
+	font-size: 13px;
+}
+
+main{
+	width: 800px;
+    margin: 0 auto 10px;
+}
+h4{
+	margin: 15px 0 5px;
+	background: linear-gradient(0deg, black 2px, #444 2px) repeat;
+	background-size: 4px 4px;
+	padding: 6px 30px;
+	color: wheat;
+	font-weight: 700;
+	font-size: 17px;
+	line-height: 17px;
+	border-radius: 3px;
+	position: relative;
+}
+h4::before{
+	content: "";
+    position: absolute;
+    top: 5px;
+    left: 9px;
+    width: 9px;
+    height: 19px;
+    background-color: #931;
+    border-radius: 6px;
+}
+
+/* primerの入力項目 */
+ul{
+	list-style: none;
+	margin: 5px 0px 5px 10px;
+	padding: 0 10px;
+	background: conic-gradient(
+		#ccc 0,#aaa 25%,#ccc 50%,#aaa 75%,#ccc 100%
+	);
+	border-radius: 10px;
+	overflow: auto;
+}
+li{
+	margin: 10px auto;
+    padding: 6px;
+	width: 740px;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    background-color: rgba(16,16,16,0.4);
+    border-radius: 5px;
+}
+li input[type=text]{
+	width: 200px;
+    border-radius: 8px;
+    background-color: #ddd;
+    box-shadow: 1px 1px 1px #ddd inset;
+    text-align: right;
+    display: inline-block;
+    padding: 3px 3px 0px 0px;
+	user-select: none;
+}
+li input[type=text]:last-child{
+	width: 260px;
+}
+li span{
+	display: inline-block;
+    font-style: italic;
+    color: #444;
+    text-shadow: -1px -1px 1px #aaa;
+    font-weight: 700;
+    padding: 0px 7px 0 25px;
+}
+li span:first-child{
+	padding: 0px 7px;
+}
+.btn_box{
+	margin: 0;
+	overflow: auto;
+}
+.btn_box > button{
+	display: block;
+	width: 780px;
+	margin: 0 auto;
+	padding: 3px 0;
+}
+.btn_box > button:first-child{
+	background: radial-gradient(#aaa, #ddd);
+    display: block;
+    width: 200px;
+    margin: 5px auto;
+    border-radius: 10px;
+    color: #444;
+}
+/* primer evaluate Button */
+#done{
+	background: radial-gradient(#444, #aaa);
+    display: block;
+    width: 300px;
+    margin: 5px auto;
+    padding: 10px 0;
+    border-radius: 10px;
+    color: #ddd;
+    font-size: 16px;
+}
+.around-dna-span{
+	display: block;
+	margin: 0 auto;
+}
+#around-dna{
+	display: block;
+	margin: 0 auto;
+	width: 600px;
+	height: 100px;
+}
+output{
+	font-family: "MS Gothic", "Arial";
+}
+output section{
+	margin: 10px 0 5px;
+}
+output .sec1{
+	background-color: #dcc;
+    border: solid 2px #a99;
+}
+output .sec2{
+	background-color: #cdd;
+    border: solid 2px #9aa;
+}
+output .sec3{
+	background-color: #ddc;
+    border: solid 2px #aa9;
+}
+output dl{
+	margin: 0px auto 5px;
+    padding: 4px 0;
+    overflow: auto;
+    background: linear-gradient(45deg, #755, #a88, #866);
+    text-shadow: 1px 1px 1px #644;
+    font-size: 18px;
+    color: #a88;
+    font-weight: 700;
+}
+output dt{
+	float: left;
+    width: 38%;
+    text-align: center;
+}
+output dd{
+	float: left;
+    width: 45%;
+    text-align: left;
+    padding: 0 0 0 10px;
+    margin: 0;
+}
+output th, td{
+	font-weight: 400;
+	border-radius: 2px;
+	padding: 4px 6px;
+}
+output table.primer-param{
+	margin: 10px auto;
+	background-color: #222;
+	border-radius: 3px;
+	padding: 1px;
+}
+output table.primer-param caption{
+	text-align: center;
+	font-weight: 400;
+	font-size: 14px;
+	padding: 1px;
+}
+output table.primer-param th{
+    background-color: #aaa;
+    color: #832;
+	text-align: left;
+}
+output table.primer-param td{
+    background-color: #ddd;
+    color: #a32;
+	text-align: center;
+}
+output table.primer-form{
+	margin: 17px auto 10px;
+    background-color: #200;
+    border-radius: 3px;
+}
+output .primer-form th, output .primer-position th{
+	text-align: right;
+	color: #832;
+	background-color: #aaa;
+}
+output table.primer-form td, output table.primer-position td{
+    background-color: #eee;
+    color: black;
+	text-align: center;
+}
+output table.primer-position{
+	margin: 10px auto;
+    background-color: #200;
+    border-radius: 3px;
+}
+small{
+	display: block;
+	font-size: 11px;
+	font-weight: 400;
+	text-align: center;
+	color: #333;
+}
