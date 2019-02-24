@@ -49,12 +49,20 @@
 				<tbody id="tbl_data">
 					<tr><td colspan="7">まだ登録されていません。</td></tr>
 				</tbody>
+				<thead>
+					<tr>
+						<th>日付</th>
+						<th class="changable">開始</th><th class="changable">終了</th><th class="changable">勤務時間</th>
+						<th>仕事</th><th>休憩</th><th class="changable">コメント</th>
+					</tr>
+				</thead>
 			</table>
 			<p>
 				<span></span>
 				<input id="reg_time_btn2" type="button" value="登録された時間を変更" >
 			</p>
 		</section>
+		<section id="total_tbl" class="tbl"></section>
 	</main>
 	<footer>
 		<small>Copyright &commat; Kentaro Asai 2019</small>

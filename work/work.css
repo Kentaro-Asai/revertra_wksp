@@ -44,6 +44,7 @@ main{
 }
 
 .today{
+	height: 290px;
 	overflow: auto;
 }
 
@@ -158,9 +159,15 @@ main{
     color: wheat;
     padding: 3px 5px;
 }
+.tbl tr:nth-child(odd){
+	background-color: ivory;
+}
+.tbl tr:nth-child(even){
+	background-color: beige;
+}
 .tbl td{
 	font-size: 15px;
-	background-color: ivory;
+	/* background-color: ivory; */
 	color: black;
 	padding: 3px 5px;
 	min-width: 85px;
@@ -203,6 +210,15 @@ main{
 	font-size: 12px;
 	height: 15px;
 	margin: 8px;
+}
+.tbl caption{
+	margin: 15px 15px 10px;
+    padding: 5px 0;
+    background: darkgreen;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px black;
+    color: #cdd;
+    box-shadow: 0 -3px 2px #444 inset;
 }
 small{
 	display: block;

@@ -48,6 +48,8 @@ $(function(){
 			//すでに働いていて、勤務終了ボタンを押した。しかし、戻ってきた
 			$('#btn_box').html(makeBtn(['still_work', 'new_work']));
 		}
+		//tblAryの下にある労働時間をつくる
+		updateTotalTbl();
 	};	
 	//})();
 		
@@ -145,6 +147,7 @@ $(function(){
 		}).then(()=>{
 			//今日の仕事を追加で表示
 			$('#tbl_data').html(outputTblHtml(tblAry));
+			updateTotalTbl();
 		});
 		
 	});
@@ -437,8 +440,68 @@ $(function(){
 			'work_end': rtn.end + ':00'
 		} : false;
 	};
+
+	/**
+	 * tblAryを元に、今月分とかのまとめの値を表で表示する
+	 */
+	function updateTotalTbl(){
+		if(0 == tblAry.length){
+			$('#total_tbl').html('');
+			$('#total_tbl').css('display', 'none');
+			return ;
+		}
+		let totalAry = [
+			/* {'month': 0, 'total_work': 0, 'work': 0, 'rest': 0} */
+		];
+		let can_contain = false;
+		for(let v of tblAry){
+			can_contain = false;
+			var n_month = parseInt(v.date.substring(v.date.indexOf('/')+1, v.date.lastIndexOf('/')));
+			for(let t of totalAry){
+				if(t.month == n_month){
+					t.formal_work += timeFunc.internalTime(v.formal_work + ':00');
+					t.work += timeFunc.internalTime(v.work + ':00');
+					t.rest += timeFunc.internalTime(v.rest + ':00');
+					can_contain = true;
+					break;
+				}
+			}
+			if(!can_contain){
+				//同じ月が無ければ新しい月を作成
+				totalAry.push({
+					'month': n_month,
+					'formal_work': timeFunc.internalTime(v.formal_work + ':00'),
+					'work': timeFunc.internalTime(v.work + ':00'),
+					'rest': timeFunc.internalTime(v.rest + ':00')
+				});
+			}
+		}
+		//テーブル作成
+		let tbl_str = '<table>'
+			+'<caption>労働時間（まとめ）</caption>'
+			+'<thead><tr><th>月</th><th>総労働時間</th><th>仕事</th><th>休憩</th></tr></thead>'
+			+'<tbody>';
+		for(let t of totalAry){
+			var hs = {
+				'formal_work': timeFunc.viewTime(t.formal_work),
+				'work': timeFunc.viewTime(t.work),
+				'rest': timeFunc.viewTime(t.rest)
+			};
+			tbl_str += '<tr>'
+				+'<td>' + t.month + '</td>'
+				+'<td>' + hs.formal_work.substr(0, hs.formal_work.lastIndexOf(':')) + '</td>'
+				+'<td>' + hs.work.substr(0, hs.work.lastIndexOf(':')) + '</td>'
+				+'<td>' + hs.rest.substr(0, hs.rest.lastIndexOf(':')) + '</td>'
+			+'</tr>';
+		}
+		tbl_str += '</tbody></table>';
+		$('#total_tbl').html(tbl_str);
+		$('#total_tbl').css('display', 'block');
+	}
 	
-	//時間に関するツール
+	/**
+	 * 時間に関するツール
+	 */
 	var timeFunc = {
 		//時:分:秒をint timeStamp(秒)で表現
 		'internalTime': str => {
