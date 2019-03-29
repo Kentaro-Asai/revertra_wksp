@@ -1,6 +1,6 @@
 $(function(){
 	//直近の労働データ
-	var todayAry = {/*
+	let todayAry = {/*
 		msg: '',
 		btn_time: '2018/01/10 08:03:21',
 		rest_time: '10:03:21',
@@ -10,23 +10,24 @@ $(function(){
 		update: false
 	*/};
 	//過去の労働データ
-	var tblAry = [/*
+	let tblAry = [/*
 		{
-			'date': '01/01',
-			'start': '00:00',
-			'end': '00:00',
-			'work': '00:00',
-			'rest': '00:00',
-			'comment': ''
+			comment: "",
+			date: "2019/02/03",
+			end: "22:00",
+			formal_work: "06:15",
+			rest: "03:28",
+			start: "14:45",
+			work: "04:10"
 		}, {...}, {...}
 	*/];
 	//今のモード(休憩中か仕事中か)
-	var boolAry = {'work': false, 'rest': false};
+	let boolAry = {'work': false, 'rest': false};
 	//countUpの中のループを1つだけしか呼ばないようにする(古いループは捨てる)
-	var loopKey = 0;
+	let loopKey = 0;
 	
 	//initialFunc();
-	var initialFunc = ()=>{
+	let initialFunc = ()=>{
 	//(function(){
 		tblStorage();
 		todayAry = getTodayStorage();
@@ -215,10 +216,12 @@ $(function(){
 		}
 		transMsg(0 < tblAry.length ? '勤務時間を書き換えました。' : '勤務終了ボタンを押して、表中にデータを追加してください。');
 		localStorage.setItem('tblAry', JSON.stringify(tblAry));
+		//tblAryを書き換えたので、TotalTblも書き換える必要がある時がある
+		updateTotalTbl()
 	});
 	
 	//メッセージを表示（徐々に消えていく演出）
-	var transMsg = msg =>{
+	let transMsg = msg =>{
 		let tbl_span = $('.tbl span');
 		let num = {'opacity': 10, 'buffer': 20};
 		tbl_span.html(msg);
@@ -358,7 +361,7 @@ $(function(){
 				+'<td><input type="text" class="tbl_formal_work" value="'+v.formal_work+'" ></td>'
 				+'<td>'+v.work+'</td>'
 				+'<td>'+v.rest+'</td>'
-				+'<td><textarea class="comment">'+(!!v.comment?v.comment:'')+'</textarea></td>'
+				+'<td><textarea class="comment">'+(!!v.comment ? v.comment : '')+'</textarea></td>'
 			+'</tr>';
 		}
 		return !!str ? str : '<tr><td colspan="7">まだ登録されていません。</td></tr>';
@@ -450,32 +453,7 @@ $(function(){
 			$('#total_tbl').css('display', 'none');
 			return ;
 		}
-		let totalAry = [
-			/* {'month': 0, 'total_work': 0, 'work': 0, 'rest': 0} */
-		];
-		let can_contain = false;
-		for(let v of tblAry){
-			can_contain = false;
-			var n_month = parseInt(v.date.substring(v.date.indexOf('/')+1, v.date.lastIndexOf('/')));
-			for(let t of totalAry){
-				if(t.month == n_month){
-					t.formal_work += timeFunc.internalTime(v.formal_work + ':00');
-					t.work += timeFunc.internalTime(v.work + ':00');
-					t.rest += timeFunc.internalTime(v.rest + ':00');
-					can_contain = true;
-					break;
-				}
-			}
-			if(!can_contain){
-				//同じ月が無ければ新しい月を作成
-				totalAry.push({
-					'month': n_month,
-					'formal_work': timeFunc.internalTime(v.formal_work + ':00'),
-					'work': timeFunc.internalTime(v.work + ':00'),
-					'rest': timeFunc.internalTime(v.rest + ':00')
-				});
-			}
-		}
+		let totalAry = getTotalAry();
 		//テーブル作成
 		let tbl_str = '<table>'
 			+'<caption>労働時間（まとめ）</caption>'
@@ -495,8 +473,41 @@ $(function(){
 			+'</tr>';
 		}
 		tbl_str += '</tbody></table>';
-		$('#total_tbl').html(tbl_str);
+		$('#total_tbl').html('<button id="to_clipboard">表をクリップボードにコピー</button>');
+		$('#total_tbl').append(tbl_str);
 		$('#total_tbl').css('display', 'block');
+	}
+
+	//tblAryのデータを加算して月の通算値を登録
+	function getTotalAry(){
+		let totalAry = [
+			/* {'month': 0, 'total_work': 0, 'work': 0, 'rest': 0} */
+		];
+		let can_contain = false;
+		for(let v of tblAry){
+			can_contain = false;
+			var n_month = parseInt(v.date.substring(v.date.indexOf('/')+1, v.date.lastIndexOf('/')));
+			for(let t of totalAry){
+				//同じ月に加算する
+				if(t.month == n_month){
+					t.formal_work += timeFunc.internalTime(v.formal_work + ':00');
+					t.work += timeFunc.internalTime(v.work + ':00');
+					t.rest += timeFunc.internalTime(v.rest + ':00');
+					can_contain = true;
+					break;
+				}
+			}
+			if(!can_contain){
+				//同じ月が無ければ新しい月を作成
+				totalAry.push({
+					'month': n_month,
+					'formal_work': timeFunc.internalTime(v.formal_work + ':00'),
+					'work': timeFunc.internalTime(v.work + ':00'),
+					'rest': timeFunc.internalTime(v.rest + ':00')
+				});
+			}
+		}
+		return totalAry;
 	}
 	
 	/**

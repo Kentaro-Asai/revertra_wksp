@@ -21,7 +21,6 @@
 	</header>
 	<main>
 		<section class="today">
-			<!-- 高度な設定をあとで追加したい -->
 			<div>
 				<p id="msg"></p>
 				<p id="start"></p>
@@ -29,13 +28,12 @@
 				<p id="rest_time">00:00:00</p>
 			</div>
 			<div id="btn_box">
-				<!-- 勤務開始、休憩、勤務終了、やっぱり勤務開始、別の勤務開始 -->
 				<button id="work_btn">勤務開始</button>
 			</div>
 		</section>
 		<section class="tbl">
 			<p>
-				<input id="reg_time_btn1" type="button" value="登録された時間を変更" >
+				<button id="reg_time_btn1">登録された時間を変更</button>
 				<span></span>
 			</p>
 			<table>
@@ -59,7 +57,7 @@
 			</table>
 			<p>
 				<span></span>
-				<input id="reg_time_btn2" type="button" value="登録された時間を変更" >
+				<button id="reg_time_btn2">登録された時間を変更</button>
 			</p>
 		</section>
 		<section id="total_tbl" class="tbl"></section>
@@ -68,5 +66,6 @@
 		<small>Copyright &commat; Kentaro Asai 2019</small>
 	</footer>
 	<script src="./work.js"></script>
+	<script src="./export_work.js"></script>
 </body>
 </html>

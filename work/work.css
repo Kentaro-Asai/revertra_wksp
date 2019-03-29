@@ -146,6 +146,21 @@ main{
 	display: block;
 	margin: 0 auto;
 }
+#reg_time_btn1:hover, #reg_time_btn2:hover{
+    background: linear-gradient(0deg, #775, #442, #775);
+}
+#to_clipboard{
+	display: block;
+    background: linear-gradient(0deg, #484, #262, #484);
+    color: #ddc;
+    padding: 5px 15px;
+    border-radius: 8px;
+    border: solid 1px #272;
+    margin: 5px 0 0px auto;
+}
+#to_clipboard:hover{
+	background: linear-gradient(0deg, #393, #4a4, #393);
+}
 .tbl table{
 	border-collapse: collapse;
 	margin: 10px auto;
