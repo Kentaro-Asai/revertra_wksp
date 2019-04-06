@@ -159,8 +159,8 @@ $(function(){
 		let dt = new Date();
 		let now_time = timeFunc.getStrTime('full', dt);
 		let findTarget = {
-			'today': timeFunc.getStrTime('dateOnly', dt),
-			'yesterday': timeFunc.getStrTime('dateOnly', new Date(timeFunc.getYesterday(now_time)))
+			today: timeFunc.getStrTime('dateOnly', dt),
+			yesterday: timeFunc.getStrTime('dateOnly', new Date(timeFunc.getYesterday(now_time)))
 		};
 		let ret = tblAry.find(dayOb =>
 			findTarget.today === dayOb.date
@@ -170,13 +170,13 @@ $(function(){
 		if(!ret) return ;
 		
 		todayAry = {
-			'msg': '現在仕事中です。',
-			'btn_time': '' + now_time,//ボタンを押した時間を記録
-			'rest_time': '',
-			'work_time': '',
-			'work_start': '' + now_time,
-			'work_end': '',
-			'update': false
+			msg: '現在仕事中です。',
+			btn_time: '' + now_time,//ボタンを押した時間を記録
+			rest_time: '',
+			work_time: '',
+			work_start: '' + now_time,
+			work_end: '',
+			update: false
 		};
 		boolAry = {'work': true, 'rest': false};
 		$('#start').html(todayAry.work_start);
@@ -200,11 +200,11 @@ $(function(){
 		let tbl_html_ary = [];
 		for(let i=0; i < tbl_date.length; i++){
 			tbl_html_ary.push({
-				'date': tbl_date[i].innerHTML,
-				'work': tbl_work[i].value,
-				'start': tbl_start[i].value,
-				'end': tbl_end[i].value,
-				'comment': comment[i].value
+				date: tbl_date[i].innerHTML,
+				work: tbl_work[i].value,
+				start: tbl_start[i].value,
+				end: tbl_end[i].value,
+				comment: comment[i].value
 			});
 		}
 		for(let i in tblAry){
@@ -436,12 +436,12 @@ $(function(){
 		}
 		//すでに働いていた時、todayAryを返す
 		return ret ? {
-			'msg': 'お疲れさまでした。<br>もしかして、まだ働きますか？',
-			'btn_time': rtn.date +' '+ rtn.end + ':00',
-			'rest_time': rtn.rest + ':00',
-			'work_time': rtn.work + ':00',
-			'work_start': rtn.start + ':00',
-			'work_end': rtn.end + ':00'
+			msg: 'お疲れさまでした。<br>もしかして、まだ働きますか？',
+			btn_time: rtn.date +' '+ rtn.end + ':00',
+			rest_time: rtn.rest + ':00',
+			work_time: rtn.work + ':00',
+			work_start: rtn.date +' '+ rtn.start + ':00',
+			work_end: rtn.end + ':00'
 		} : false;
 	};
 
