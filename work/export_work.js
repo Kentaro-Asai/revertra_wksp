@@ -13,7 +13,7 @@ $(function(){
 		}
 	});
 
-	function excelStr(tblList){
+	const excelStr = (tblList)=>{
 		let rtn = '日付\t開始\t終了\t勤務時間\t仕事\t休憩\tコメント\n';
 		for(let v of tblList){
 			rtn += v.date+'\t'+v.start+'\t'+v.end+'\t'+v.formal_work+'\t'+v.work+'\t'+v.rest+'\t'+v.comment+'\n';
@@ -22,14 +22,17 @@ $(function(){
 		return rtn;
 	}
 
-	//thを取得すれば, コード変えなくてもいけるようになるよ
-	function getTotalTblStr(){
+	const getTotalTblStr = ()=>{
 		let rtn = '';
-		let html_td = $('#total_tbl td');
+		const html_td = $('#total_tbl td');
 		if(!!html_td.length){
-			rtn += '月\t総労働時間\t仕事\t休憩\n';
+			rtn += '労働時間（まとめ）\n';
+			const tbl_header = $('#total_tbl th');
+			for(let i=0; i < tbl_header.length; i++){
+				rtn += tbl_header[i].innerHTML + (i+1 == tbl_header.length ? '\n':'\t');
+			}
 		}
-		for(let i = 0; 0 < html_td.length; i += 4){
+		for(let i = 0; i < html_td.length; i += 4){
 			rtn += html_td[i].innerHTML + '\t';
 			rtn += html_td[i+1].innerHTML + '\t';
 			rtn += html_td[i+2].innerHTML + '\t';
@@ -38,7 +41,7 @@ $(function(){
 		return rtn;
 	}
 
-	function execCopy(string){
+	const execCopy = (string)=>{
 		var temp = document.createElement('div');
 
 		temp.appendChild(document.createElement('pre')).textContent = string;

@@ -30,7 +30,8 @@ header > p {
     background-color: #ccd;
     color: #333;
     border: solid 3px maroon;
-    border-radius: 2em;
+	border-radius: 2em;
+	font-size: 13px;
     font-weight: bold;
     padding: 1.5em;
 }

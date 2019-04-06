@@ -25,10 +25,12 @@ $(function(){
 	let boolAry = {'work': false, 'rest': false};
 	//countUpの中のループを1つだけしか呼ばないようにする(古いループは捨てる)
 	let loopKey = 0;
-	
-	//initialFunc();
-	let initialFunc = ()=>{
-	//(function(){
+
+	/**
+	 * initialFunc()
+	 * 最初に呼ぶだけの関数
+	 */
+	const initialFunc = ()=>{
 		tblStorage();
 		todayAry = getTodayStorage();
 		$('#tbl_data').html(outputTblHtml(tblAry));
@@ -51,8 +53,7 @@ $(function(){
 		}
 		//tblAryの下にある労働時間をつくる
 		updateTotalTbl();
-	};	
-	//})();
+	};
 		
 	$('#btn_box').on('click', '#work_btn, #still_work_btn', (e)=>{
 	//$('#work_btn').on('click', ()=>{
@@ -221,12 +222,12 @@ $(function(){
 	});
 	
 	//メッセージを表示（徐々に消えていく演出）
-	let transMsg = msg =>{
+	const transMsg = msg =>{
 		let tbl_span = $('.tbl span');
 		let num = {'opacity': 10, 'buffer': 20};
 		tbl_span.html(msg);
 		tbl_span.css('opacity', num.opacity / 10);
-		let key = window.setInterval(()=>{
+		const key = window.setInterval(()=>{
 			if(0 < num.buffer) num.buffer--;
 			else tbl_span.css('opacity', (--num.opacity) / 10);
 			if(0 === num.opacity) window.clearInterval(key);
@@ -234,7 +235,7 @@ $(function(){
 	};
 	
 	//現在のモードの(get OR set)を引数あるなしで行う
-	function boolAryStorage(boolObj){
+	const boolAryStorage = boolObj =>{
 		if(!!boolObj){
 			//this is set
 			localStorage.setItem('boolAry', JSON.stringify(boolObj));
@@ -248,10 +249,9 @@ $(function(){
 	};
 	
 	//過去の労働時間(get and set)
-	function tblStorage(todayObj){
+	const tblStorage = todayObj =>{
 		if(!!todayObj){
 			//this is set
-			let st = new Date(todayObj.work_start);
 			let start = timeFunc.marumeTime('start', todayObj.work_start);
 			let end = timeFunc.marumeTime('end', todayObj.work_end);
 			let lack = {'end': timeFunc.internalTime(end + ':00'), 'start': timeFunc.internalTime(start + ':00'), 'labor': 0};
@@ -262,13 +262,13 @@ $(function(){
 			}
 			//挿入するデータ
 			let today_tblAry = {
-				'date': timeFunc.getStrTime('dateOnly', st),
-				'start': start,
-				'end': end,
-				'formal_work': timeFunc.viewTime(lack.labor).slice(0, -3),
-				'work': todayObj.work_time.slice(0, -3),
-				'rest': todayObj.rest_time.slice(0, -3),
-				'comment': ''
+				date: timeFunc.getStrTime('dateOnly', new Date(todayObj.work_start)),
+				start: start,
+				end: end,
+				formal_work: timeFunc.viewTime(lack.labor).slice(0, -3),
+				work: todayObj.work_time.slice(0, -3),
+				rest: todayObj.rest_time.slice(0, -3),
+				comment: ''
 			};
 			if(todayObj.update){
 				let yesterday_date = timeFunc.getStrTime('dateOnly', timeFunc.getYesterday());
@@ -289,7 +289,7 @@ $(function(){
 	};
 	
 	//今日の労働を保存
-	function setTodayStorage(todayObj){
+	const setTodayStorage = todayObj =>{
 		if(!!todayObj){
 			localStorage.setItem('todayAry', JSON.stringify(todayObj));
 		}else{
@@ -298,10 +298,9 @@ $(function(){
 	}
 	
 	//直近の労働を返す
-	function getTodayStorage(){
+	const getTodayStorage = ()=>{
 		let todayObj = {};
 		let needNew = false;
-		//TODO: 仕事をして本日中に終了後、またスタートして戻ってきた時の対応がない
 		//途中の仕事があるか => 今日終えた仕事があるか => 新しい仕事の判定順
 		let str = localStorage.getItem('todayAry');
 		if(!!str){
@@ -339,17 +338,18 @@ $(function(){
 			if(!needNew) todayObj = workedObj;
 		}
 		return needNew ? {
-			'msg': 'おはようございます。',
-			'work_time': '00:00:00', //sec
-			'rest_time': '00:00:00',
-			'btn_time': '', //ボタンを押した時間
-			'work_start': '',
-			'work_end': '',
-			'update': false
+			msg: 'おはようございます。',
+			work_time: '00:00:00', //sec
+			rest_time: '00:00:00',
+			btn_time: '', //ボタンを押した時間
+			work_start: '',
+			work_end: '',
+			update: false
 		} : todayObj;
 	};
 	
-	function outputTblHtml(tblList){
+	//文字列を返す(table)
+	const outputTblHtml = tblList =>{
 		if(null == tblList || !tblList.length) return '<tr><td colspan="7">まだ登録されていません。</td></tr>';
 		let str = '';
 		//<tr><th>日付</th><th>開始</th><th>終了</th><th>勤務時間</th><th>休憩</th></tr>
@@ -367,23 +367,23 @@ $(function(){
 		return !!str ? str : '<tr><td colspan="7">まだ登録されていません。</td></tr>';
 	};
 	
-	function makeBtn(ary){
-		let btnStr = '';
-		let viewStr = '';
+	const makeBtn = ary =>{
+		let btn_str = '';
+		let view_str = '';
 		for(let val of ary){
-			if('rest' === val) viewStr = '休憩開始';
-			else if('work' === val) viewStr = '仕事開始';
-			else if('work_end' === val) viewStr = '勤務終了';
-			else if('still_work' === val) viewStr = 'やっぱり仕事再開';
-			else if('new_work' === val) viewStr = '新しい仕事開始';
-			btnStr += '<button id="'+val+'_btn">'+viewStr+'</button>';
+			if('rest' === val) view_str = '休憩開始';
+			else if('work' === val) view_str = '仕事開始';
+			else if('work_end' === val) view_str = '勤務終了';
+			else if('still_work' === val) view_str = 'やっぱり仕事再開';
+			else if('new_work' === val) view_str = '新しい仕事開始';
+			btn_str += '<button id="'+val+'_btn">'+view_str+'</button>';
 		}
-		return btnStr;
+		return btn_str;
 	};
 	
 	//表示をOutput
-	function countUpTime(myKey){
-		let btn_d = !!todayAry.btn_time ? new Date(todayAry.btn_time) : new Date();
+	const countUpTime = myKey =>{
+		const btn_d = !!todayAry.btn_time ? new Date(todayAry.btn_time) : new Date();
 		let btn_stmp = Math.floor(btn_d.getTime() / 1000);
 		let viewed_time = 0;
 		let countOb = {};
@@ -394,8 +394,8 @@ $(function(){
 		}else{
 			return ;
 		}
-		loop();
-		function loop(){
+		
+		let loop = ()=>{
 			let d = new Date();
 			let stmp = Math.floor(d.getTime() / 1000);
 			let cumulative_time = stmp - btn_stmp + countOb.prev_count;
@@ -405,17 +405,18 @@ $(function(){
 			}
 			if(myKey === loopKey) requestAnimationFrame(loop);			
 		}
+		loop();
 	};
 	
 	//今日すでに働いているか、働いているならtodayAryを返す
-	function todayWorked(){
+	const todayWorked = ()=>{
 		let dt = new Date();
-		let d_now = {
-			'date': timeFunc.getStrTime('dateOnly', dt),
-			'time': dt.getHours() * 60 + dt.getMinutes()
+		const d_now = {
+			date: timeFunc.getStrTime('dateOnly', dt),
+			time: dt.getHours() * 60 + dt.getMinutes()
 		};
 		dt.setDate(dt.getDate() - 1);
-		let yesterday_date = timeFunc.getStrTime('dateOnly', dt);
+		const yesterday_date = timeFunc.getStrTime('dateOnly', dt);
 		let ret = false;
 		let rtn = {};
 		for(let d of tblAry){
@@ -447,13 +448,13 @@ $(function(){
 	/**
 	 * tblAryを元に、今月分とかのまとめの値を表で表示する
 	 */
-	function updateTotalTbl(){
+	const updateTotalTbl = ()=>{
 		if(0 == tblAry.length){
 			$('#total_tbl').html('');
 			$('#total_tbl').css('display', 'none');
 			return ;
 		}
-		let totalAry = getTotalAry();
+		const totalAry = getTotalAry();
 		//テーブル作成
 		let tbl_str = '<table>'
 			+'<caption>労働時間（まとめ）</caption>'
@@ -461,9 +462,9 @@ $(function(){
 			+'<tbody>';
 		for(let t of totalAry){
 			var hs = {
-				'formal_work': timeFunc.viewTime(t.formal_work),
-				'work': timeFunc.viewTime(t.work),
-				'rest': timeFunc.viewTime(t.rest)
+				formal_work: timeFunc.viewTime(t.formal_work),
+				work: timeFunc.viewTime(t.work),
+				rest: timeFunc.viewTime(t.rest)
 			};
 			tbl_str += '<tr>'
 				+'<td>' + t.month + '</td>'
@@ -478,8 +479,8 @@ $(function(){
 		$('#total_tbl').css('display', 'block');
 	}
 
-	//tblAryのデータを加算して月の通算値を登録
-	function getTotalAry(){
+	//tblAryのデータを加算して月の通算値(totalAry)を作成
+	const getTotalAry = ()=>{
 		let totalAry = [
 			/* {'month': 0, 'total_work': 0, 'work': 0, 'rest': 0} */
 		];
@@ -500,10 +501,10 @@ $(function(){
 			if(!can_contain){
 				//同じ月が無ければ新しい月を作成
 				totalAry.push({
-					'month': n_month,
-					'formal_work': timeFunc.internalTime(v.formal_work + ':00'),
-					'work': timeFunc.internalTime(v.work + ':00'),
-					'rest': timeFunc.internalTime(v.rest + ':00')
+					month: n_month,
+					formal_work: timeFunc.internalTime(v.formal_work + ':00'),
+					work: timeFunc.internalTime(v.work + ':00'),
+					rest: timeFunc.internalTime(v.rest + ':00')
 				});
 			}
 		}
@@ -513,21 +514,21 @@ $(function(){
 	/**
 	 * 時間に関するツール
 	 */
-	var timeFunc = {
+	const timeFunc = {
 		//時:分:秒をint timeStamp(秒)で表現
-		'internalTime': str => {
+		internalTime: str => {
 			let total_sec = 0;
 			if(!!str){
-				let sec = str.substr(str.lastIndexOf(':')+1, 2);
-				let hr = str.substr(0, str.indexOf(':'));
-				let minutes = str.substring(str.indexOf(':')+1, str.lastIndexOf(':'));
+				const sec = str.substr(str.lastIndexOf(':')+1, 2),
+					hr = str.substr(0, str.indexOf(':')),
+					minutes = str.substring(str.indexOf(':')+1, str.lastIndexOf(':'));
 
 				total_sec = parseInt(hr) * 60 * 60 + parseInt(minutes) * 60 + parseInt(sec);
 			}
 			return total_sec;
 		},
 		//int timeStamp(秒)を、時:分:秒で表現
-		'viewTime': sec => {
+		viewTime: sec => {
 			let rtn = '';
 			if(60*60 <= sec){
 				let hr = Math.floor(sec / (60 * 60));
@@ -546,7 +547,7 @@ $(function(){
 			return rtn;
 		},
 		//2019/01/01 02:08:06 の形式で日付取得
-		'getStrTime': (mode, dateObj) => {
+		getStrTime: (mode, dateObj) => {
 			let yr = dateObj.getFullYear();
 			let mnth = dateObj.getMonth() + 1;
 			mnth = mnth < 10 ? '0'+mnth : mnth;  
@@ -565,7 +566,7 @@ $(function(){
 			}
 		},
 		// Date Objectを返す
-		'getYesterday': str => {
+		getYesterday: str => {
 			let dt = new Date(str);
 			if('Invalid Date' === dt){
 				dt = new Date();
@@ -573,7 +574,7 @@ $(function(){
 			return new Date(dt.setDate(dt.getDate()-1));
 		},
 		//開始は15分刻みで遅くなる。終了は早くなる(返す値に日付を付加)
-		'marumeTime': (mode, tm) => {
+		marumeTime: (mode, tm) => {
 			let dt = new Date(tm);
 			let rtn = '';
 			let hrs = dt.getHours();
