@@ -1,12 +1,23 @@
 $(function(){
 	//入力されたら表示する文字
-	var ok_word_ary = ['A', 'T', 'G', 'C', 'N', 'W', 'S', 'R', 'Y', 'M', 'K', 'B', 'V', 'H', 'D'];
-	var primer_num = 1;
-	var output_section_clr = 1;
+	const ok_word_ary = ['A', 'T', 'G', 'C', 'N', 'W', 'S', 'R', 'Y', 'M', 'K', 'B', 'V', 'H', 'D'];
+	let primer_num = 1;
+	let output_section_clr = 1;
+
+	//周辺配列を変更
+	$('#around-dna > textarea').on('change', (e)=>{
+		let dna = deleteInActive(e.target.value);
+		$('#around-dna > span').html(dna.length + 'bp');
+	});
+
+	//周辺配列を逆相補鎖に変更
+	$('#complement-around-dna').on('click', ()=>{
+		let dna = deleteInActive($('#around-dna > textarea').val());
+		$('#around-dna > textarea').val(makeComplement(dna));
+	});
 	
 	//プライマーの入力欄を追加
 	$('#insert_primer_btn').on('click',()=>{
-		// onsole.log(0 < primer_num < 10, primer_num, primer_num < 10);
 		//if(0 < primer_num < 10){ //この書き方するとなんでか知らんが10より小さいが効かない。バグる
 		if(primer_num < 10){
 			createInputPrimer(++primer_num);
@@ -26,7 +37,7 @@ $(function(){
 				//primer
 				let primer = deleteInActive(input_dna);
 				$('#primer'+primer_num+'sq').html(primer);
-				let dna = deleteInActive($('#around-dna').val());
+				let dna = deleteInActive($('#around-dna > textarea').val());
 				let dna_hms = 0 < dna.length ? templateHomologySearch(dna, primer) : [];
 				//逆相補鎖、回文配列なら高い相同性
 				let pm_hms = primerHomologySearch(primer);
@@ -54,7 +65,7 @@ $(function(){
 	function deleteInActive(input_str){
 		let str = '';
 		let up_case = !!input_str ? input_str.toUpperCase() : '';
-		for(var i=0; i < up_case.length; i++){
+		for(let i=0; i < up_case.length; i++){
 			if(-1 !== ok_word_ary.indexOf(up_case[i])){
 				str += up_case[i];
 			}
@@ -65,7 +76,7 @@ $(function(){
 	//逆相補鎖を出力します
 	function makeComplement(dna){
 		let rtn = '';
-		for(var i=dna.length-1; i >= 0; i--){
+		for(let i=dna.length-1; i >= 0; i--){
 			switch(dna[i]){
 				case 'A':
 				 rtn += 'T';
@@ -254,7 +265,6 @@ $(function(){
 				break;
 			case "N":
 				return true;
-			   break;
 		}
 		return false;
 	}
@@ -391,8 +401,13 @@ $(function(){
 		let rtn = {'primer': '', 'complement': '', 'point': 0, 'position': 0};
 		let hs = {'pm': '' + pm, 'cmp': '' + cmp, 'pt': 0};
 		for(let i=0; i < pm.length; i++){
-			hs = {'pm': '' + pm, 'cmp': '' + cmp, 'pt': 0};
-			for(let c=0, p=0+i; c < cmp.length && p < pm.length; c++, p++){
+			hs = {'pm': '', 'cmp': '', 'pt': 0};
+			for(let a=0; a < i; a++){
+				hs.pm += pm[a];
+				hs.cmp += '-';
+			}
+			let c=0, p=0+i;
+			for(; c < cmp.length && p < pm.length; c++, p++){
 				if(baseFit(pm[p], cmp[c])){
 					hs.pt++;
 					hs.pm += pm[p];
@@ -429,6 +444,16 @@ $(function(){
 					}
 				}
 			}
+			// 不足分の追加
+			for(; c < cmp.length || p < pm.length; c++, p++){
+				if(cmp.length <= c){
+					hs.pm += pm[p];
+					hs.cmp += '-';
+				}else if(pm.length <= p){
+					hs.pm += pm[p];
+					hs.cmp += '-';
+				}
+			}
 			//最も配列に相同性があったものを記録
 			if(rtn.point < hs.pt){
 				rtn = {
@@ -437,8 +462,6 @@ $(function(){
 				};
 			}
 		}
-		//TODO: rtnを表示しやすい形式に変換
-		//return primerOutputFormation(rtn);
 		return rtn;
 	}
 	
@@ -501,7 +524,7 @@ $(function(){
 			beforeBase = '' + d;
 		}
 		//まるめ誤差回避
-		var gcContents = Math.round(1000 * gc / pm.length) / 10;
+		const gcContents = Math.round(1000 * gc / pm.length) / 10;
 		//まるめ誤差回避
 		tm.near = Math.round((delta.H * 10000 / ((delta.S*10 + 2626)/10)) - 2731.5 - 215.971) / 10;
 		tm.wallace += 35 - 2 * pm.length;

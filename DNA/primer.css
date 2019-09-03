@@ -140,18 +140,46 @@ li span:first-child{
     color: #ddd;
     font-size: 16px;
 }
-.around-dna-span{
-	display: block;
-	margin: 0 auto;
-}
 #around-dna{
+	overflow: auto;
+	height: 164px
+}
+#around-dna > textarea{
 	display: block;
-	margin: 0 auto;
+	float: left;
+	margin: 0 5px;
 	width: 600px;
-	height: 100px;
+	height: 156px;
+	font-size: 12px;
+	resize: none;
+	overflow: hidden scroll;
+}
+#complement-around-dna{
+	display: block;
+    float: left;
+    width: 125px;
+    padding: 9px;
+    margin: 25px 23px 50px;
+    border-radius: 19px;
+    border: solid 1px #777;
+    background: radial-gradient(#ddd, #666);
+}
+#complement-around-dna:active{
+	border: solid 1px #999;
+    background: radial-gradient(#fff, #888);
+}
+#around-dna > span{
+	display: block;
+	float: left;
+    font-size: 12px;
+    text-align: right;
+    width: 160px;
+    padding: 4px 10px 0 0;
+    color: #444;
+    text-shadow: -1px -1px 1px white, 1px 1px 1px black;
 }
 output{
-	font-family: "MS Gothic", "Arial";
+	font-family: "MS Gothic", "monospace", Terminal;
 }
 output section{
 	margin: 10px 0 5px;

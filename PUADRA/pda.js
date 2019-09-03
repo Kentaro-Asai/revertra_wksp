@@ -1,6 +1,6 @@
 $(function(){
-    var mns = {
-    	//kilr=キラー, mlb=マルチブースト
+	var mns = {
+		//kilr=キラー, mlb=マルチブースト
 597:{'nm':'覚醒ヘラ・イース','main':2,'sub':5,'type':['evil', 'god'],'hp':3504,'atk':1334,'re':428,'aw':{'mz': 1, 'mzdec': 1, 'skb': 1}},
 986:{'nm':'八界蛇神・ヤマタノオロチ','main':2,'sub':2,'type':['god', 'vitality'],'hp':4590,'atk':1150,'re':222,'aw':{'2way': 2, 'mzr': 1, 'skb': 1, 'huin': 1, 'kilr': 1}},
 1112:{'nm':'宿業の破壊神・シヴァ','main':1,'sub':2,'type':['god', 'vitality'],'hp':4131,'atk':1452,'re':125,'aw':{'hir': 2, 'skb': 1, 'huin': 1, 'yb': 1, 'kilr': 1}},
@@ -738,12 +738,12 @@ $(function(){
 3976:{'nm':'轟叫の魔伯爵・ロノウェ','main':3,'sub':1,'type':['evil', 'attack'],'hp':3811,'atk':2252,'re':486,'aw':{'2way': 1, 'skb': 2, 'huin': 1, 'yb': 2}},
 
 };
-    var sttm = 0; //for requestAnimationFrame
-    var is_ld_type = true;
-    var msm = ['A', 'B', 'C', 'D', 'E', 'F'];
-    var zk_tg_btn = [true, false, false, false, false]; //for selecting monster (toggle button)
-    var zk_tg_btn_sub = [true, false, false, false, false, false];
-    var max_page = 0;
+	var sttm = 0; //for requestAnimationFrame
+	var is_ld_type = true;
+	var msm = ['A', 'B', 'C', 'D', 'E', 'F'];
+	var zk_tg_btn = [true, false, false, false, false]; //for selecting monster (toggle button)
+	var zk_tg_btn_sub = [true, false, false, false, false, false];
+	var max_page = 0;
 	//現在のチームの覚醒保有状況。
 	var aw_list = {
 		'hidec':[0,0,0,0,0,0], 'mzdec':[0,0,0,0,0,0], 'kidec':[0,0,0,0,0,0], 'hkdec':[0,0,0,0,0,0], 'ymdec':[0,0,0,0,0,0],
@@ -772,100 +772,69 @@ monswork.onmessage = function(e){
 };
 */
 
-    $('#nm1').on('click', function () {
-    	selectGUI(1, "nm");
-    });
-    $('#nm2').on('click', function () {
-    	selectGUI(2, "nm");
-    });
-    $('#nm3').on('click', function () {
-    	selectGUI(3, "nm");
-    });
-    $('#nm4').on('click', function () {
-    	selectGUI(4, "nm");
-    });
-    $('#nm5').on('click', function () {
-    	selectGUI(5, "nm");
-    });
-    $('#nm6').on('click', function () {
-    	selectGUI(6, "nm");
-    });
-	$('#asis_nm1').on('click', function () {
-    	selectGUI(1, "asis_nm");
-    });
-    $('#asis_nm2').on('click', function () {
-    	selectGUI(2, "asis_nm");
-    });
-    $('#asis_nm3').on('click', function () {
-    	selectGUI(3, "asis_nm");
-    });
-    $('#asis_nm4').on('click', function () {
-    	selectGUI(4, "asis_nm");
-    });
-    $('#asis_nm5').on('click', function () {
-    	selectGUI(5, "asis_nm");
-    });
-    $('#asis_nm6').on('click', function () {
-    	selectGUI(6, "asis_nm");
-    });
-    function selectGUI(num, str) {
-    	$('#'+str + num).append('<div class=bk data-000='+num+' data-nm='+str+' ></div>');
-    	sttm = Date.now();
-    	requestAnimationFrame(reqAnim);
-    };
-    function listMons(page, num) {
-    	var item = 24;
-    	var index = 0;
-    	var bgc = '';
-    	var hs = '<ul class=page>'
-					+ '<li data-001=' + (page - 1) + '>previous</li>'
-					+ '<li data-001=' + (parseInt(page) + 1) + '>next</li>'
-				+ '</ul>'
-				+ '<ul class=tgl_btn>'
-					+ '<li id=tg1>火</li>'
-					+ '<li id=tg2>水</li>'
-					+ '<li id=tg3>木</li>'
-					+ '<li id=tg4>光</li>'
-					+ '<li id=tg5>闇</li>'
-				+ '</ul>'
-				+ '<ul class=tgl_btn_sub>'
-					+ '<li id=tg_sub0>無</li>'
-					+ '<li id=tg_sub1>火</li>'
-					+ '<li id=tg_sub2>水</li>'
-					+ '<li id=tg_sub3>木</li>'
-					+ '<li id=tg_sub4>光</li>'
-					+ '<li id=tg_sub5>闇</li>'
-				+ '</ul>'
-				+'<ul class=mns_list >';
-    	for (var ky in mns) {
-    		if (zk_tg_btn[mns[ky]['main']-1] === true && zk_tg_btn_sub[mns[ky]['sub']] === true) {
+	function selectGUI(num, str) {
+		$('#'+str + num).append('<div class="bk" data-000="'+num+'" data-nm="'+str+'" ></div>');
+		sttm = Date.now();
+		requestAnimationFrame(reqAnim);
+	};
+
+	for (let id_fragment in [...Array(6).keys()]) {
+		const id_num = parseInt(id_fragment) + 1;
+		$('#nm' + id_num).on('click', function () {
+			selectGUI(id_num, "nm");
+		});
+		$('#asis_nm' + id_num).on('click', function () {
+			selectGUI(id_num, "asis_nm");
+		});
+	}
+
+	function listMons(page, num) {
+		var item = 24;
+		var index = 0;
+		var bgc = '';
+		var hs = '<ul class=page>'
+				+ '<li data-001=' + (page - 1) + '>previous</li>'
+				+ '<li data-001=' + (parseInt(page) + 1) + '>next</li>'
+			+ '</ul>'
+			+ '<ul class=tgl_btn>'
+				+ '<li id=tg1>火</li>'
+				+ '<li id=tg2>水</li>'
+				+ '<li id=tg3>木</li>'
+				+ '<li id=tg4>光</li>'
+				+ '<li id=tg5>闇</li>'
+			+ '</ul>'
+			+ '<ul class=tgl_btn_sub>'
+				+ '<li id=tg_sub0>無</li>'
+				+ '<li id=tg_sub1>火</li>'
+				+ '<li id=tg_sub2>水</li>'
+				+ '<li id=tg_sub3>木</li>'
+				+ '<li id=tg_sub4>光</li>'
+				+ '<li id=tg_sub5>闇</li>'
+			+ '</ul>'
+			+'<ul class="mns_list" >';
+		for (let ky in mns) {
+			if (zk_tg_btn[mns[ky]['main']-1] === true && zk_tg_btn_sub[mns[ky]['sub']] === true) {
 				if (index >= item * (page - 1) && index < item * page) {
-    				bgc = 'z' + mns[ky]['main'] +'_'+mns[ky]['sub'];
-    				hs += '<li class='+bgc+'><span>'+ky+':</span><br>'+mns[ky]['nm']+'</li>';
-    			}
-    			index++;
-    		}
-    	}
-    	if (index % item > 0) {
-    		max_page = parseInt(index / item) +1;
-    	} else {
-    		max_page = parseInt(index / item);
-    	}
-    	hs += '</ul>';
-    	$('.bk').html(hs);
-    	for (var i = 0; i < zk_tg_btn.length; i++) {
-    		if (zk_tg_btn[i]) $('#tg' + (parseInt(i) + 1)).attr('class', 'on_btn');
-    		else $('#tg' + (parseInt(i) + 1)).attr('class','off_btn');
-    	}
-    	for (var i = 0; i < zk_tg_btn_sub.length; i++) {
-    		if (zk_tg_btn_sub[i]) $('#tg_sub' + i).attr('class', 'on_btn');
-    		else $('#tg_sub' + i).attr('class', 'off_btn');
-    	}
-    }
+					bgc = 'z' + mns[ky]['main'] +'_'+mns[ky]['sub'];
+					hs += '<li class='+bgc+'><span>'+ky+':</span><br>'+mns[ky]['nm']+'</li>';
+				}
+				index++;
+			}
+		}
+		max_page = parseInt(index / item) + (index % item > 0 ? 1 : 0);
+		hs += '</ul>';
+		$('.bk').html(hs);
+		for (let i = 0; i < zk_tg_btn.length; i++) {
+			$('#tg' + (parseInt(i) + 1)).attr('class',(zk_tg_btn[i] ? 'on_btn' : 'off_btn'));
+		}
+		for (let i = 0; i < zk_tg_btn_sub.length; i++) {
+			$('#tg_sub' + i).attr('class', (zk_tg_btn_sub[i] ? 'on_btn' : 'off_btn') );
+		}
+	}
 
 	//mnsボタンクリックしたからステータスを入れる
-    $('body').on('click', '.mns_list li', function () {
-    	var hs_char = $(this).children('span').html();
+	$('body').on('click', '.mns_list li', function () {
+		var hs_char = $(this).children('span').html();
 		var mns_num = hs_char.substring(0, hs_char.length - 1);
 		var num = $('.bk').data('000');
 		var hp = parseInt(mns[mns_num]['hp']);
@@ -873,10 +842,10 @@ monswork.onmessage = function(e){
 		var re = parseInt(mns[mns_num]['re']);
 		var nm = $('.bk').data('nm');
 		$('.bk').remove();
-    	//
-    	$('#'+ nm + num).html(mns[mns_num]['nm']);
-    	$('#'+ nm + num).removeAttr('class');
-    	$('#'+ nm + num).attr('class', 'z' + mns[mns_num]['main'] + '_' + mns[mns_num]['sub']);
+		//
+		$('#'+ nm + num).html(mns[mns_num]['nm']);
+		$('#'+ nm + num).removeAttr('class');
+		$('#'+ nm + num).attr('class', 'z' + mns[mns_num]['main'] + '_' + mns[mns_num]['sub']);
 		if (nm.length === 2) {
 			//main ele
 			$('select[name=main' + num + ']').val(mns[mns_num]['main']);
@@ -909,20 +878,20 @@ monswork.onmessage = function(e){
 			//引数のステータスを反映させるべきか、足すべきか引くべきか判断 => assist_mnsに入れる
 			commitAssist(num, mns_num, {'hp':hp, 'atk':atk, 're':re});
 		}
-		
-    });
+	});
 	
 	//
 	$('body').on('click', '.page li', function () {
-		var page = parseInt($(this).data('001'));
-		var num = parseInt($('.bk').data('000'));
+		let page = parseInt($(this).data('001'));
+		const num = parseInt($('.bk').data('000'));
 		if (page < 1) {
 			page = 1;
 		} else if (page > max_page) {
 			page = max_page;
-    	}
-    	listMons(page, num);
-    });
+		}
+		listMons(page, num);
+	});
+
 	//for toggle button addEventListener
 	$('body').on('click', '.tgl_btn li', function () {
 		var zk = $(this).attr('id').substr(2, 1);
@@ -937,47 +906,44 @@ monswork.onmessage = function(e){
 		listMons(1, parseInt($('.bk').data('000')));
 	});
 
-    $('input[type=checkbox]').on('click', function () {
-    	var atr = $(this).attr('id');
+	$('input[type=checkbox]').on('click', function () {
+		var atr = $(this).attr('id');
 		var num = atr.substr(atr.length - 1);
 		var asi_no = assist_mns['no'][atr.substr(atr.length - 1)];
-    	if (atr.substr(0, 3) === 'pls') {
-    		var atk = parseInt($('input[name=atk' + num + ']').val());
-    		var re = parseInt($('input[name=re' + num + ']').val());
+		if (atr.substr(0, 3) === 'pls') {
+			var atk = parseInt($('input[name=atk' + num + ']').val());
+			var re = parseInt($('input[name=re' + num + ']').val());
 			var pls_hsi = {'atk':0, 'hp':0, 're':0};
-    		if ($(this).prop('checked')) {
+			if ($(this).prop('checked')) {
 				pls_hsi['hp'] = 990;
 				pls_hsi['atk'] = 495;
 				pls_hsi['re'] = 297;
-    		} else {
-    			pls_hsi['hp'] = -990;
+			} else {
+				pls_hsi['hp'] = -990;
 				pls_hsi['atk'] = -495;
 				pls_hsi['re'] = -297;
-    		}
+			}
 			//change status for awaken list under team table
 			statusChange(num, status_list['hp'][num-1]+pls_hsi['hp'], atk + pls_hsi['atk'], re + pls_hsi['re']);
 			commitAssist(num, 0, {'hp':0, 'atk':0, 're':0});
-    	} else if (atr.substr(0, 8) === 'asis_pls' && assist_mns['no'][num - 1] !== 0) {
+		} else if (atr.substr(0, 8) === 'asis_pls' && assist_mns['no'][num - 1] !== 0) {
 			var asi_no = assist_mns['no'][num - 1];
 			if ($(this).prop('checked')) {
 				commitAssist(num, asi_no, {'hp':mns[asi_no]['hp']+990, 'atk':mns[asi_no]['atk']+495, 're':mns[asi_no]['re']+297});
-    		} else {
-    			commitAssist(num, asi_no, {'hp':mns[asi_no]['hp'], 'atk':mns[asi_no]['atk'], 're':mns[asi_no]['re']});
-    		}
-			
-		}
-    });
+			} else {
+				commitAssist(num, asi_no, {'hp':mns[asi_no]['hp'], 'atk':mns[asi_no]['atk'], 're':mns[asi_no]['re']});
+			}
 
-	$('#team input[type=text]').on('change', function(){
-		var num = $(this).attr('name').slice(-1);
-		var atk_or_re = $(this).attr('name').slice(0, -1);
-		//console.log(num+ " "+atk_or_re);
-		status_list[atk_or_re][num - 1] = parseInt($(this).val());
-		var sum = 0;
-		for (var i=0; i < status_list[atk_or_re].length; i++) {
-			sum += status_list[atk_or_re][i];
 		}
-		$('#status_'+atk_or_re).html(sum);
+	});
+
+	//直接攻撃力か回復力の値を変更した時
+	$('#team input[type=text]').on('change', e => {
+		const num = e.target.name.slice(-1);
+		const atk_or_re = e.target.name.slice(0, -1);
+		status_list[atk_or_re][num - 1] = parseInt(e.target.value);
+		// reduce関数で合計値を生成、出力
+		$('#status_'+atk_or_re).html(status_list[atk_or_re].reduce((sum_val, data) => sum_val + data));
 	});
 
 	//覚醒一覧に関連させる。
@@ -993,85 +959,85 @@ monswork.onmessage = function(e){
 
 //コンボの項目
 	//属性選んだら色変える && 総コンボ数自動変換
-	$('select[name^=zk]').on('change', function () {
+	$('select[name^=zk]').on('change', function(){
 		var bgc = '';
 		var vl = $(this).val();
 
 		if (0 == vl) {
 			$(this).parent().parent().removeAttr('class');
 		} else {
-    		if (1 == vl) bgc = 'bgc_hi';
-    		else if (2 == vl) bgc = 'bgc_mz';
-    		else if (3 == vl) bgc = 'bgc_ki';
-    		else if (4 == vl) bgc = 'bgc_hk';
-    		else if (5 == vl) bgc = 'bgc_ym';
-    		else if (6 == vl) bgc = 'bgc_kh';
+			if (1 == vl) bgc = 'bgc_hi';
+			else if (2 == vl) bgc = 'bgc_mz';
+			else if (3 == vl) bgc = 'bgc_ki';
+			else if (4 == vl) bgc = 'bgc_hk';
+			else if (5 == vl) bgc = 'bgc_ym';
+			else if (6 == vl) bgc = 'bgc_kh';
 
-    		$(this).parent().parent().attr('class', bgc);
-    	}
-    	var at = $(this).attr('name').substr(2, 1);
+			$(this).parent().parent().attr('class', bgc);
+		}
+		var at = $(this).attr('name').substr(2, 1);
 		$('#cmb').val(at);
-    });
+	});
 
 
-//dmg
-    $('#dir_but').on('click', function () {
-    	$(this).attr('disabled', 'disabled');
-    	$(this).val('計算中');
-    	//攻撃力、回復力をもってくる
-    	var atks = getAtk();
-    	//コンボをもってくる
-    	var cmb = getCmb();
+	//dmg
+	$('#dir_but').on('click', function () {
+		$(this).attr('disabled', 'disabled');
+		$(this).val('計算中');
+		//攻撃力、回復力をもってくる
+		var atks = getAtk();
+		//コンボをもってくる
+		var cmb = getCmb();
 		var sk = getLeadSkl();
-		
-    	var dm_ary = getDm(atks, cmb, sk);
-    	//表とpタグに出力(ダメージ)
-    	setDm(dm_ary, atks);
 
-    	butUserble();
-    });
+		var dm_ary = getDm(atks, cmb, sk);
+		//表とpタグに出力(ダメージ)
+		setDm(dm_ary, atks);
+
+		butUserble();
+	});
 
 	//ボタン連打対策（）
-    function butUserble() {
-    	$('#dir_but').val('この条件でダメージ計算');
-    	$('#dir_but').removeAttr('disabled');
-    };
+	function butUserble() {
+		$('#dir_but').val('この条件でダメージ計算');
+		$('#dir_but').removeAttr('disabled');
+	};
 	//攻撃力回復力をArrayに入れる
-    function getAtk() {
-    	var ar = {
-    		'atk': {}, 're': {}, 'main': {}, 'sub': {}, '2way': {},
-    		'hi':0, 'mz':0, 'ki':0, 'hk':0, 'ym':0, 'ht':0,
-    		'hir':0, 'mzr':0, 'kir':0, 'hkr':0, 'ymr':0,
+	function getAtk() {
+		var ar = {
+			'atk': {}, 're': {}, 'main': {}, 'sub': {}, '2way': {},
+			'hi':0, 'mz':0, 'ki':0, 'hk':0, 'ym':0, 'ht':0,
+			'hir':0, 'mzr':0, 'kir':0, 'hkr':0, 'ymr':0,
 			'kilr': {}, 'mlb': {}, 'cmbs':{}, 'sen_klr':{}, 'noDmg':{}
-    	};
-    	for (var i = 1; i <= 6; i++) {
-    		ar['atk'][i] = parseInt($('input[name=atk' + i + ']').val());
-    		ar['re'][i] = parseInt($('input[name=re' + i + ']').val());
-    		ar['main'][i] = parseInt($('select[name=main' + i + ']').val());
-    		ar['sub'][i] = parseInt($('select[name=sub' + i + ']').val());
-    		ar['2way'][i] = parseInt($('select[name=2way' + i + ']').val());
-    		ar['hi'] += parseInt($('select[name=hi' + i + ']').val());
-    		ar['mz'] += parseInt($('select[name=mz' + i + ']').val());
-    		ar['ki'] += parseInt($('select[name=ki' + i + ']').val());
-    		ar['hk'] += parseInt($('select[name=hk' + i + ']').val());
-    		ar['ym'] += parseInt($('select[name=ym' + i + ']').val());
-    		ar['ht'] += parseInt($('select[name=ht' + i + ']').val());
-    		ar['hir'] += parseInt($('select[name=hir' + i + ']').val());
-    		ar['mzr'] += parseInt($('select[name=mzr' + i + ']').val());
-    		ar['kir'] += parseInt($('select[name=kir' + i + ']').val());
-    		ar['hkr'] += parseInt($('select[name=hkr' + i + ']').val());
-    		ar['ymr'] += parseInt($('select[name=ymr' + i + ']').val());
-    		ar['mlb'][i] = parseInt($('select[name=mlb' + i + ']').val());
-    		ar['kilr'][i] = parseInt($('select[name=kilr' + i + ']').val());
+		};
+		for (var i = 1; i <= 6; i++) {
+			ar['atk'][i] = parseInt($('input[name=atk' + i + ']').val());
+			ar['re'][i] = parseInt($('input[name=re' + i + ']').val());
+			ar['main'][i] = parseInt($('select[name=main' + i + ']').val());
+			ar['sub'][i] = parseInt($('select[name=sub' + i + ']').val());
+			ar['2way'][i] = parseInt($('select[name=2way' + i + ']').val());
+			ar['hi'] += parseInt($('select[name=hi' + i + ']').val());
+			ar['mz'] += parseInt($('select[name=mz' + i + ']').val());
+			ar['ki'] += parseInt($('select[name=ki' + i + ']').val());
+			ar['hk'] += parseInt($('select[name=hk' + i + ']').val());
+			ar['ym'] += parseInt($('select[name=ym' + i + ']').val());
+			ar['ht'] += parseInt($('select[name=ht' + i + ']').val());
+			ar['hir'] += parseInt($('select[name=hir' + i + ']').val());
+			ar['mzr'] += parseInt($('select[name=mzr' + i + ']').val());
+			ar['kir'] += parseInt($('select[name=kir' + i + ']').val());
+			ar['hkr'] += parseInt($('select[name=hkr' + i + ']').val());
+			ar['ymr'] += parseInt($('select[name=ymr' + i + ']').val());
+			ar['mlb'][i] = parseInt($('select[name=mlb' + i + ']').val());
+			ar['kilr'][i] = parseInt($('select[name=kilr' + i + ']').val());
 			ar['cmbs'][i] = parseInt($('select[name=cmbs' + i + ']').val());
 			ar['noDmg'][i] = parseInt($('select[name=noDmg' + i + ']').val());
 			ar['sen_klr'][i] = parseInt($('select[name=sen_klr' + i + ']').val());
-    	}
-    	return ar;
-    }
+		}
+		return ar;
+	}
 	//コンボの中身をarrayに入れる
-    function getCmb() {
-    	var cmb = {
+	function getCmb() {
+		var cmb = {
 			'num':$('#cmb').val(),
 			'rt':{1:0, 2:0, 3:0, 4:0, 5:0},
 			'square':{
@@ -1088,77 +1054,77 @@ monswork.onmessage = function(e){
 			8:{'zk':0, 'num':0, 'pls':0},
 			9:{'zk':0, 'num':0, 'pls':0},
 			10:{'zk':0, 'num':0, 'pls':0}
-    	};
-    	for (var i=1; i <= 10; i++) { //これはコンボ10の10
-    		cmb[i]['zk'] = parseInt($('select[name=zk' + i + ']').val());
-    		cmb[i]['num'] = $('#cmb_dp'+i).val();
-    		cmb[i]['pls'] = $('#cmb_pls'+i).val();
-    		if ($('#cmb' + i + 'rt').prop('checked')) {
-    			cmb['rt'][cmb[i]['zk']]++; //add retsu
-    		}
+		};
+		for (var i=1; i <= 10; i++) { //これはコンボ10の10
+			cmb[i]['zk'] = parseInt($('select[name=zk' + i + ']').val());
+			cmb[i]['num'] = $('#cmb_dp'+i).val();
+			cmb[i]['pls'] = $('#cmb_pls'+i).val();
+			if ($('#cmb' + i + 'rt').prop('checked')) {
+				cmb['rt'][cmb[i]['zk']]++; //add retsu
+			}
 			if ($('#cmb' + i + 'square').prop('checked')) {
-    			cmb['square'][i] = true; //add ダメージ無効貫通
-    		}
-    	}
+				cmb['square'][i] = true; //add ダメージ無効貫通
+			}
+		}
 		
-    	return cmb;
-    }
-    //リーダースキル倍率を格納する
-    function getLeadSkl(){
-    	var sk = {
-    		'atk':parseFloat($('#leader_atk').val()),
-    		're':parseFloat($('#leader_re').val())
-    	};
-    	if (isNaN(sk['atk'])) {
-    		$('#leader_atk').val(1);
-    		sk['atk'] = 1;
-    	}
-    	if (isNaN(sk['re'])) {
-    		$('#leader_re').val(1);
-    		sk['re'] = 1;
-    	}
-    	if ($('#ld_type').prop('checked')) {
-    		sk['atk'] = Math.pow(sk['atk'], 2);
-    		sk['re'] = Math.pow(sk['re'], 2);
-    	}
-    	
-    	return sk;
-    }
+		return cmb;
+	}
+	//リーダースキル倍率を格納する
+	function getLeadSkl(){
+		var sk = {
+			'atk':parseFloat($('#leader_atk').val()),
+			're':parseFloat($('#leader_re').val())
+		};
+		if (isNaN(sk['atk'])) {
+			$('#leader_atk').val(1);
+			sk['atk'] = 1;
+		}
+		if (isNaN(sk['re'])) {
+			$('#leader_re').val(1);
+			sk['re'] = 1;
+		}
+		if ($('#ld_type').prop('checked')) {
+			sk['atk'] = Math.pow(sk['atk'], 2);
+			sk['re'] = Math.pow(sk['re'], 2);
+		}
+		
+		return sk;
+	}
 
-    $('#tm > p > label').on('click', function () {
-    	is_ld_type = !is_ld_type;
-    	if (is_ld_type) {
-    		$('#tm > p > label').css('background-color', 'white');
-    		$('#tm > p > label').css('color', 'blue');
-    		$('#tm > p > label').css('box-shadow', '1px 1px 1px 1px inset');
-    	} else {
-    		$('#tm > p > label').css('background-color', '#ccc');
-    		$('#tm > p > label').css('color', 'black');
-    		$('#tm > p > label').css('box-shadow', '1px 1px 1px 1px gray');
-    	}
-    });
+	$('#tm > p > label').on('click', function () {
+		is_ld_type = !is_ld_type;
+		if (is_ld_type) {
+			$('#tm > p > label').css('background-color', 'white');
+			$('#tm > p > label').css('color', 'blue');
+			$('#tm > p > label').css('box-shadow', '1px 1px 1px 1px inset');
+		} else {
+			$('#tm > p > label').css('background-color', '#ccc');
+			$('#tm > p > label').css('color', 'black');
+			$('#tm > p > label').css('box-shadow', '1px 1px 1px 1px gray');
+		}
+	});
 
 	//ダメージ
-    function getDm(atks, cmb, sk) {
-    	var dm = {
-    		'dm':{
-    			1:{'main':0, 'sub':0, 're':0},
-    			2:{'main':0, 'sub':0, 're':0},
-    			3:{'main':0, 'sub':0, 're':0},
-    			4:{'main':0, 'sub':0, 're':0},
-    			5:{'main':0, 'sub':0, 're':0},
-    			6:{'main':0, 'sub':0, 're':0},
-    			'sum':{1:0, 2:0, 3:0, 4:0, 5:0, 'dm':0, 6:0} //6 is heart
-    		},
-    		'cmb':{
-    			'hi':0, 'mz':0, 'ki':0, 'hk':0, 'ym':0, 'ht':0, 'sum':parseInt(cmb['num'])
-    		}
-    	};
+	function getDm(atks, cmb, sk) {
+		var rtn = {
+			'dm':{
+				1:{'main':0, 'sub':0, 're':0},
+				2:{'main':0, 'sub':0, 're':0},
+				3:{'main':0, 'sub':0, 're':0},
+				4:{'main':0, 'sub':0, 're':0},
+				5:{'main':0, 'sub':0, 're':0},
+				6:{'main':0, 'sub':0, 're':0},
+				'sum':{1:0, 2:0, 3:0, 4:0, 5:0, 'all_zk':0, 6:0} //6 is heart
+			},
+			'cmb':{
+				'hi':0, 'mz':0, 'ki':0, 'hk':0, 'ym':0, 'ht':0, 'sum':parseInt(cmb['num'])
+			}
+		};
 		
-    	//注意！！！！！！！！！！！！！ここにコンボ10の10がある！！！
-    	for (var i=1; i <= 10; i++) {
-    		if (0 < cmb[i]['zk']) {
-    			var zk = '';
+		//注意！！！！！！！！！！！！！ここにコンボ10の10がある！！！
+		for (let i=1; i <= 10; i++) {
+			if (0 < cmb[i]['zk']) {
+				var zk = '';
 				if (cmb[i]['zk'] == 1) {
 					zk = 'hi';
 				} else if (cmb[i]['zk'] == 2) {
@@ -1169,144 +1135,144 @@ monswork.onmessage = function(e){
 					zk = 'hk';
 				} else if (cmb[i]['zk'] == 5) {
 					zk = 'ym';
-    			} else {
-    				zk = 'ht';
-    			}
-    			dm['cmb'][zk]++;
-    			for (var j=1; j <= 6; j++) {
+				} else {
+					zk = 'ht';
+				}
+				rtn['cmb'][zk]++;
+				for (var j=1; j <= 6; j++) {
 					//var main_atk = atks['atk'][j] * sk['atk'];
 					var hs = 0;
 					var hs_sub = 0;
 					var hs_re = 0;
-    				if (atks['main'][j] == cmb[i]['zk']) {
+					if (atks['main'][j] == cmb[i]['zk']) {
 						hs += atks['atk'][j] //素の攻撃力
 							* (1 + (cmb[i]['num'] - 3) * 0.25) //繋げたﾄﾞﾛｯﾌﾟ
-							* (1 + (dm['cmb']['sum'] - 1) * 0.25) //コンボ数
+							* (1 + (rtn['cmb']['sum'] - 1) * 0.25) //コンボ数
 							* Math.pow(1.5, atks['mlb'][j]) //マルチブースト
 							* Math.pow(3, atks['kilr'][j]) //キラー
-							* Math.pow(1.5, atks['sen_klr'][j]) //キラー
-							* (1 + 0.1 * atks[zk+'r'] * cmb['rt'][cmb[i]['zk']])  //列強化
+							* Math.pow(1.5, atks['sen_klr'][j]) //潜在キラー
+							* (1 + 0.15 * atks[zk+'r'] * cmb['rt'][cmb[i]['zk']])  //列強化
 							* sk['atk']; //リーダースキル倍率
 						//覚醒スキル==7コンボ以上強化
-						if (dm['cmb']['sum'] >= 7) hs *= Math.pow(2, atks['cmbs'][j]);
-						if (cmb[i]['pls'] > 0) hs *= (cmb[i]['pls'] * 0.06 + 1) * (atks[zk] * 0.05 + 1);
+						if (rtn['cmb']['sum'] >= 7) hs *= Math.pow(2, atks['cmbs'][j]);
+						if (cmb[i]['pls'] > 0) hs *= (cmb[i]['pls'] * 0.06 + 1) * (atks[zk] * 0.07 + 1);
 						if (4 == cmb[i]['num']) hs *= Math.pow(1.5, atks['2way'][j]);
 						if (cmb['square'][i]) hs *= Math.pow(2.5, atks['noDmg'][j]);
-						dm['dm'][j]['main'] += hs;
-    				}
-    				//sub
-    				if (atks['sub'][j] == cmb[i]['zk']) {
+						rtn['dm'][j]['main'] += hs;
+					}
+					//sub
+					if (atks['sub'][j] == cmb[i]['zk']) {
 						var sub_atk = 0;
 						if (atks['sub'][j] == atks['main'][j]) sub_atk = atks['atk'][j] * 0.1 * sk['atk'];
 						else sub_atk = atks['atk'][j] * 0.3 * sk['atk'];
 						hs_sub += sub_atk
 							* (1 + (cmb[i]['num'] - 3) * 0.25)
-							* (1 + (dm['cmb']['sum'] - 1) * 0.25)
+							* (1 + (rtn['cmb']['sum'] - 1) * 0.25)
 							* Math.pow(1.5, atks['mlb'][j])
 							* Math.pow(3, atks['kilr'][j])
 							* Math.pow(2.5, atks['noDmg'][j])
 							* Math.pow(1.5, atks['sen_klr'][j])
-							* (1 + 0.1 * atks[zk+'r'] * cmb['rt'][cmb[i]['zk']]);
-						if (dm['cmb']['sum'] >= 7) hs_sub *= Math.pow(2, atks['cmbs'][j]);
-						if (cmb[i]['pls'] > 0) hs_sub *= (cmb[i]['pls'] * 0.06 + 1) * (atks[zk] * 0.05 + 1);
+							* (1 + 0.15 * atks[zk+'r'] * cmb['rt'][cmb[i]['zk']]);
+						if (rtn['cmb']['sum'] >= 7) hs_sub *= Math.pow(2, atks['cmbs'][j]);
+						if (cmb[i]['pls'] > 0) hs_sub *= (cmb[i]['pls'] * 0.06 + 1) * (atks[zk] * 0.07 + 1);
 						if (4 == cmb[i]['num']) hs_sub *= Math.pow(1.5, atks['2way'][j]);
 						if (cmb['square'][i]) hs *= Math.pow(2.5, atks['noDmg'][j]);
-						dm['dm'][j]['sub'] += hs_sub;
+						rtn['dm'][j]['sub'] += hs_sub;
 					}
 					//ht
 					if (6 == cmb[i]['zk']) {
 						hs_re	+= atks['re'][j]
 							* (1 + (cmb[i]['num'] - 3) * 0.25)
-							* (1 + (dm['cmb']['sum'] - 1) * 0.25)
+							* (1 + (rtn['cmb']['sum'] - 1) * 0.25)
 							* Math.pow(1.5, atks['mlb'][j])
 							* sk['re'];
 						if (cmb[i]['pls'] > 0) hs_re *= (cmb[i]['pls'] * 0.06 + 1) * (atks['ht'] * 0.05 + 1);
-						dm['dm'][j]['re'] += hs_re;
-    				}
-    			}
-    		}
-    	}
-    	//sum
-    	for (var i=1; i<=5; i++) {	//各属性の合計を作っている。
-    		for (var j=1; j<=6; j++) { //攻撃する人
-    			if (i == atks['main'][j]) {
-    				dm['dm']['sum'][i] += dm['dm'][j]['main'];
-    			}
-    			if (i == atks['sub'][j]) {
-    				dm['dm']['sum'][i] += dm['dm'][j]['sub'];
-    			}
-    		}
-    		dm['dm']['sum']['dm'] += dm['dm']['sum'][i];
-    	}
-    	for (var i=1; i<=6; i++) { //回復合計生成
-    		dm['dm']['sum'][6] += dm['dm'][i]['re'];
-    	}
-    	
-    	return dm;
-    }
+						rtn['dm'][j]['re'] += hs_re;
+					}
+				}
+			}
+		}
+		//sum
+		for (var i=1; i<=5; i++) {	//各属性の合計を作っている。
+			for (var j=1; j<=6; j++) { //攻撃する人
+				if (i == atks['main'][j]) {
+					rtn['dm']['sum'][i] += rtn['dm'][j]['main'];
+				}
+				if (i == atks['sub'][j]) {
+					rtn['dm']['sum'][i] += rtn['dm'][j]['sub'];
+				}
+			}
+			rtn['dm']['sum']['all_zk'] += rtn['dm']['sum'][i];
+		}
+		for (var i=1; i<=6; i++) { //回復合計生成
+			rtn['dm']['sum'][6] += rtn['dm'][i]['re'];
+		}
+		
+		return rtn;
+	}
 
-    function setDm(dm, atks){
-    	//メイン属性のダメージを示す
-    	var hs = '<th>メイン属性</th>';
-    	for (var i=1; i<=6; i++) {
-    		var bgc = '';
-    		if (1 == atks['main'][i]) bgc = 'bgc_hi';
-    		else if (2 == atks['main'][i]) bgc = 'bgc_mz';
-    		else if (3 == atks['main'][i]) bgc = 'bgc_ki';
-    		else if (4 == atks['main'][i]) bgc = 'bgc_hk';
-    		else if (5 == atks['main'][i]) bgc = 'bgc_ym';
-    		hs += '<td class='+bgc+'>'+Math.round(dm['dm'][i]['main'])+'</td>';
-    	}
-    	$('#each_main').html(hs);
-    	//サブ属性のダメージを示す
-    	hs = '<th>サブ属性</th>';
-    	for (var i=1; i<=6; i++) {
-    		var bgc = '';
-    		if (6 > atks['sub'][i]) {
-	    		if (1 == atks['sub'][i]) bgc = 'bgc_hi';
-	    		else if (2 == atks['sub'][i]) bgc = 'bgc_mz';
-	    		else if (3 == atks['sub'][i]) bgc = 'bgc_ki';
-	    		else if (4 == atks['sub'][i]) bgc = 'bgc_hk';
-	    		else if (5 == atks['sub'][i]) bgc = 'bgc_ym';
-	    		hs += '<td class='+bgc+'>'+Math.round(dm['dm'][i]['sub'])+'</td>';
-	    	} else {
-	    		hs += '<td>-</td>';
-	    	}
-    	}
-    	$('#each_sub').html(hs);
-    	//回復量を示す
-    	hs = '<th>回復</th>';
-    	for (var i=1; i<=6; i++) {
-	    	hs += '<td class=bgc_kh>'+Math.round(dm['dm'][i]['re'])+'</td>';
-    	}
-    	$('#each_re').html(hs);
-    	//下段
-    	hs = '<th>各属性合計</th>';
-    	hs += '<td class="bgc_hi">'+Math.round(dm['dm']['sum'][1])+'</td>';    	
-    	hs += '<td class="bgc_mz">'+Math.round(dm['dm']['sum'][2])+'</td>';
-    	hs += '<td class="bgc_ki">'+Math.round(dm['dm']['sum'][3])+'</td>';
-    	hs += '<td class="bgc_hk">'+Math.round(dm['dm']['sum'][4])+'</td>';
-    	hs += '<td class="bgc_ym">'+Math.round(dm['dm']['sum'][5])+'</td>';
-    	hs += '<td class="bgc_kh">'+Math.round(dm['dm']['sum'][6])+'</td>';
-    	$('#each_sum').html(hs);
-    	//合計ダメージ
-    	$('#dm_sum').html('合計 '+Math.round(dm['dm']['sum']['dm'])+' ダメージ');
-    	
-    	//
-    	hs = '<th>コンボ数</th>';
-    	hs += '<td class="bgc_hi">'+dm['cmb']['hi']+'</td>';
-    	hs += '<td class="bgc_mz">'+dm['cmb']['mz']+'</td>';
-    	hs += '<td class="bgc_ki">'+dm['cmb']['ki']+'</td>';
-    	hs += '<td class="bgc_hk">'+dm['cmb']['hk']+'</td>';
-    	hs += '<td class="bgc_ym">'+dm['cmb']['ym']+'</td>';
-    	hs += '<td class="bgc_kh">'+dm['cmb']['ht']+'</td>';
-    	$('#each_cmb').html(hs);
-    	$('#cmb_sum').html('合計 '+dm['cmb']['sum']+' コンボ');
-    }
+	function setDm(dm, atks){
+		//メイン属性のダメージを示す
+		let main_html = '<th>メイン属性</th>';
+		for (let i=1; i<=6; i++) {
+			let bgc = '';
+			if (1 == atks['main'][i]) bgc = 'bgc_hi';
+			else if (2 == atks['main'][i]) bgc = 'bgc_mz';
+			else if (3 == atks['main'][i]) bgc = 'bgc_ki';
+			else if (4 == atks['main'][i]) bgc = 'bgc_hk';
+			else if (5 == atks['main'][i]) bgc = 'bgc_ym';
+			main_html += '<td class='+bgc+'>'+Math.round(dm['dm'][i]['main'])+'</td>';
+		}
+		$('#each_main').html(main_html);
+		//サブ属性のダメージを示す
+		let sub_html = '<th>サブ属性</th>';
+		for (let i=1; i<=6; i++) {
+			let bgc = '';
+			if (6 > atks['sub'][i]) {
+				if (1 == atks['sub'][i]) bgc = 'bgc_hi';
+				else if (2 == atks['sub'][i]) bgc = 'bgc_mz';
+				else if (3 == atks['sub'][i]) bgc = 'bgc_ki';
+				else if (4 == atks['sub'][i]) bgc = 'bgc_hk';
+				else if (5 == atks['sub'][i]) bgc = 'bgc_ym';
+				sub_html += '<td class='+bgc+'>'+Math.round(dm['dm'][i]['sub'])+'</td>';
+			} else {
+				sub_html += '<td>-</td>';
+			}
+		}
+		$('#each_sub').html(sub_html);
+		//回復量を示す
+		let recovery_html = '<th>回復</th>';
+		for (let i=1; i<=6; i++) {
+			recovery_html += '<td class=bgc_kh>'+Math.round(dm['dm'][i]['re'])+'</td>';
+		}
+		$('#each_re').html(recovery_html);
+		//下段
+		let all_ele = '<th>各属性合計</th>';
+		all_ele += '<td class="bgc_hi">'+Math.round(dm['dm']['sum'][1])+'</td>';		
+		all_ele += '<td class="bgc_mz">'+Math.round(dm['dm']['sum'][2])+'</td>';
+		all_ele += '<td class="bgc_ki">'+Math.round(dm['dm']['sum'][3])+'</td>';
+		all_ele += '<td class="bgc_hk">'+Math.round(dm['dm']['sum'][4])+'</td>';
+		all_ele += '<td class="bgc_ym">'+Math.round(dm['dm']['sum'][5])+'</td>';
+		all_ele += '<td class="bgc_kh">'+Math.round(dm['dm']['sum'][6])+'</td>';
+		$('#each_sum').html(all_ele);
+		//合計ダメージ
+		$('#dm_sum').html('合計 '+Math.round(dm['dm']['sum']['all_zk'])+' ダメージ');
+		
+		//
+		let combo_html = '<th>コンボ数</th>';
+		combo_html += '<td class="bgc_hi">'+dm['cmb']['hi']+'</td>';
+		combo_html += '<td class="bgc_mz">'+dm['cmb']['mz']+'</td>';
+		combo_html += '<td class="bgc_ki">'+dm['cmb']['ki']+'</td>';
+		combo_html += '<td class="bgc_hk">'+dm['cmb']['hk']+'</td>';
+		combo_html += '<td class="bgc_ym">'+dm['cmb']['ym']+'</td>';
+		combo_html += '<td class="bgc_kh">'+dm['cmb']['ht']+'</td>';
+		$('#each_cmb').html(combo_html);
+		$('#cmb_sum').html('合計 '+dm['cmb']['sum']+' コンボ');
+	}
 
 	//覚醒の値、すべて0にする関数
-    function awakensIni(num) {
-    	$('select[name=2way' + num + ']').val(0);
+	function awakensIni(num) {
+		$('select[name=2way' + num + ']').val(0);
 		$('select[name=hi' + num + ']').val(0);
 		$('select[name=mz' + num + ']').val(0);
 		$('select[name=ki' + num + ']').val(0);
@@ -1323,610 +1289,612 @@ monswork.onmessage = function(e){
 		$('select[name=cmbs' + num + ']').val(0);
 		$('select[name=noDmg' + num + ']').val(0);
 		$('select[name=sen_kilr' + num + ']').val(0);
-    }
+	}
 
 	//
 	// toggle for combo && dir
 	//
-    $('#cmb_zone div').slideToggle();
-    $('#cmb_zone span').css('transform', 'rotate(-90deg)');
-    var cmb_tgl = false;
+	$('#cmb_zone div').slideToggle();
+	$('#cmb_zone span').css('transform', 'rotate(-90deg)');
+	var cmb_tgl = false;
 
-    $('#dir h4').on('click', function () {
-    	$('#dir div').slideToggle();
-    	$('#cmb_zone div').slideToggle();
-    	if (!cmb_tgl) {
-    		$('#dir span').css('transform', 'rotate(-90deg)');
-    		$('#cmb_zone span').css('transform', 'rotate(0deg)');
-    	} else {
-    		$('#dir span').css('transform', 'rotate(0deg)');
-    		$('#cmb_zone span').css('transform', 'rotate(-90deg)');
-    	}
-    	cmb_tgl = !cmb_tgl;
-    });
+	$('#dir h4').on('click', function () {
+		$('#dir div').slideToggle();
+		$('#cmb_zone div').slideToggle();
+		if (!cmb_tgl) {
+			$('#dir span').css('transform', 'rotate(-90deg)');
+			$('#cmb_zone span').css('transform', 'rotate(0deg)');
+		} else {
+			$('#dir span').css('transform', 'rotate(0deg)');
+			$('#cmb_zone span').css('transform', 'rotate(-90deg)');
+		}
+		cmb_tgl = !cmb_tgl;
+	});
 
-    $('#cmb_zone h4').on('click', function () {
-    	$('#dir div').slideToggle();
-    	$('#cmb_zone div').slideToggle();
-    	if (!cmb_tgl) {
-    		$('#dir span').css('transform', 'rotate(-90deg)');
-    		$('#cmb_zone span').css('transform', 'rotate(0deg)');
-    	} else {
-    		$('#dir span').css('transform', 'rotate(0deg)');
-    		$('#cmb_zone span').css('transform', 'rotate(-90deg)');
-    	}
-    	cmb_tgl = !cmb_tgl;
-    });
+	$('#cmb_zone h4').on('click', function () {
+		$('#dir div').slideToggle();
+		$('#cmb_zone div').slideToggle();
+		if (!cmb_tgl) {
+			$('#dir span').css('transform', 'rotate(-90deg)');
+			$('#cmb_zone span').css('transform', 'rotate(0deg)');
+		} else {
+			$('#dir span').css('transform', 'rotate(0deg)');
+			$('#cmb_zone span').css('transform', 'rotate(-90deg)');
+		}
+		cmb_tgl = !cmb_tgl;
+	});
 
 	//
 	// ドロップの再生成ボタンの実装
 	//
 
-    $('#cmb_redrop').on('click', function () {
-    	var get_tbl = getDropRate();
-    	setBanmen(get_tbl);
-    });
+	$('#cmb_redrop').on('click', function () {
+		var get_tbl = getDropRate();
+		setBanmen(get_tbl);
+	});
 
-    function getDropRate() {
-    	var hi = parseInt($('#hi_gene').val());
-    	var mz = parseInt($('#mz_gene').val());
-    	var ki = parseInt($('#ki_gene').val());
-    	var hk = parseInt($('#hk_gene').val());
-    	var ym = parseInt($('#ym_gene').val());
-    	var ht = parseInt($('#ht_gene').val());
+	function getDropRate() {
+		var hi = parseInt($('#hi_gene').val());
+		var mz = parseInt($('#mz_gene').val());
+		var ki = parseInt($('#ki_gene').val());
+		var hk = parseInt($('#hk_gene').val());
+		var ym = parseInt($('#ym_gene').val());
+		var ht = parseInt($('#ht_gene').val());
 
-    	if (hi + mz + ki + hk + ym + ht < 100) {
-    		ht = 100 - (hi + mz + ki + hk + ym);
-    	} else if (hi + mz + ki + hk + ym + ht > 100) {
-    		ht = 100 - (hi + mz + ki + hk + ym);
-    		if (ht < 0) {
-    			ht = 0;
-    			ym = 100 - (hi + mz + ki + hk);
-    			if (ym < 0) {
-    				ym = 0;
-    				hk = 100 - (hi + mz + ki);
-    				if (hk < 0) {
-    					hk = 0;
-    					ki = 100 - hi - mz;
-    					if (ki < 0) {
-    						ki = 0;
-    						mz = 100 - hi;
-    						if (mz < 0) {
-    							mz = 0;
-    							hi = 100;
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
+		if (hi + mz + ki + hk + ym + ht < 100) {
+			ht = 100 - (hi + mz + ki + hk + ym);
+		} else if (hi + mz + ki + hk + ym + ht > 100) {
+			ht = 100 - (hi + mz + ki + hk + ym);
+			if (ht < 0) {
+				ht = 0;
+				ym = 100 - (hi + mz + ki + hk);
+				if (ym < 0) {
+					ym = 0;
+					hk = 100 - (hi + mz + ki);
+					if (hk < 0) {
+						hk = 0;
+						ki = 100 - hi - mz;
+						if (ki < 0) {
+							ki = 0;
+							mz = 100 - hi;
+							if (mz < 0) {
+								mz = 0;
+								hi = 100;
+							}
+						}
+					}
+				}
+			}
+		}
 
-    	$('#hi_gene').val(hi);
-    	$('#mz_gene').val(mz);
-    	$('#ki_gene').val(ki);
-    	$('#hk_gene').val(hk);
-    	$('#ym_gene').val(ym);
-    	$('#ht_gene').val(ht);
+		$('#hi_gene').val(hi);
+		$('#mz_gene').val(mz);
+		$('#ki_gene').val(ki);
+		$('#hk_gene').val(hk);
+		$('#ym_gene').val(ym);
+		$('#ht_gene').val(ht);
 
-    	return {
-    		'hi': hi, 'mz': mz, 'ki': ki, 'hk': hk, 'ym': ym, 'ht': ht,
-    		'hip': parseInt($('#hi_pls').val()),
-    		'mzp': parseInt($('#mz_pls').val()),
-    		'kip': parseInt($('#ki_pls').val()),
-    		'hkp': parseInt($('#hk_pls').val()),
-    		'ymp': parseInt($('#ym_pls').val()),
-    		'htp': parseInt($('#ht_pls').val())
-    	};
-    }
+		return {
+			'hi': hi, 'mz': mz, 'ki': ki, 'hk': hk, 'ym': ym, 'ht': ht,
+			'hip': parseInt($('#hi_pls').val()),
+			'mzp': parseInt($('#mz_pls').val()),
+			'kip': parseInt($('#ki_pls').val()),
+			'hkp': parseInt($('#hk_pls').val()),
+			'ymp': parseInt($('#ym_pls').val()),
+			'htp': parseInt($('#ht_pls').val())
+		};
+	}
 
-    function setBanmen(dp_tbl) {
-    	for (var i = 0; i < msm.length; i++) {
-    		for (var k = 1; k <= 5; k++) {
-    			var dp = getADrop(dp_tbl);
-    			var hs = '<img src=img/' + dp + 'A.png width=59 height=59>';
-    			$('#' + msm[i] + k).html(hs);
-    		}
-    	}
-    }
+	function setBanmen(dp_tbl) {
+		for (var i = 0; i < msm.length; i++) {
+			for (var k = 1; k <= 5; k++) {
+				var dp = getADrop(dp_tbl);
+				var hs = '<img src=img/' + dp + 'A.png width=59 height=59>';
+				$('#' + msm[i] + k).html(hs);
+			}
+		}
+	}
 
 	//to get a drop that standard the setting table
-    function getADrop(dp_tbl) {
-    	var rd = rand(1, 100);
-    	var rtn = '';
-    	if (rd <= dp_tbl['hi']) {
-    		if (dp_tbl['hip'] < rand(1, 100)) rtn = 'fire';
-    		else rtn = 'firep';
-    	} else if (rd <= dp_tbl['hi'] + dp_tbl['mz']) {
-    		if (dp_tbl['mzp'] < rand(1, 100)) rtn = 'water';
-    		else rtn = 'waterp';
-    	} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki']) {
-    		if (dp_tbl['kip'] < rand(1, 100)) rtn = 'tree';
-    		else rtn = 'treep';
-    	} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki'] + dp_tbl['hk']) {
-    		if (dp_tbl['hkp'] < rand(1, 100)) rtn = 'light';
-    		else rtn = 'lightp';
-    	} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki'] + dp_tbl['hk'] + dp_tbl['ym']) {
-    		if (dp_tbl['ymp'] < rand(1, 100)) rtn = 'dark';
-    		else rtn = 'darkp';
-    	} else {
-    		if (dp_tbl['htp'] <= rand(1, 100)) rtn = 'heart';
-    		else rtn = 'heartp';
-    	}
+	function getADrop(dp_tbl) {
+		var rd = rand(1, 100);
+		var rtn = '';
+		if (rd <= dp_tbl['hi']) {
+			if (dp_tbl['hip'] < rand(1, 100)) rtn = 'fire';
+			else rtn = 'firep';
+		} else if (rd <= dp_tbl['hi'] + dp_tbl['mz']) {
+			if (dp_tbl['mzp'] < rand(1, 100)) rtn = 'water';
+			else rtn = 'waterp';
+		} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki']) {
+			if (dp_tbl['kip'] < rand(1, 100)) rtn = 'tree';
+			else rtn = 'treep';
+		} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki'] + dp_tbl['hk']) {
+			if (dp_tbl['hkp'] < rand(1, 100)) rtn = 'light';
+			else rtn = 'lightp';
+		} else if (rd <= dp_tbl['hi'] + dp_tbl['mz'] + dp_tbl['ki'] + dp_tbl['hk'] + dp_tbl['ym']) {
+			if (dp_tbl['ymp'] < rand(1, 100)) rtn = 'dark';
+			else rtn = 'darkp';
+		} else {
+			if (dp_tbl['htp'] <= rand(1, 100)) rtn = 'heart';
+			else rtn = 'heartp';
+		}
 
-    	return rtn;
-    }
+		return rtn;
+	}
 
-    function rand(min, max) {
+	function rand(min, max) {
 		var num = Math.floor((Math.random() * ((max + 1) - min)) + min);
-    	return parseInt(num);
-    }
+		return parseInt(num);
+	}
 	//
 	// 以下ドロップ操作
 	//
-    $('.banmen p').attr('draggable', 'true');
-    $('.banmen p').addClass('movable');
-    var drg = document.getElementsByClassName('movable');
+	$('.banmen p').attr('draggable', 'true');
+	$('.banmen p').addClass('movable');
+	var drg = document.getElementsByClassName('movable');
 	//ptagじゃないと動かせない。IMGタグでは動かせない
 
-    var plc = {
-    	'pos': '', 'fst_im': ''
-    };
+	var plc = {
+		'pos': '', 'fst_im': ''
+	};
 
 	//dragされる
-    for (var i in drg) {
-    	drg[i].ondragstart = function (e) {
+	for (let i in drg) {
+		drg[i].ondragstart = function (e) {
 
-    		e.dataTransfer.setDragImage(this.children[0], '59px', '59px');
+			e.dataTransfer.setDragImage(this.children[0], '59px', '59px');
 
-    		plc['pos'] = this.id;
-    		plc['fst_im'] = this.children[0];
-    	};
-    	//dropされる
-    	drg[i].ondragover = function (e) {
-    		e.preventDefault();
+			plc['pos'] = this.id;
+			plc['fst_im'] = this.children[0];
+		};
+		//dropされる
+		drg[i].ondragover = function (e) {
+			e.preventDefault();
 
-    		if (plc['pos'] != this.id) {
-    			var im = document.getElementById(plc['pos']);
-    			$('#' + plc['pos']).html(this.children[0]);
-    			plc['pos'] = this.id;
-    			$(this).html();
-    		}
-    	};
-    	drg[i].ondrop = function (e) {
-    		e.preventDefault();
+			if (plc['pos'] != this.id) {
+				let im = document.getElementById(plc['pos']);
+				$('#' + plc['pos']).html(this.children[0]);
+				plc['pos'] = this.id;
+				$(this).html();
+			}
+		};
+		drg[i].ondrop = function (e) {
+			e.preventDefault();
 
-    		$('#' + this.id).html(plc['fst_im']);
-    	};
-    }
+			$('#' + this.id).html(plc['fst_im']);
+		};
+	}
 
 	//
 	//  caliculate combo
 	//
-    $('#cmb_calc').on('click', function () {
-    	var cmb = banmenCmb();
+	$('#cmb_calc').on('click', function () {
+		var cmb = banmenCmb();
 		cmb = transformCmb(cmb);
-    	//cmbを表にして結果を表示 -> ダメージを算出
+		//cmbを表にして結果を表示 -> ダメージを算出
 		//console.log(cmb);
-    	//攻撃力、回復力をもってくる
+		//攻撃力、回復力をもってくる
 		var atks = getAtk();
 		//console.log(atks);
 		var sk = getLeadSkl();
 		//console.log(sk);
 
-    	var dm_ary = getDm(atks, cmb, sk);
-    	//console.log(dm_ary);
-    	//表とpタグに出力(ダメージ)
-    	setDm(dm_ary, atks);
+		var dm_ary = getDm(atks, cmb, sk);
+		//console.log(dm_ary);
+		//表とpタグに出力(ダメージ)
+		setDm(dm_ary, atks);
 
-    });
+	});
 
-    function banmenCmb() {
-    	//cmb left and top is point
-    	var bmn = getBanmen();
-    	//{'bmn': [], 'pls':[]};
-    	//banmen Combo
-    	var cmb = bmnCmb(bmn);
-    	//drop drop
-    	var hs_cmb = cmb;
-    	var hs_bmn = bmn;
-    	var otosi = true;
-    	while (otosi === true) {
-    		hs_bmn = dropDrop(hs_bmn, hs_cmb);
-    		hs_cmb = bmnCmb(hs_bmn);
-    		var hs_cmb_length = 0;
-    		for (var k in hs_cmb) {
-    			hs_cmb_length++;
-    		}
-    		if (hs_cmb_length > 0) {
-    			var cmb_length = 0;
-    			for (var key in cmb) {
-    				cmb_length++;
-    			}
-    			for (var ky in hs_cmb) {
-    				cmb[cmb_length] = hs_cmb[ky];
-    				cmb_length++;
-    			}
-    		} else {
-    			otosi = false;
-    		}
-    	}
-    	return cmb;
-    }
+	function banmenCmb() {
+		//cmb left and top is point
+		var bmn = getBanmen();
+		//{'bmn': [], 'pls':[]};
+		//banmen Combo
+		var cmb = bmnCmb(bmn);
+		//drop drop
+		var hs_cmb = cmb;
+		var hs_bmn = bmn;
+		var otosi = true;
+		while (otosi === true) {
+			hs_bmn = dropDrop(hs_bmn, hs_cmb);
+			hs_cmb = bmnCmb(hs_bmn);
+			var hs_cmb_length = 0;
+			for (var k in hs_cmb) {
+				hs_cmb_length++;
+			}
+			if (hs_cmb_length > 0) {
+				var cmb_length = 0;
+				for (var key in cmb) {
+					cmb_length++;
+				}
+				for (var ky in hs_cmb) {
+					cmb[cmb_length] = hs_cmb[ky];
+					cmb_length++;
+				}
+			} else {
+				otosi = false;
+			}
+		}
+		return cmb;
+	}
 
-    function getBanmen() {
-    	var bmn_pls = { 'bmn': {}, 'pls': {} };
-    	for (var i = 0; i < msm.length; i++) {
-    		for (var k = 1; k <= 5; k++) {
-    			var hs = $('#' + msm[i] + k).children('img').attr('src');
-    			if (hs.substr(-10, 5) === '/fire') {
-    				bmn_pls['bmn'][msm[i] + k] = 'hi';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === 'water') {
-    				bmn_pls['bmn'][msm[i] + k] = 'mz';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === '/tree') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ki';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === 'light') {
-    				bmn_pls['bmn'][msm[i] + k] = 'hk';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === '/dark') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ym';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === 'heart') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ht';
-    				bmn_pls['pls'][msm[i] + k] = false;
-    			} else if (hs.substr(-10, 5) === 'firep') {
-    				bmn_pls['bmn'][msm[i] + k] = 'hi';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			} else if (hs.substr(-10, 5) === 'aterp') {
-    				bmn_pls['bmn'][msm[i] + k] = 'mz';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			} else if (hs.substr(-10, 5) === 'treep') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ki';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			} else if (hs.substr(-10, 5) === 'ightp') {
-    				bmn_pls['bmn'][msm[i] + k] = 'hk';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			} else if (hs.substr(-10, 5) === 'darkp') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ym';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			} else if (hs.substr(-10, 5) === 'eartp') {
-    				bmn_pls['bmn'][msm[i] + k] = 'ht';
-    				bmn_pls['pls'][msm[i] + k] = true;
-    			}
-    			//本当はプラスならtruefalseで分けて示したい
-    		}
-    	}
-    	return bmn_pls;
-    }
+	//盤面の情報を取得
+	function getBanmen() {
+		var bmn_pls = { 'bmn': {}, 'pls': {} };
+		for (var i = 0; i < msm.length; i++) {
+			for (var k = 1; k <= 5; k++) {
+				var hs = $('#' + msm[i] + k).children('img').attr('src');
+				if (hs.substr(-10, 5) === '/fire') {
+					bmn_pls['bmn'][msm[i] + k] = 'hi';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === 'water') {
+					bmn_pls['bmn'][msm[i] + k] = 'mz';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === '/tree') {
+					bmn_pls['bmn'][msm[i] + k] = 'ki';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === 'light') {
+					bmn_pls['bmn'][msm[i] + k] = 'hk';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === '/dark') {
+					bmn_pls['bmn'][msm[i] + k] = 'ym';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === 'heart') {
+					bmn_pls['bmn'][msm[i] + k] = 'ht';
+					bmn_pls['pls'][msm[i] + k] = false;
+				} else if (hs.substr(-10, 5) === 'firep') {
+					bmn_pls['bmn'][msm[i] + k] = 'hi';
+					bmn_pls['pls'][msm[i] + k] = true;
+				} else if (hs.substr(-10, 5) === 'aterp') {
+					bmn_pls['bmn'][msm[i] + k] = 'mz';
+					bmn_pls['pls'][msm[i] + k] = true;
+				} else if (hs.substr(-10, 5) === 'treep') {
+					bmn_pls['bmn'][msm[i] + k] = 'ki';
+					bmn_pls['pls'][msm[i] + k] = true;
+				} else if (hs.substr(-10, 5) === 'ightp') {
+					bmn_pls['bmn'][msm[i] + k] = 'hk';
+					bmn_pls['pls'][msm[i] + k] = true;
+				} else if (hs.substr(-10, 5) === 'darkp') {
+					bmn_pls['bmn'][msm[i] + k] = 'ym';
+					bmn_pls['pls'][msm[i] + k] = true;
+				} else if (hs.substr(-10, 5) === 'eartp') {
+					bmn_pls['bmn'][msm[i] + k] = 'ht';
+					bmn_pls['pls'][msm[i] + k] = true;
+				}
+				//本当はプラスならtruefalseで分けて示したい
+			}
+		}
+		return bmn_pls;
+	}
 
-    function bmnCmb(bmn_p) {
-    	var bmn = bmn_p['bmn'];
-    	//var pls = bmn_p['pls'];
-    	var combo = [];
-    	var m = 0;
-    	for (var i = 0; i < msm.length; i++) {
-    		for (var k = 1; k <= 5; k++) { //tateのコメントの下に3(5-2)がある
-    			//yoko
-    			if (i < msm.length - 2 && bmn[msm[i] + k] != '') {
-    				if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 1] + k] && bmn[msm[i] + k] == bmn[msm[parseInt(i) + 2] + k]) { //最低でも3個消し
-    					combo[m] = [msm[i] + k, msm[parseInt(i) + 1] + k, msm[parseInt(i) + 2] + k];
-    					if (i + 3 < msm.length) {
-    						//4つけしか
-    						if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 3] + k]) {
-    							combo[m].push(msm[parseInt(i) + 3] + k);
-    							//5tu
-    							if (i + 4 < msm.length) {
-    								if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 4] + k]) {
-    									combo[m].push(msm[parseInt(i) + 4] + k);
-    									//6tu
-    									if (i + 5 < msm.length) {
-    										if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 5] + k]) {
-    											combo[m].push(msm[parseInt(i) + 5] + k);
-    										}
-    									}
-    								}
-    							}
-    						}
-    					}
-    					m++;
-    				}
-    			}
-    			//tate
-    			if (k <= 3 && bmn[msm[i] + k] != '') {
-    				if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 1)] && bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 2)]) { //最低でも3個消し
-    					combo[m] = [msm[i] + k, msm[i] + (parseInt(k) + 1), msm[i] + (parseInt(k) + 2)];
-    					if (parseInt(k) + 3 <= 5) { //5 あり
-    						//4つけしか
-    						if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 3)]) {
-    							combo[m].push(msm[i] + (parseInt(k) + 3));
-    							//5tu
-    							if (parseInt(k) + 4 <= 5) { //5 あり
-    								if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 4)]) {
-    									combo[m].push(msm[i] + (parseInt(k) + 4));
-    								}
-    							}
-    						}
-    					}
-    					m++;
-    				}
-    			}
-    		}
-    	}
+	//盤面の情報からコンボ
+	function bmnCmb(bmn_p) {
+		var bmn = bmn_p['bmn'];
+		//var pls = bmn_p['pls'];
+		var combo = [];
+		var m = 0;
+		for (var i = 0; i < msm.length; i++) {
+			for (var k = 1; k <= 5; k++) { //tateのコメントの下に3(5-2)がある
+				//yoko
+				if (i < msm.length - 2 && bmn[msm[i] + k] != '') {
+					if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 1] + k] && bmn[msm[i] + k] == bmn[msm[parseInt(i) + 2] + k]) { //最低でも3個消し
+						combo[m] = [msm[i] + k, msm[parseInt(i) + 1] + k, msm[parseInt(i) + 2] + k];
+						if (i + 3 < msm.length) {
+							//4つけしか
+							if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 3] + k]) {
+								combo[m].push(msm[parseInt(i) + 3] + k);
+								//5tu
+								if (i + 4 < msm.length) {
+									if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 4] + k]) {
+										combo[m].push(msm[parseInt(i) + 4] + k);
+										//6tu
+										if (i + 5 < msm.length) {
+											if (bmn[msm[i] + k] == bmn[msm[parseInt(i) + 5] + k]) {
+												combo[m].push(msm[parseInt(i) + 5] + k);
+											}
+										}
+									}
+								}
+							}
+						}
+						m++;
+					}
+				}
+				//tate
+				if (k <= 3 && bmn[msm[i] + k] != '') {
+					if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 1)] && bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 2)]) { //最低でも3個消し
+						combo[m] = [msm[i] + k, msm[i] + (parseInt(k) + 1), msm[i] + (parseInt(k) + 2)];
+						if (parseInt(k) + 3 <= 5) { //5 あり
+							//4つけしか
+							if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 3)]) {
+								combo[m].push(msm[i] + (parseInt(k) + 3));
+								//5tu
+								if (parseInt(k) + 4 <= 5) { //5 あり
+									if (bmn[msm[i] + k] == bmn[msm[i] + (parseInt(k) + 4)]) {
+										combo[m].push(msm[i] + (parseInt(k) + 4));
+									}
+								}
+							}
+						}
+						m++;
+					}
+				}
+			}
+		}
 
-    	return assumeCmb(bmn_p, combo);
-    }
+		return assumeCmb(bmn_p, combo);
+	}
 
-    function assumeCmb(bmn_p, combo) {
-    	//comboには、combo[何コンボ目][座標]と入っている
-    	var con_cmb = {};//0{zk:'', cmb:[]}
-    	var cmb_num = 1;
-    	//同じ座標を持つか
-    	for (var i = 0; i < combo.length; i++) {
-    		if (i == 0 && combo.length > 0) {
-    			var pls = 0;
-    			for (var m = 0; m < combo[i].length; m++) {
-    				if (bmn_p['pls'][combo[i][m]]) pls++;
-    			}
-    			con_cmb[0] = { 'zk': bmn_p['bmn'][combo[0][0]], 'pls': pls, 'cmb': combo[0] };
-    		} else {
-    			var umu = { 'a': 0, 'umu': false };
-    			for (var k = 0; k < combo[i].length && umu['umu'] === false; k++) {
-    				//同じ座標がある時は、con_cmbにそれを追加
-    				for (var a in con_cmb) {
-    					for (var b in con_cmb[a]['cmb']) {
-    						if (combo[i][k] == con_cmb[a]['cmb'][b]) {
-    							umu['umu'] = true;
-    							umu['a'] = a;
-    						}
-    					}
-    				}
-    			}
-    			//どの座標も無い時は、con_cmbの新しい項目に追加
-    			if (!umu['umu']) {
-    				var pls = 0;
-    				for (var m = 0; m < combo[i].length; m++) {
-    					if (bmn_p['pls'][combo[i][m]]) pls++;
-    				}
-    				con_cmb[cmb_num] = { 'zk': bmn_p['bmn'][combo[i][0]], 'pls': pls, 'cmb': combo[i] };
-    				cmb_num++;
-    			} else {
-    				//同じ座標がある時
-    				for (var k = 0; k < combo[i].length; k++) {
-    					//同じ座標がある時は、con_cmbにそれを追加
-    					var need = true;
-    					for (var b in con_cmb[umu['a']]['cmb']) {
-    						if (combo[i][k] == con_cmb[umu['a']]['cmb'][b]) need = false;
-    					}
-    					if (need) {
-    						con_cmb[umu['a']]['cmb'].push(combo[i][k]);
-    						if (bmn_p['pls'][combo[i][k]]) con_cmb[umu['a']]['pls']++;
-    					}
-    				}
-    			}
-    		}
-    	}
+	function assumeCmb(bmn_p, combo) {
+		//comboには、combo[何コンボ目][座標]と入っている
+		var con_cmb = {};//0{zk:'', cmb:[]}
+		var cmb_num = 1;
+		//同じ座標を持つか
+		for (var i = 0; i < combo.length; i++) {
+			if (i == 0 && combo.length > 0) {
+				var pls = 0;
+				for (var m = 0; m < combo[i].length; m++) {
+					if (bmn_p['pls'][combo[i][m]]) pls++;
+				}
+				con_cmb[0] = { 'zk': bmn_p['bmn'][combo[0][0]], 'pls': pls, 'cmb': combo[0] };
+			} else {
+				var umu = { 'a': 0, 'umu': false };
+				for (var k = 0; k < combo[i].length && umu['umu'] === false; k++) {
+					//同じ座標がある時は、con_cmbにそれを追加
+					for (var a in con_cmb) {
+						for (var b in con_cmb[a]['cmb']) {
+							if (combo[i][k] == con_cmb[a]['cmb'][b]) {
+								umu['umu'] = true;
+								umu['a'] = a;
+							}
+						}
+					}
+				}
+				//どの座標も無い時は、con_cmbの新しい項目に追加
+				if (!umu['umu']) {
+					var pls = 0;
+					for (var m = 0; m < combo[i].length; m++) {
+						if (bmn_p['pls'][combo[i][m]]) pls++;
+					}
+					con_cmb[cmb_num] = { 'zk': bmn_p['bmn'][combo[i][0]], 'pls': pls, 'cmb': combo[i] };
+					cmb_num++;
+				} else {
+					//同じ座標がある時
+					for (var k = 0; k < combo[i].length; k++) {
+						//同じ座標がある時は、con_cmbにそれを追加
+						var need = true;
+						for (var b in con_cmb[umu['a']]['cmb']) {
+							if (combo[i][k] == con_cmb[umu['a']]['cmb'][b]) need = false;
+						}
+						if (need) {
+							con_cmb[umu['a']]['cmb'].push(combo[i][k]);
+							if (bmn_p['pls'][combo[i][k]]) con_cmb[umu['a']]['pls']++;
+						}
+					}
+				}
+			}
+		}
 
-    	//{cmb:{zahyo}, zk:hi, pls: int}
+		//{cmb:{zahyo}, zk:hi, pls: int}
 
-    	var rtn_cmb = connectCombo(con_cmb);
+		var rtn_cmb = connectCombo(con_cmb);
 
-    	return rtn_cmb;
-    }
+		return rtn_cmb;
+	}
 
-    function dropDrop(bmn, cmb) {
-    	//erase drop
-    	for (var kb in bmn['bmn']) {
-    		for (var kc in cmb) {
-    			for (var zh = 0; zh < cmb[kc]['cmb'].length; zh++) {
-    				if (kb == cmb[kc]['cmb'][zh]) {
-    					bmn['bmn'][kb] = '';
-    					bmn['pls'][kb] = false;
-    				}
-    			}
-    		}
-    	}
-    	//dropDrop
-    	for (var i = 0; i < msm.length; i++) {
-    		bmn = otosu(bmn, msm[i]);
-    	}
-    	return bmn;
-    }
+	function dropDrop(bmn, cmb) {
+		//erase drop
+		for (var kb in bmn['bmn']) {
+			for (var kc in cmb) {
+				for (var zh = 0; zh < cmb[kc]['cmb'].length; zh++) {
+					if (kb == cmb[kc]['cmb'][zh]) {
+						bmn['bmn'][kb] = '';
+						bmn['pls'][kb] = false;
+					}
+				}
+			}
+		}
+		//dropDrop
+		for (var i = 0; i < msm.length; i++) {
+			bmn = otosu(bmn, msm[i]);
+		}
+		return bmn;
+	}
 
 	//横3,横3と上と下でくっつく場合
-    function connectCombo(cmb) {
-    	var con_cmb = {};
-    	var ng_con = []; //くっつく組み合わせ
-    	for (var ky in cmb) {
-    		for (var ky2 in cmb) {
-    			if (ky != ky2 && cmb[ky]['zk'] == cmb[ky2]['zk']) {
-    				for (var zh in cmb[ky]['cmb']) {
-    					for (var zh2 in cmb[ky2]['cmb']) {
-    						switch (cmb[ky]['cmb'][zh].substring(0, 1)) {
-    							case 'A':
-    								if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B'
+	function connectCombo(cmb) {
+		var con_cmb = {};
+		var ng_con = []; //くっつく組み合わせ
+		for (var ky in cmb) {
+			for (var ky2 in cmb) {
+				if (ky != ky2 && cmb[ky]['zk'] == cmb[ky2]['zk']) {
+					for (var zh in cmb[ky]['cmb']) {
+						for (var zh2 in cmb[ky2]['cmb']) {
+							switch (cmb[ky]['cmb'][zh].substring(0, 1)) {
+								case 'A':
+									if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B'
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'A'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'A'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    							case 'B':
-    								if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'A' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C')
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+								case 'B':
+									if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'A' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C')
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    							case 'C':
-    								if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D')
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+								case 'C':
+									if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'B' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D')
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    							case 'D':
-    								if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E')
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+								case 'D':
+									if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'C' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E')
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    							case 'E':
-    								if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'F')
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+								case 'E':
+									if ((cmb[ky2]['cmb'][zh2].substring(0, 1) == 'D' || cmb[ky2]['cmb'][zh2].substring(0, 1) == 'F')
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    							case 'F':
-    								if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E'
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+								case 'F':
+									if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'E'
 										&& cmb[ky]['cmb'][zh].substring(1) == cmb[ky2]['cmb'][zh2].substring(1)) {
-    									//yoko dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'F'
+										//yoko dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									} else if (cmb[ky2]['cmb'][zh2].substring(0, 1) == 'F'
 										&& (parseInt(cmb[ky]['cmb'][zh].substring(1)) - 1 == cmb[ky2]['cmb'][zh2].substring(1) || parseInt(cmb[ky]['cmb'][zh].substring(1)) + 1 == cmb[ky2]['cmb'][zh2].substring(1))) {
-    									//tate dousi
-    									ng_con = tyohukuHazusi(ky, ky2, ng_con);
-    								}
-    								break;
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
+										//tate dousi
+										ng_con = tyohukuHazusi(ky, ky2, ng_con);
+									}
+									break;
+							}
+						}
+					}
+				}
+			}
+		}
 
-    	//ng_con is doubling
-    	//[0,1] , [0,2] and [1,3] -> [0,1,2,3] && [0,1] , [0,2] and [1,2] -> [0,1,2]
-    	//関数に入れて回す->繋げたら即returnして、もう一度最初から。繋がらない時は脱出
-    	var mtm_ng = ng_con;
-    	var ary = [0, 1];
-    	while (ary[0] != ary[1]) {
-    		ary = dbrEscape(mtm_ng);
-    		if (ary[0] != ary[1]) mtm_ng = matomeCon(mtm_ng, ary);
-    	}
+		//ng_con is doubling
+		//[0,1] , [0,2] and [1,3] -> [0,1,2,3] && [0,1] , [0,2] and [1,2] -> [0,1,2]
+		//関数に入れて回す->繋げたら即returnして、もう一度最初から。繋がらない時は脱出
+		var mtm_ng = ng_con;
+		var ary = [0, 1];
+		while (ary[0] != ary[1]) {
+			ary = dbrEscape(mtm_ng);
+			if (ary[0] != ary[1]) mtm_ng = matomeCon(mtm_ng, ary);
+		}
 
-    	var num = 0;
-    	var fit_key = false;
-    	for (var k in cmb) {
-    		fit_key = false;
-    		for (var i = 0; i < mtm_ng.length; i++) {
-    			for (var d = 0; d < mtm_ng[i].length; d++) {
-    				if (k == mtm_ng[i][d]) {
-    					//keyを合わせたら、cmb[k]['cmb']の値を連結
-    					fit_key = true;
-    				}
-    			}
-    		}
-    		//keyが合わなければ、con_cmbにそのまま代入 
-    		if (!fit_key) {
-    			con_cmb[num] = cmb[k];
-    			num++;
-    		}
-    	}
-    	for (var i = 0; i < mtm_ng.length; i++) {
-    		for (var d = 0; d < mtm_ng[i].length; d++) {
-    			if (d == 0) con_cmb[num] = cmb[mtm_ng[i][d]];
-    			else {
-    				for (var e = 0; e < cmb[mtm_ng[i][d]]['cmb'].length; e++) {
-    					con_cmb[num]['cmb'].push(cmb[mtm_ng[i][d]]['cmb'][e]);
-    				}
-    				con_cmb[num]['pls'] += parseInt(cmb[mtm_ng[i][d]]['pls']);
-    			}
-    		}
-    		num++;
-    	}
-    	return con_cmb;
-    }
+		var num = 0;
+		var fit_key = false;
+		for (var k in cmb) {
+			fit_key = false;
+			for (var i = 0; i < mtm_ng.length; i++) {
+				for (var d = 0; d < mtm_ng[i].length; d++) {
+					if (k == mtm_ng[i][d]) {
+						//keyを合わせたら、cmb[k]['cmb']の値を連結
+						fit_key = true;
+					}
+				}
+			}
+			//keyが合わなければ、con_cmbにそのまま代入 
+			if (!fit_key) {
+				con_cmb[num] = cmb[k];
+				num++;
+			}
+		}
+		for (var i = 0; i < mtm_ng.length; i++) {
+			for (var d = 0; d < mtm_ng[i].length; d++) {
+				if (d == 0) con_cmb[num] = cmb[mtm_ng[i][d]];
+				else {
+					for (var e = 0; e < cmb[mtm_ng[i][d]]['cmb'].length; e++) {
+						con_cmb[num]['cmb'].push(cmb[mtm_ng[i][d]]['cmb'][e]);
+					}
+					con_cmb[num]['pls'] += parseInt(cmb[mtm_ng[i][d]]['pls']);
+				}
+			}
+			num++;
+		}
+		return con_cmb;
+	}
 
-    function tyohukuHazusi(k, k2, grp) {
-    	var tyohuku = false;
-    	for (var i = 0; i < grp.length; i++) {
-    		if (grp[i][0] == k && grp[i][1] == k2) tyohuku = true;
-    		else if (grp[i][0] == k2 && grp[i][1] == k) tyohuku = true;
-    	}
-    	if (!tyohuku) {
-    		grp[grp.length] = [k, k2];
-    	}
-    	return grp;
-    }
+	function tyohukuHazusi(k, k2, grp) {
+		var tyohuku = false;
+		for (var i = 0; i < grp.length; i++) {
+			if (grp[i][0] == k && grp[i][1] == k2) tyohuku = true;
+			else if (grp[i][0] == k2 && grp[i][1] == k) tyohuku = true;
+		}
+		if (!tyohuku) {
+			grp[grp.length] = [k, k2];
+		}
+		return grp;
+	}
 
 	//組み合わせるべきng_conのグループを探す
-    function dbrEscape(con) {
-    	for (var i = 0; i < con.length; i++) {
-    		for (var m = i + 1; m < con.length; m++) {
-    			for (var k = 0; k < con[i].length; k++) {
-    				for (var n = 0; n < con[m].length; n++) {
-    					if (i != m && con[i][k] == con[m][n]) {
-    						return [i, m];
-    					}
-    				}
-    			}
-    		}
-    	}
-    	//組み合わせるべきものが無い時
-    	return [0, 0];
-    }
+	function dbrEscape(con) {
+		for (var i = 0; i < con.length; i++) {
+			for (var m = i + 1; m < con.length; m++) {
+				for (var k = 0; k < con[i].length; k++) {
+					for (var n = 0; n < con[m].length; n++) {
+						if (i != m && con[i][k] == con[m][n]) {
+							return [i, m];
+						}
+					}
+				}
+			}
+		}
+		//組み合わせるべきものが無い時
+		return [0, 0];
+	}
 
-    function matomeCon(con, ary) {
-    	var dbr = false;
-    	var adar = [];
-    	for (var n = 0; n < con[ary[1]].length; n++) {
-    		dbr = false;
-    		for (var k = 0; k < con[ary[0]].length; k++) {
-    			if (con[ary[1]][n] == con[ary[0]][k]) {
-    				dbr = true;
-    			}
-    		}
-    		if (!dbr) adar.push(con[ary[1]][n]);
-    	}
-    	for (var m = 0; m < adar.length; m++) {
-    		con[ary[0]].push(adar[m]);
-    	}
-    	con.splice(ary[1], ary[1]);
-    	return con;
-    }
+	function matomeCon(con, ary) {
+		var dbr = false;
+		var adar = [];
+		for (var n = 0; n < con[ary[1]].length; n++) {
+			dbr = false;
+			for (var k = 0; k < con[ary[0]].length; k++) {
+				if (con[ary[1]][n] == con[ary[0]][k]) {
+					dbr = true;
+				}
+			}
+			if (!dbr) adar.push(con[ary[1]][n]);
+		}
+		for (var m = 0; m < adar.length; m++) {
+			con[ary[0]].push(adar[m]);
+		}
+		con.splice(ary[1], ary[1]);
+		return con;
+	}
 
-    function otosu(bmn, char) {
-    	for (var i = 0; i < 5; i++) { // 5 is tate
-    		for (var k = 5; k > 1; k--) {
-    			if (bmn['bmn'][char + k] == '') {
-    				//blank exchange with drop or blank
-    				bmn['bmn'][char + k] = bmn['bmn'][char + (parseInt(k) - 1)];
-    				bmn['pls'][char + k] = bmn['pls'][char + (parseInt(k) - 1)];
-    				bmn['bmn'][char + (parseInt(k) - 1)] = '';
-    				bmn['pls'][char + (parseInt(k) - 1)] = false;
-    			}
-    		}
-    	}
+	function otosu(bmn, char) {
+		for (var i = 0; i < 5; i++) { // 5 is tate
+			for (var k = 5; k > 1; k--) {
+				if (bmn['bmn'][char + k] == '') {
+					//blank exchange with drop or blank
+					bmn['bmn'][char + k] = bmn['bmn'][char + (parseInt(k) - 1)];
+					bmn['pls'][char + k] = bmn['pls'][char + (parseInt(k) - 1)];
+					bmn['bmn'][char + (parseInt(k) - 1)] = '';
+					bmn['pls'][char + (parseInt(k) - 1)] = false;
+				}
+			}
+		}
 
-    	return bmn;
-    }
+		return bmn;
+	}
 
-    function transformCmb(cmb) {
-    	//0:{'cmb':['A1','B1','C1'], 'pls':2, 'zk': 'hi'}
-    	//以下に変形
+	function transformCmb(cmb) {
+		//0:{'cmb':['A1','B1','C1'], 'pls':2, 'zk': 'hi'}
+		//以下に変形
 		var t_cmb = {
 			'num':0,
 			'rt':{1:0, 2:0, 3:0, 4:0, 5:0},
@@ -1947,28 +1915,28 @@ monswork.onmessage = function(e){
 		};
 		var zk = ['', 'hi', 'mz', 'ki', 'hk', 'ym', 'ht'];
 		var sej = 1;
-    	for (var i in cmb) {
-    		t_cmb['num']++;
-    		t_cmb[sej]['num'] = cmb[i]['cmb'].length;
-    		t_cmb[sej]['pls'] = cmb[i]['pls'];
-    		for (var a = 1; a < zk.length; a++) {
-    			if (cmb[i]['zk'] == zk[a]) t_cmb[sej]['zk'] = a;
-    		}
-    		if (t_cmb[sej]['num'] >= 6) { //列形成か
+		for (var i in cmb) {
+			t_cmb['num']++;
+			t_cmb[sej]['num'] = cmb[i]['cmb'].length;
+			t_cmb[sej]['pls'] = cmb[i]['pls'];
+			for (var a = 1; a < zk.length; a++) {
+				if (cmb[i]['zk'] == zk[a]) t_cmb[sej]['zk'] = a;
+			}
+			if (t_cmb[sej]['num'] >= 6) { //列形成か
 				var rt_dbr = false;
-    			for (var d = 0; d < 5 && rt_dbr === false; d++) {
-    				var rt_ary = [false, false, false, false, false, false];
-    				for (var c = 0; c < cmb[i]['cmb'].length; c++) {
-   						for (var b = 0; b < msm.length; b++) {
-    						if (msm[b] + (parseInt(d) + 1) == cmb[i]['cmb'][c]) rt_ary[b] = true;
-    					}
-    				}
-    				if (rt_ary[0] && rt_ary[1] && rt_ary[2] && rt_ary[3] && rt_ary[4] && rt_ary[5]) {
-    					t_cmb['rt'][t_cmb[sej]['zk']]++;
+				for (var d = 0; d < 5 && rt_dbr === false; d++) {
+					var rt_ary = [false, false, false, false, false, false];
+					for (var c = 0; c < cmb[i]['cmb'].length; c++) {
+						for (var b = 0; b < msm.length; b++) {
+							if (msm[b] + (parseInt(d) + 1) == cmb[i]['cmb'][c]) rt_ary[b] = true;
+						}
+					}
+					if (rt_ary[0] && rt_ary[1] && rt_ary[2] && rt_ary[3] && rt_ary[4] && rt_ary[5]) {
+						t_cmb['rt'][t_cmb[sej]['zk']]++;
 						rt_dbr = true;
-    				}
-    			}
-    		}
+					}
+				}
+			}
 			if (t_cmb[sej]['num'] == 9 && rt_dbr === false) { //3×3正方形 形成か
 				var judge = 0;
 				var candidate = [];
@@ -2000,50 +1968,51 @@ monswork.onmessage = function(e){
 				}
 				
 			}
-    		sej++;
-    	}
+			sej++;
+		}
 
-    	return t_cmb;
-    }
+		return t_cmb;
+	}
 
 	//覚醒一覧の値変更はこれでできている
 	function awList(num, aw_ary){
 		//aw_listの初期化(numのみ)
-		for (var key in aw_list) {
+		for (let key in aw_list) {
 			aw_list[key][num - 1] = 0;
 		}
 		//aw_listにmnsの値を入れる。
-		for (var key in aw_ary) {
+		for (let key in aw_ary) {
 			aw_list[key][num - 1] = aw_ary[key];
 		}
 		//num = 1~6の値を一覧に表示
-		for (var key in aw_list) {
-			var hs = 0;
-			for (var i=0; i < aw_list[key].length; i++) {
+		for (let key in aw_list) {
+			let hs = 0;
+			for (let i=0; i < aw_list[key].length; i++) {
 				hs += aw_list[key][i];
 			}
 			$('#aw_'+key).html(hs);
 		}
 	}
 
+	//ステータスの変更を見えるようにDOM(numは変更があったモンスターの左から数えて何番目かの値)
 	function statusChange(num, hp, atk, re){
 		status_list['hp'][num - 1] = hp;
 		status_list['atk'][num - 1] = atk;
 		status_list['re'][num - 1] = re;
 		
-		$('input[name=atk' + num + ']').val(atk);
-		$('input[name=re' + num + ']').val(re);
+		$('input[name="atk' + num + '"]').val(atk);
+		$('input[name="re' + num + '"]').val(re);
 		
 		var st_sum = {'atk':0, 'hp':0, 're':0};
 		//マルチブースト
-		for (var i=0; i < status_list['atk'].length; i++) {
+		for (let i=0; i < status_list['atk'].length; i++) {
 			st_sum['atk'] += status_list['atk'][i] * Math.pow(1.5, aw_list['mlb'][i]);
 			st_sum['hp'] += status_list['hp'][i] * Math.pow(1.5, aw_list['mlb'][i]);
 			st_sum['re'] += status_list['re'][i] * Math.pow(1.5, aw_list['mlb'][i]);
 		}
 		var teamAw = {'HP':0, 'RE':0};
 		//チームHP強化、チーム回復強化
-		for (var i=0; i < aw_list['tmHP'].length; i++) {
+		for (let i=0; i < aw_list['tmHP'].length; i++) {
 			teamAw['HP'] += aw_list['tmHP'][i];
 			teamAw['RE'] += aw_list['tmRE'][i];
 		}
@@ -2138,28 +2107,36 @@ monswork.onmessage = function(e){
 		return true;
 	}
 
-    function reqAnim(tmstmp) {
+	function reqAnim() {
 		//2つの意味がある.bk ==> ピンチ！
-    	var tm = Date.now() - sttm;
-    	$('.bk').css('width', 4*tm+'px');
-    	$('.bk').css('height', 4*tm + 'px');
-    	$('.bk').css('top', (-2 * tm) + 'px');
-    	$('.bk').css('left', (-2 * tm) + 'px');
-    	if (4*tm < window.innerWidth) {
-    		requestAnimationFrame(reqAnim);
-    	} else {
-    		var num = $('.bk').data('000');
+		var tm = Date.now() - sttm;
+		$('.bk').css('width', 4*tm+'px');
+		$('.bk').css('height', 4*tm + 'px');
+		$('.bk').css('top', (-2 * tm) + 'px');
+		$('.bk').css('left', (-2 * tm) + 'px');
+		if (4*tm < window.innerWidth) {
+			requestAnimationFrame(reqAnim);
+		} else {
+			var num = $('.bk').data('000');
 			var str = $('.bk').data('nm');
-    		$('#'+ str + num).html('-指定無し-');
-    		$('body').css('position', 'relative');
-    		$('body').append('<div class=bk data-000=' + num + ' data-nm='+str+'></div>');
-    		$('.bk').css('width', window.innerWidth + 'px');
-    		$('.bk').css('height', window.innerHeight*2 + 'px');
-    		$('.bk').css('top', 0 + 'px');
-    		$('.bk').css('left', 0 + 'px');
-    		listMons(1, num);
-    		cancelAnimationFrame(reqAnim);
-    	}
-    }
+			$('#'+ str + num).html('-指定無し-');
+			$('body').css('position', 'relative');
+			$('body').append('<div class=bk data-000=' + num + ' data-nm='+str+'></div>');
+			$('.bk').css('width', window.innerWidth + 'px');
+			$('.bk').css('height', window.innerHeight + 'px');
+			$('.bk').css('top', 0 + 'px');
+			$('.bk').css('left', 0 + 'px');
+			listMons(1, num);
+			cancelAnimationFrame(reqAnim);
+		}
+	}
+	
+	// モンスター選択画面が出てる時の黒い画面のサイズ再調整
+	window.onresize = ()=>{
+		if (!($('.bk').length)) {
+			$('.bk').css('width', window.innerWidth + 'px');
+			$('.bk').css('height', window.innerHeight + 'px');
+		}
+	};
 });
 

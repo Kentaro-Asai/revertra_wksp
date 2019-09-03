@@ -7,6 +7,7 @@
 	<meta name="description" content="あなたのPCRプライマー設計を支援します。">
 	<meta name="keywords" content="Tm値,primer,プライマー設計,PCR">
 	<link rel="stylesheet" href="primer.css" type="text/css">
+	<script src="../jq.js"></script>
 	<title>プライマー評価</title>
 </head>
 <body>
@@ -22,6 +23,14 @@
 	</header>
 	<main>
 		<section>
+			<h4>周辺DNA塩基配列(入力無しでも可)</h4>
+			<p id="around-dna">
+				<textarea></textarea>
+				<button id="complement-around-dna">逆相補鎖にする</button>
+				<span>0bp</span>
+			</p>
+		</section>
+		<section>
 			<h4>プライマーの入力</h4>
 			<ul id="primer_box">
 				<li>
@@ -31,11 +40,7 @@
 			</ul>
 			<p class="btn_box"><button id="insert_primer_btn">プライマーの追加</button></p>
 		</section>
-		<section>
-			<h4>周辺DNA塩基配列(入力無しでも可)</h4>
-			<p><textarea id="around-dna"></textarea></p>
-			<p><button id="done">プライマーの評価</button></p>
-		</section>
+		<p><button id="done">プライマーの評価</button></p>
 		<output>
 			ここに入力されたプライマーの評価が表示されます。
 		</output>
@@ -43,7 +48,6 @@
 	<footer>
 		<small>Copyright &commat; Kentaro Asai 2019</small>
 	</footer>
-	<script src="../jq.js"></script>
 	<script src="./primer.js"></script>
 </body>
 </html>
