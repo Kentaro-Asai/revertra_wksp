@@ -1,5 +1,6 @@
 <?php
-	require_once($_SERVER["DOCUMENT_ROOT"]."/wksp/PUADRA_G/mnsdata.class.php");
+	//require_once($_SERVER["DOCUMENT_ROOT"]."/wksp/PUADRA_G/mnsdata.class.php");
+	require_once($_SERVER["DOCUMENT_ROOT"]."/revertra/revertra_wksp/PUADRA_G/mnsdata.class.php");
 	
 	$ob = new mnsdata();
 	$g = $ob->series();

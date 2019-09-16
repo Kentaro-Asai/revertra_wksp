@@ -1,7 +1,8 @@
 <?php
 function __autoload($name)
 {
-	require_once($_SERVER["DOCUMENT_ROOT"]."/wksp/PUADRA_G/".$name.".class.php");
+	//require_once($_SERVER["DOCUMENT_ROOT"]."/wksp/PUADRA_G/".$name.".class.php");
+	require_once($_SERVER["DOCUMENT_ROOT"]."/revertra/revertra_wksp/PUADRA_G/".$name.".class.php");
 }
 $rtn = array();
 if (isset($_REQUEST)){
