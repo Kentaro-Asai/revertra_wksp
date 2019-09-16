@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<title>パズドラ クリア可能チーム</title>
+	<link rel="stylesheet" href="puadra.css" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<script src="../../jq.js" ></script>
+</head>
+<body>
+	<section id="korin">
+		<h3>降臨系</h3>
+	</section>
+	<section id="josetu">
+		<h3>常設・コイン系ダンジョン</h3>
+	</section>
+	<section id="nm">
+		<h3>ノーマルダンジョン・テクニカルダンジョン</h3>
+	</section>
+	<section id="yobi">
+		<h3>曜日・ゲリラダンジョン</h3>
+	</section>
+	<section>
+		<h1>データ登録用出力</h1>
+		<div>
+			<select id="selected_dungeon">
+				<option value="korin" selected>降臨</option>
+				<option value="josetu">常設・コイン系ダンジョン</option>
+				<option value="nm">ノーマル・テクニカルダンジョン</option>
+				<option value="yobi">曜日・ゲリラダンジョン</option>
+			</select>
+			ダンジョン名:<input type="text" id="dungeon_name" value="">
+			<br>
+			<select id="main_z">
+				<option value="0" selected>火</option>
+				<option value="1">水</option>
+				<option value="2">木</option>
+				<option value="3">光</option>
+				<option value="4">闇</option>
+			</select>
+			<select id="sub_z">
+				<option value="0" selected>火</option>
+				<option value="1">水</option>
+				<option value="2">木</option>
+				<option value="3">光</option>
+				<option value="4">闇</option>
+			</select>
+			<label><input type="radio" name="s_or_m" value="solo">ソロ</label>
+			<label><input type="radio" name="s_or_m" value="multi" checked>マルチ</label>
+			<p id="team">
+				host<br>
+				leader:<input type="text" id="h_leader" value=""><br>
+				subs:<input type="text" id="h_sub1" value="">
+				<input type="text" id="h_sub2" value="">
+				<input type="text" id="h_sub3" value="">
+				<input type="text" id="h_sub4" value="">
+				<br>
+				guest<br>
+				leader:<input type="text" id="g_leader" value=""><br>
+				subs:<input type="text" id="g_sub1" value="">
+				<input type="text" id="g_sub2" value="">
+				<input type="text" id="g_sub3" value="">
+				<input type="text" id="g_sub4" value=""><br>
+				comment:<br>
+				<textarea id="comment"></textarea>
+			</p>
+
+			<button id="submit_team">チーム提案</button>
+		</div>
+		<output></output>
+	</section>
+	<script src="puadra_rekkyo.js" ></script>
+</body>
+</html>
