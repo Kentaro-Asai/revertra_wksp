@@ -1,71 +1,62 @@
 $(function(){
-	var cnt = {'sum':0, 'mns_no':[], 'nm':[], 'num':[]};
-	var usr_cnt = {'sum':0, 'mns_no':[], 'num':[]};
-	var SHOSU = 1000; //けた
-	var nav_toggle = true;
+	let gatya_ary = [/*
+		{mns_no:idみたいなもの, nm:"name", num:ガチャから出てきた数, pc:ユーザが変えられる値}*/
+	];
+	let gatya_sum = 0; //ガチャした回数
+	const SHOSU = 1000; //有効けた数
+	const RARE = {'UNDER':4, 'UPPER': 8}; //ガチャレア範囲
+	let nav_toggle = true;
 	
-	$('#all_rr4').on('change', function(){
-		pcEven(4);
-	});
-	$('#all_rr5').on('change', function(){
-		pcEven(5);
-	});
-	$('#all_rr6').on('change', function(){
-		pcEven(6);
-	});
-	$('#all_rr7').on('change', function(){
-		pcEven(7);
-	});
-	$('#all_rr8').on('change', function(){
-		pcEven(8);
-	});
-	function pcEven(num){
-		var total = $('#kosiki').children().length;
-		var rr_ar = [];
-		for (var i=1; i <= total; i++) {
-			if (num === parseInt($('#mns'+i).data('rr'))) {
-				rr_ar.push(i);
+	for (let i=RARE.UNDER; i <= RARE.UPPER; i++) {
+		$('#all_rr'+i).on('change', function(){
+			pcEven(i);
+		});
+	}
+
+	let pcEven = (num) => {
+		let rr_ary = [];
+		for (let v of gatya_ary) {
+			if (num === parseInt($('#mns'+v.mns_no).data('rr'))) {
+				rr_ary.push(v.mns_no);
 			}
 		}
-		var total_pc = $('#all_rr'+num).val();
-		var kobetu_pc = Math.round(1000 * total_pc / rr_ar.length);
-		var amari = Math.round(1000 * total_pc - (kobetu_pc * rr_ar.length));
-		for (i=0; i < rr_ar.length; i++) {
+		const total_pc = $('#all_rr'+num).val();
+		const kobetu_pc = Math.round(SHOSU * total_pc / rr_ary.length);
+		let amari = Math.round(SHOSU * total_pc - (kobetu_pc * rr_ary.length));
+		for (let target_rarelity_mns_no of rr_ary) {
 			if (amari > 0) {
-				$('#mns'+rr_ar[i]).val( (kobetu_pc + 1) / 1000);
+				$('#mns'+target_rarelity_mns_no).val( (kobetu_pc + 1) / SHOSU);
 				amari--;
 			} else if(amari < 0) {
-				$('#mns'+rr_ar[i]).val( (kobetu_pc - 1) / 1000);
+				$('#mns'+target_rarelity_mns_no).val( (kobetu_pc - 1) / SHOSU);
 				amari++;
 			} else {
-				$('#mns'+rr_ar[i]).val(kobetu_pc / 1000);
+				$('#mns'+target_rarelity_mns_no).val(kobetu_pc / SHOSU);
 			}
 		}
-	}
+	};
 	
 	$('#reset_encount').on('click',function(){
-		if (cnt['sum'] > 0) {
+		if (gatya_sum > 0) {
 			//display reset
-			cnt['sum'] = 0;
-			for (var i=0; i < cnt['num'].length; i++) {
-				cnt['num'][i] = 0;
+			gatya_sum = 0;
+			for (let i in gatya_ary) {
+				gatya_ary[i].num = 0;
 			}
-			
 			//make img tags
-			var series =  $('#kosiki').attr('data-0');
-			var imgs = '';
-			for (var i=0; i < cnt['mns_no'].length; i++) {
-				imgs += '<img width=40 height=40 title='+cnt['nm'][i]+' src=img/i'+series+'/c'+cnt['mns_no'][i]+'.jpg />';
+			const series =  $('#kosiki').data('series');
+			let imgs = '';
+			for (let v of gatya_ary) {
+				imgs += `<img title="${v.nm}" src="img/i${series}/c${v.mns_no}.jpg" />`;
 			}
 			
-			$('.rst_cnt dd').html('0回');
+			$('.encount > dt > span').html('(通算: 0回)');
 			$('.not_encount dd').html(imgs);
 			$('.encount dd').html('なし');
-			$('#rst ul').html('<li></li>');
-			
+			$('#rst ul').html('<li class="none_gatya_result">ガチャ結果をここに表示します。</li>');			
 		}
-		for(var i=0; i < cnt['num'].length; i++){
-			cnt['num'][i] = 0;
+		for(let v of gatya_ary){
+			v.num = 0;
 		}
 	});
 	
@@ -82,75 +73,80 @@ $(function(){
 		}
 	});
 	
-	cntInit();
-	function cntInit(){
-		var mns_ar = $('#kosiki').children().children().children('img');
-		for (var i=0; i < mns_ar.length; i++) {
-			var hs = mns_ar[i].src;
-			cnt['mns_no'][i] = hs.substring(hs.indexOf("/c")+2, hs.indexOf(".jpg"));
-			cnt['num'][i] = 0;
-			cnt['nm'][i] = mns_ar[i].alt;
+	// 初期動作
+	(function cntInit(){
+		const mns_ary = $('#kosiki').children().children().children('img');
+		for (let i in mns_ary) {
+			let hs = mns_ary[i].src;
+			if (!!hs) {
+				gatya_ary[i] = {
+					mns_no: hs.substring(hs.indexOf("/c")+2, hs.indexOf(".jpg")),
+					nm: mns_ary[i].alt,
+					num: 0
+				};
+			}
 		}
-	}
+	})();
+
 	function errDisp(str, num){
 		if (isNaN(num)) {
-			$('#'+str).html('<p class=shoki >しばらく待っていれば、良いかも...</p>');
+			$('#'+str).html('<p class="shoki">しばらく待っていれば、良いかも...</p>');
 		}else{
-			$('#'+str).html('<p class=shoki >排出率の合計値が'+(parseFloat(num) / SHOSU)+'％です。<br />'
+			$('#'+str).html('<p class="shoki">排出率の合計値が'+(parseFloat(num) / SHOSU)+'％です。<br />'
 				+'100％になるように設定してください。<br />'
 				+'（小数点以下'+Math.log10(SHOSU)+'桁まで対応しています。）<br />ここに結果を示します。</p>');
 		}
 	}
 	
 	function comuServe(times){
-		var mns_ar = $('#kosiki').children();
 		var data = {
 			'times': parseInt(times),
-			'series': $('#kosiki').attr('data-0'),
+			'series': $('#kosiki').data('series'),
 			//no.と排出率を入力
-			'rare':[]
+			'mns': [/* {'mns_no': 数字, 'pc': 数字},*/]
 		};
 		var pc_sum = 0;
-		for (var i=0; i < mns_ar.length; i++) {
-			data['rare'][i] = Math.round(parseFloat($('#mns'+(i+1)).val()) * SHOSU);
+		for (let i in gatya_ary) {
+			data.mns[i] = {
+				pc: Math.round(parseFloat($('#mns'+(gatya_ary[i].mns_no)).val()) * SHOSU),
+				mns_no: gatya_ary[i].mns_no
+			};
 			//ついでにpc_sum
-			pc_sum += data['rare'][i];
+			pc_sum += data.mns[i].pc;
 		}
 		if (pc_sum === 100 * SHOSU) {
 			$.getJSON('gatya.json.php', data, function($js){
 				//console.log($js);
 				//[{no: 3284, nm: "龍喚士の弟子・シーナ", rr: 5, pc: 15}]
-				var otpt ='<ul>';
-				for (var i in $js) {
-					cnt['sum']++;
-					otpt += '<li class="output rare'+$js[i]['rr']+'">'
-							+'<p><img src=img/i'+data['series']+'/c'+$js[i]['no']+'.jpg width=50 height=50 title='+$js[i]['nm']+' /></p>'
-							+'<div>'
-								+'<h5>'+$js[i]['nm']+'</h5>'
-								+'<p>レアリティ：★'+$js[i]['rr']+'</p>'
-							+'</div>'
-							+'</li>';
-					for (var j=0; j < cnt['mns_no'].length; j++) {
-						if ($js[i]['no'] == cnt['mns_no'][j]) cnt['num'][j]++;
+				let otpt ='<ul>';
+				for (let $v of $js) {
+					gatya_sum++;
+					otpt += `<li class="output rare${$v.rr}">
+							<p><img src="img/i${data['series']}/c${$v.no}.jpg" title="${$v.nm}" /></p>
+							<div>
+								<p>★${$v.rr}</p>
+								<h5>${$v.nm}</h5>
+							</div>
+						</li>`;
+					for (let j in gatya_ary) {
+						if ($v.no == gatya_ary[j].mns_no) gatya_ary[j].num++;
 					}
 				}
 				//何が何回出たかの実装
-				var no_mons = true;
-				var otpt_data = '<dl class=rst_cnt><dt>通算：</dt><dd>'+cnt['sum']+'回</dd></dl>'
-							+'<dl class=not_encount><dt>出てないモンスター</dt><dd>';
-				for (var i=0; i < cnt['mns_no'].length; i++) {
-					if (cnt['num'][i] === 0) {
-						otpt_data += '<img src=img/i'+data['series']+'/c'+cnt['mns_no'][i]+'.jpg width=40 height=40 title='+cnt['nm'][i]+' />';
+				let no_mons = true;
+				let otpt_data = '<dl class="not_encount"><dt>出てないモンスター</dt><dd>';
+				for (let v of gatya_ary) {
+					if (v.num === 0) {
+						otpt_data += `<img src="img/i${data.series}/c${v.mns_no}.jpg" title="${v.nm}" />`;
 						no_mons = false;
 					}
 				}
 				if (no_mons) otpt_data += ' なし';
 				otpt_data += '</dd></dl>';
-				otpt_data += '<dl class=encount><dt>出てきたモンスター</dt><dd>';
-				for (var i=0; i < cnt['mns_no'].length; i++) {
-					if (cnt['num'][i] > 0) {
-						otpt_data += '<span><img src=img/i'+data['series']+'/c'+cnt['mns_no'][i]+'.jpg width=40 height=40 title='+cnt['nm'][i]+' />×'
-								+cnt['num'][i]+'</span>';
+				otpt_data += '<dl class="encount"><dt>出てきたモンスター<span>(通算：'+gatya_sum+'回)</span></dt><dd>';
+				for (let v of gatya_ary) {
+					if (v.num > 0) {
+						otpt_data += `<span><img src="img/i${data.series}/c${v.mns_no}.jpg" title="${v.nm}" />×${v.num}</span>`;
 					}
 				}
 				otpt_data += '</dd></dl>';
@@ -163,86 +159,68 @@ $(function(){
 			return pc_sum;
 		}
 	}
-	
-	//
-	//user gatya 
-	//
 
-	//add monster
-	$('.mns_box').on('click', 'input[type=button]', function(){
-		var id = $(this).attr('name');
-		var usr_html = '<h4><input type="text" name="usr_nm'+id.slice(3)+'" value="モンスター'+id.slice(3)+'" /></h4>'
-					+'<p><img src="img/c0000.jpg" width="33" height="33" alt="任意のモンスター" /></p>'
-					+'<p class="rare">'
-						+'レアリティ： ★<input type="text" name=usr_rr'+id.slice(3)+' value="4" /><br />'
-						+'排出率： <input type="text" name="usr_pc'+id.slice(3)+'" /> ％'
-					+'</p>';
-		var but_html = '<li id=usr'+(parseInt(id.slice(3))+1)
-				+'><input type="button" name=usr'+(parseInt(id.slice(3))+1)+' value="モンスター追加" /></li>';
-		$('#'+id).html(usr_html);
-		$('#usr').append(but_html);
-	});
-
-	//
-	$('#usr_gatya').on('click', function(){
-		var num = gatyaGatya(1);
-		if (num !== 100 * SHOSU) {
-			errDisp('rst_usr', num);
-		}
-	});
-	$('#usr_gatya17').on('click', function(){
-		var num = gatyaGatya(17);
-		if (num !== 100 * SHOSU) {
-			errDisp('rst_usr', num);
-		}
-	});
-	
-	function gatyaGatya(times){
-		var li_ary = $("#usr").children();
-		var ary = {'pc':[], 'rr':[], 'nm':[]};
-		var tosen = {'pc':[], 'rr':[], 'nm':[]};
-
-		var pc_sum = 0;
-		for (var i=1; i < li_ary.length; i++) {
-			var pc = $('input[name=usr_pc'+i+']').val();
-			if (Number.isNaN(parseInt(pc))) {
-				$('input[name=usr_pc'+i+']').val(0);
-				pc = 0;
+	//モンスター名を小さくして全部表示
+	(function allDisplay(){
+		let mns_name = $('#kosiki h4');
+		for (let v of mns_name) {
+			//文字数で判定
+			if (v.innerHTML.length <= 12) {
+				// 文字が入る(font-size:14)
+			} else if (v.innerHTML.length <= 14) {
+				v.style.fontSize = "12px";
+			} else {
+				v.style.fontSize = "10px";
 			}
-			pc_sum += Math.round(parseFloat(pc) * SHOSU);
+		}
+	})();
+
+	//全種出るまで引くを実装
+	$('#exec_complete_gatya').on('click', ()=>{
+		let num = gatyaGatya();
+		if (num !== 100 * SHOSU) {
+			errDisp('rst', num);
+		}
+	});
+
+	let gatyaGatya = ()=>{
+		//確率を取得
+		let pc_sum = 0;
+		for (let i in gatya_ary) {
+			gatya_ary[i]['pc'] = Math.round(parseFloat($('#mns'+(gatya_ary[i].mns_no)).val()) * SHOSU);
+			//ついでに確率合計値取得
+			pc_sum += gatya_ary[i].pc;
 		}
 		if (pc_sum !== 100 * SHOSU) return pc_sum;
-		
-		for(var i=1; i < li_ary.length; i++){
-			ary['pc'][i] = $('input[name=usr_pc'+i+']').val();
-			ary['rr'][i] = $('input[name=usr_rr'+i+']').val();
-			ary['nm'][i] = $('input[name=usr_nm'+i+']').val();
+		let is_complete = !gatya_ary.find(v => v.num == 0);
+		if (is_complete) {
+			alert("すでに全種のモンスターを出しています。");
+			return pc_sum;
 		}
-		for (var i=0; i < times; i++) {
-			var rd = rand(1, 100 * SHOSU);
-			var pc = 0;
-			for (var j=1; j < li_ary.length; j++) {
-				pc += Math.round(parseFloat(ary["pc"][j]) * SHOSU);  
+		while (!is_complete) {
+			//ガチャを引く
+			let rd = rand(1, 100 * SHOSU);
+			let pc = 0;
+			for (let i in gatya_ary) {
+				pc += gatya_ary[i].pc;
 				if (pc >= rd) {
-					tosen['pc'][i] = ary['pc'][j];
-					tosen['rr'][i] = ary['rr'][j];
-					tosen['nm'][i] = ary['nm'][j];
+					//引いたものを追加 && 通算回数の追加
+					gatya_ary[i].num++;
+					gatya_sum++;
 					break;
 				}
 			}
+			//出たモンスターがコンプリートしていないなら、まだ回す
+			is_complete = !gatya_ary.find(v => v.num == 0);
 		}
-		var rtn = '<ul>';
-			for (var i=0; i < times; i++) {
-				usr_cnt['sum']++;
-				rtn += '<li class=output>'
-						+'<p><img src=img/c0000.jpg width=50 height=50 /></p>'
-						+'<div>'
-							+'<h5>'+tosen['nm'][i]+'</h5>'
-							+'<p>レアリティ：★'+tosen['rr'][i]+' 排出率：'+tosen['pc'][i]+'％</p>'
-						+'</div>'
-						+'</li>';
-			}
-		$('#rst_usr').html(rtn);
+		let series = $('#kosiki').data('series');
+		let output_data = '<dl class="not_encount"><dt>出てないモンスター</dt><dd>なし</dd></dl>';
+		output_data += `<dl class="encount"><dt>出てきたモンスター<span>(通算：${gatya_sum}回)</span></dt><dd>`;
+		for (let v of gatya_ary) {
+			output_data += `<span><img src="img/i${series}/c${v.mns_no}.jpg" title="${v.nm}" />×${v.num}</span>`;
+		}
+		output_data += '</dd></dl>';
+		$('#rst').html(output_data);
 		return pc_sum;
 	}
 	
@@ -259,8 +237,8 @@ $(function(){
 			var ref_ary = []; // inputted cutting position
 			var ttl_ary = [];
 			var glist_ary = [[], []]; //this is complete.0:number,1:title
-			for (var i=0; i < glist.length; i++) {
-				if(glist.charAt(i) === '-') {
+			for (let i=0; i < glist.length; i++) {
+				if (glist.charAt(i) === '-') {
 					ttl_ary.push(i);
 				} else if (glist.charAt(i) === '_') {
 					ref_ary.push(i);
@@ -283,9 +261,9 @@ $(function(){
 				glist_ary[1].push(glist.slice(ttl_ary[0]+1));
 			}
 			//生成
-			addbox += '<div id=nav_toggle>';
+			addbox += '<div id="nav_toggle">';
 			for (var i=0; i < glist_ary[0].length; i++) {
-				addbox += '<a href=./?g='+glist_ary[0][i]+'>'+glist_ary[1][i]+'</a>';
+				addbox += '<a href="./?g='+glist_ary[0][i]+'">'+glist_ary[1][i]+'</a>';
 			}
 			addbox += '</div>';
 
@@ -298,6 +276,6 @@ $(function(){
 	
 	function rand(min, max) {
 		var num = Math.floor((Math.random() * ((max + 1) - min)) + min);
-    	return parseInt(num);
-    }
+		return parseInt(num);
+	}
 });

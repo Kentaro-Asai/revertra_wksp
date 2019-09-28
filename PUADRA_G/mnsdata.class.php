@@ -1,12 +1,10 @@
 <?php
-class mnsdata
-{
+class mnsdata {
 	const NAV_NUM = 3;
-	const SERIES = 10; //現在見せたいコラボ
-	var $g = 10;
+	const SERIES = 6; //現在見せたいコラボ
+	var $g = 6;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->g = self::SERIES;
 		if (isset($_GET['g'])) {
 			$this->g = $_GET['g'];
@@ -22,8 +20,7 @@ class mnsdata
 		}
 	}
 	
-	public function series()
-	{
+	public function series() {
 		return $this->g;
 	}
 
@@ -181,23 +178,23 @@ class mnsdata
 				array("no"=>4130, "nm" => "初陽の蒼空神・ケプリ", "rr"=> 7, "pc"=> 2),
 			),
 			6 => array(
-				array("no"=>1858, "nm" => "ラオウ", "rr"=> 5, "pc"=> 5),
-				array("no"=>1860, "nm" => "ケンシロウ", "rr"=> 5, "pc"=> 5),
-				array("no"=>1862, "nm" => "トキ", "rr"=> 5, "pc"=> 5),
-				array("no"=>1864, "nm" => "シン", "rr"=> 4, "pc"=> 7),
-				array("no"=>1866, "nm" => "レイ", "rr"=> 4, "pc"=> 7),
-				array("no"=>1868, "nm" => "ユダ", "rr"=> 4, "pc"=> 7),
-				array("no"=>1870, "nm" => "シュウ", "rr"=> 4, "pc"=> 7),
-				array("no"=>1872, "nm" => "サウザー", "rr"=> 4, "pc"=> 7),
-				array("no"=>1874, "nm" => "マミヤ", "rr"=> 4, "pc"=> 7),
-				array("no"=>2446, "nm" => "南斗最後の将", "rr"=> 6, "pc"=> 1.5),
-				array("no"=>2448, "nm" => "ジュウザ", "rr"=> 4, "pc"=> 7),
-				array("no"=>2450, "nm" => "フドウ", "rr"=> 4, "pc"=> 7),
-				array("no"=>2452, "nm" => "リハク", "rr"=> 4, "pc"=> 7),
-				array("no"=>3077, "nm" => "ヒューイ", "rr"=> 4, "pc"=> 7),
-				array("no"=>3079, "nm" => "シュレン", "rr"=> 4, "pc"=> 7),
-				array("no"=>3408, "nm" => "カイオウ", "rr"=> 6, "pc"=> 1.5),
-				array("no"=>3410, "nm" => "バット", "rr"=> 5, "pc"=> 5),
+				array("no"=>1858, "nm" => "ラオウ", "rr"=> 7, "pc"=> 1.5),
+				array("no"=>1860, "nm" => "ケンシロウ", "rr"=> 7, "pc"=> 1.5),
+				array("no"=>1862, "nm" => "トキ", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>1864, "nm" => "シン", "rr"=> 5, "pc"=> 8),
+				array("no"=>1866, "nm" => "レイ", "rr"=> 5, "pc"=> 8),
+				array("no"=>1868, "nm" => "ユダ", "rr"=> 5, "pc"=> 8),
+				array("no"=>1870, "nm" => "シュウ", "rr"=> 5, "pc"=> 8),
+				array("no"=>1872, "nm" => "サウザー", "rr"=> 5, "pc"=> 8),
+				array("no"=>1874, "nm" => "マミヤ", "rr"=> 5, "pc"=> 8),
+				array("no"=>2446, "nm" => "南斗最後の将", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>2448, "nm" => "ジュウザ", "rr"=> 5, "pc"=> 8),
+				array("no"=>2450, "nm" => "フドウ", "rr"=> 5, "pc"=> 8),
+				array("no"=>2452, "nm" => "リハク", "rr"=> 5, "pc"=> 8),
+				array("no"=>3077, "nm" => "ヒューイ", "rr"=> 5, "pc"=> 8),
+				array("no"=>3079, "nm" => "シュレン", "rr"=> 5, "pc"=> 8),
+				array("no"=>3408, "nm" => "カイオウ", "rr"=> 7, "pc"=> 1.5),
+				array("no"=>3410, "nm" => "バット", "rr"=> 6, "pc"=> 2.5),
 			),
 			7 => array(
 				array("no"=>2457, "nm" => "犬夜叉", "rr"=> 6, "pc"=> 1.88),
@@ -573,31 +570,86 @@ class mnsdata
 		);
 		return $mns_ary[$num];
 	}
+
 	public function createNav($num){
 		$ar = array(
 			0 => array('a_href' => 0, "ttl" => ""),
 			1 => array('a_href' => 0, "ttl" => ""),
 			2 => array('a_href' => 0, "ttl" => ""),
-			3 => ""
+			3 => array('a_href' => 0, "ttl" => ""),
+			4 => ""
 		);
 		$m = 0;
 
 		for ($i = count($this->ttl())-1; $i >= 0; $i--) {
-			if($i != $num && $m < 3){
+			if ($i != $num && $m < 4) {
 				$ar[$m] = array('a_href' => $i, "ttl" => $this->ttl($i));
 				$m++;
-			}else if ($m >= 3 || $i == $num){
+			} elseif ($m >= 4 || $i == $num) {
 				//最終的には0-工事中_1-～コラボ_2-夏休み という形になる
 				//$ar[$i] = $num . "-" .$this->ttl($num);
-				$ar[3] .= $i."-".$this->ttl($i) ."_";
+				$ar[4] .= $i."-".$this->ttl($i) ."_";
 			}
 		}
-		$ar[3] = substr($ar[3], 0, -1);
+		$ar[4] = substr($ar[4], 0, -1);
 		return $ar;
 	}
+
+	public function createSummary($num){
+		$mns_ary = $this->lstMns($num);
+		$summary_ary = array();
+		//$rr_ary = array();
+		foreach ($mns_ary as $v) {
+			if (isset($summary_ary[$v["rr"]])) {
+				$summary_ary[$v["rr"]]["num"]++;
+				$summary_ary[$v["rr"]]["sum_percent"] += $v["pc"];
+			} else {
+				$summary_ary[$v["rr"]] = array(
+					"rare_clr_head" => $this->getRareColor($v["rr"]) . (6 <= $v["rr"] ? "_head" : ""),
+					"rare_clr_tail" => $this->getRareColor($v["rr"]) . (6 <= $v["rr"] ? "_tail" : ""),
+					"num" => 1,
+					"sum_percent" => $v["pc"]
+				);
+				//$rr_ary[] = $v["rr"];
+			}
+		}
+		// keyでどうこうしようってのは間違っている。スイマセン
+		krsort($summary_ary);
+		return $summary_ary;
+	}
+
+	//並び順の修正と表示に必要な項目を追加
+	public function createMnsList($num){
+		$mns = $this->lstMns($num);
+		$rtn = array();
+		$i = 1;
+		$rr_ary = array();
+		$id_ary = array();
+		foreach ($mns as $k => $v) {
+			$rtn[] = array(
+				"rare_clr" => $this->getRareColor($v["rr"]),
+				"no" => $v["no"],
+				"rr" => $v["rr"],
+				"nm" => $v["nm"],
+				"id" => "mns" . $v["no"],
+				"pc" => $v["pc"]
+			);
+			$rr_ary[] = $v["rr"];
+			$id_ary[] = $i++;
+		}
+		array_multisort($rr_ary, SORT_DESC, $id_ary, SORT_ASC, $rtn);
+		return $rtn;
+	}
+
+	public function getRareColor($rare){
+		if ($rare >= 6) {
+			$rtn = "dia_clr";
+		} elseif ($rare == 5) {
+			$rtn = "gold_clr";
+		} else {
+			$rtn = "silver_clr";
+		}
+		return $rtn;
+	}
+
 }
-
-
-
-
-

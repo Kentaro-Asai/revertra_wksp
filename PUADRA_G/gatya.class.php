@@ -11,25 +11,36 @@ class gatya {
 		/*
 		var data = {
 			'times': parseInt(times),
-			'series': $('#kosiki').attr('data000'),
+			'series': $('#kosiki').data('series'),
 			//no.と排出率を入力
-			'rare':[]
+			'mns': [{mns_no:000, pc: 000},]
 		}
 		 */
 		$rtn = array();
 		
 		for ($i=0; $i < $data['times']; $i++) {
 			$rd = mt_rand(1, 100 * self::SHOSU);
-			$rr = 0;
-			for ($j=0; $j < count($data["rare"]); $j++) {
-				$rr += $data["rare"][$j];
-				if ($rr >= $rd) {
-					$rtn[$i] = $mns[$j];
+			$percent = 0;
+			foreach ($data["mns"] as $val) {
+				$percent += $val["pc"];
+				if ($percent >= $rd) {
+					$rtn[$i] = self::getMnsData($mns, $val["mns_no"]);
 					break;
 				}
 			}
 		}
 
+		return $rtn;
+	}
+
+	private static function getMnsData($mns, $mns_no){
+		$rtn = array();
+		foreach ($mns as $val) {
+			if ($val["no"] == $mns_no) {
+				$rtn = $val;
+				break;
+			}
+		}
 		return $rtn;
 	}
 }
