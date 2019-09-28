@@ -1125,6 +1125,21 @@ $(function(){
 					'mc':'B1 寒咲幹<br>B2 シルヴィ<br>B3 ディオス<br>B4 ゼラ<br>B5 1コンボ→シーファン<br>B6 番傘+ディオス<br>B7 カメオ+ゼラ+ツクヨミ',
 				}
 			}
+		},
+		67:{
+			ttl: "センリ", z1: 0, z2: 3,
+			m:{
+				0: {
+					ma: ["ルルナ","ゼラキティ","ゼラ","ゼラ","ゼラ"],
+					mb: ["小野田坂道（カメオ）","極醒シルヴィ","ゼラ","ゼラ","アヴァロンドレイク"],
+					mc: "1H ゼラキティ<br>2G ゼラ<br>3H ゼラ<br>4G シルヴィ<br>5H ゼラ+ルルナ+覚醒無効回復<br>6G ゼラ+カメオ"
+				},
+				1: {
+					ma: ["ダークオメガ(ラージャン武器)","範馬勇次郎(ディバインスワン)","ドットスコール(２色陣)","極醒オーディン(バランスキラー)","進化前マドゥ(間桐桜)"],
+					mb: ["ダークオメガ(ソニアアナザーカード)","水着五右衛門(テューポーンのカード)","範馬勇次郎(マドゥ武器)","ラルグ(マックコットン)","カマエル(ソニア武器)"],
+					mc: "1H ダークオメガ<br>2G 水着五右衛門<br>3H オーディン<br>4G ダークオメガ+マックコットン<br>5H 間桐桜+範馬勇次郎<br>6G カマエル+ソニアアナザー"
+				}
+			}
 		}
 	};
 	
@@ -1817,6 +1832,15 @@ $(function(){
 					'mc': 'スキブ29<br>B1 エノク+リダチェン+道潤<br>B2 アヴァドレ+ダメージ吸収無効+カラット<br>B3 木闇2色陣+強化された木刀'
 				}
 			}
+		},
+		38: { ttl: "ザパン", z1: 1, z2: 1,
+			m: {
+				0: {
+					ma: ["ルルナ(超追撃)","進化前ゼラ(超追撃)","進化前ゼラ(超追撃)","ゼラキティ(遅延対策用)","ディアンヌ(スキブ)"],
+					mb: ["小野田坂道（カメオ）","進化前ゼラ","アヴァロンドレイク","究極アルゲディ（チョコラブ）","超転生バステト（ウェディングドレス）"],
+					mc: "B1H ディアンヌ<br>B2G アヴァロンドレイク<br>B3H ゼラキティ<br>B4G ウェディングドレス→チョコラブ+ルルナ+カメオ<br>B5H ゼラ"
+				}
+			}
 		}
 	};
 	
@@ -2147,7 +2171,7 @@ $(function(){
 			}
 		}
 		return {
-			num: found_flg ? i : (i+1),
+			num: found_flg ? i : (parseInt(i)+1),
 			dung: dungeon
 		};
 	};
@@ -2155,25 +2179,27 @@ $(function(){
 	const setOutput = (data)=>{
 		let rtn = '';
 		rtn += data.num + ': {\n'
-				+ 'ttl: "'+data.dung.ttl+'", z1: '+data.dung.z1+', z2: '+data.dung.z2+',<br>';
+				+ 'ttl: "'+data.dung.ttl+'", z1: '+data.dung.z1+', z2: '+data.dung.z2+',\n';
 		if ('solo' == $('input[name=s_or_m]:checked').val()) {
-			rtn += '0: {<br>'
-				+ 'l: "' + $('#leader').val() + '", f: "' + $('#friend').html() + '",<br>'
-				+ 'sb: ["'+$('#sub1').val()+'","'+$('#sub2').val()+'","'+$('#sub3').val()+'","'+$('#sub4').val()+'"],<br>'
-				+ 'cm: "'+$('#comment').val()+'"<br>'
-				+ '}';
+			rtn += 's:{\n0: {\n'
+				+ 'l: "' + $('#leader').val() + '", f: "' + $('#friend').html() + '",\n'
+				+ 'sb: ["'+$('#sub1').val()+'","'+$('#sub2').val()+'","'+$('#sub3').val()+'","'+$('#sub4').val()+'"],\n'
+				+ 'cm: "'+$('#comment').val()+'"\n'
+				+ '}\n}';
 		} else if ('multi' == $('input[name=s_or_m]:checked').val()) {
-			rtn += '0: {<br>'
-				+ 'ma: ["'+$('#h_leader').val()+'","'+$('#h_sub1').val()+'","'+$('#h_sub2').val()+'","'+$('#h_sub3').val()+'","'+$('#h_sub4').val()+'"],<br>'
-				+ 'mb: ["'+$('#g_leader').val()+'","'+$('#g_sub1').val()+'","'+$('#g_sub2').val()+'","'+$('#g_sub3').val()+'","'+$('#g_sub4').val()+'"],<br>'
-				+ 'mc: "'+$('#comment').val()+'"<br>'
-				+ '}';
+			rtn += 'm:{\n0: {\n'
+				+ 'ma: ["'+$('#h_leader').val()+'","'+$('#h_sub1').val()+'","'+$('#h_sub2').val()+'","'+$('#h_sub3').val()+'","'+$('#h_sub4').val()+'"],\n'
+				+ 'mb: ["'+$('#g_leader').val()+'","'+$('#g_sub1').val()+'","'+$('#g_sub2').val()+'","'+$('#g_sub3').val()+'","'+$('#g_sub4').val()+'"],\n'
+				+ 'mc: "'+$('#comment').val()+'"\n'
+				+ '}\n}';
 		}
 		return rtn;
 	};
 
 	$('#submit_team').on('click', function(){
 		const ret = getInput();
-		$('output').html(setOutput(ret));
+		let output_html = document.getElementsByTagName('output');
+		// innerHTMLでは、brタグを出力できない
+		output_html[0].innerText = setOutput(ret);
 	});
 });
