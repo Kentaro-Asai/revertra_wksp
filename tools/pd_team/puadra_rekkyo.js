@@ -1841,7 +1841,27 @@ $(function(){
 					mc: "B1H ディアンヌ<br>B2G アヴァロンドレイク<br>B3H ゼラキティ<br>B4G ウェディングドレス→チョコラブ+ルルナ+カメオ<br>B5H ゼラ"
 				}
 			}
-		}
+		},
+		39: {
+			ttl: "ビュート", z1: 2, z2: 2,
+			m:{
+				0: {
+				ma: ["ルルナ","アヴァドレ(蜥蜴郎)","アヴァドレ(スモック)","ケツァルコアトル(ビクトリーム・モヒカンエース)","ドットジタン（強化された木刀）"],
+				mb: ["小野田坂道(ウェディングドレス)","ケツァルコアトル(Ｋフロストマント)","進化後ゼラ(カラドボルグ)","アヴァドレ(強化された木刀)","アルゲディ(カメオ)"],
+				mc: "B1 蜥蜴郎→アヴァドレ<br>B2 ケツァルコアトル+アヴァドレ<br>B3 ルルナ<br>B4 ゼラ(回復列でバインド回復)+カメオ<br>B5 ドレス→ビクトリーム+強化された木刀"
+				}
+			}
+		},
+		40: {
+			ttl: "キーラ", z1: 3, z2: 3,
+			m:{
+				0: {
+					ma: ["ルルナ","ディアンヌ(古砲荒神)","進化前ゼラ(九斬公)","図書カーリー(間桐慎二)","ゼラキティ（遅延対策）"],
+					mb: ["小野田坂道(カメオ)","進化前ゼラ()","進化前ゼラ()","ダークライザー(雲耐性)","三只眼(陣)"],
+					mc: "B1 ディアンヌ<br>B2 ゼラ<br>B3 ゼラ<br>B4 ダークライザー+陣+カメオ<br>B5 ゼラ+間桐慎二"
+				}
+			}
+		}	
 	};
 	
 	var ar_n = {
@@ -2029,8 +2049,18 @@ $(function(){
 					'sb': ['ヴァルキリーCIEL(我乱童子)', 'レオニス(戦国龍の豪気)', 'ハクレン(じんめん犬のメダル)', 'イデアル'],
 					'cm': '仮面でスキル使わず突破。4つ消し安定。'
 				}
-			},
-		}
+			}
+		},
+		11: {
+			ttl: "極練の闘技場", z1: 2, z2: 4,
+			s:{
+				0: {
+					l: "冴木創(パワーofエンミティ)", f: "冴木創(50％以下強化)",
+					sb: ["チュアン(二重の極み)","ロマノフ(持霊エリザ)","御堂筋翔(エリカの占星器)","ヴェロア(幻魔のマント)"],
+					cm: "HP50％以下に保つのが難しいと厳しい。回復ドロップ処理をどうするか。"
+				}
+			}
+		},
 	};
 	
 	var ar_y = {
@@ -2154,16 +2184,17 @@ $(function(){
 			ary = ar_k;
 		} else if ('josetu' == dung) {
 			ary = ar_j;
-		} else if ('nm' == ar_n) {
+		} else if ('nm' == dung) {
 			ary = ar_n;
-		} else if ('yobi' == ar_y) {
+		} else if ('yobi' == dung) {
 			ary = ar_y;
 		} else {
 			ary = ar_k;
 		}
 		//aryの作り方マズってんじゃん！
 		let found_flg = false;
-		for (var i in ary) {
+		let i = 0;
+		for (i in ary) {
 			if (ary[i].ttl === dun_name) {
 				dungeon = ary[i];
 				found_flg = true;
@@ -2182,17 +2213,18 @@ $(function(){
 				+ 'ttl: "'+data.dung.ttl+'", z1: '+data.dung.z1+', z2: '+data.dung.z2+',\n';
 		if ('solo' == $('input[name=s_or_m]:checked').val()) {
 			rtn += 's:{\n0: {\n'
-				+ 'l: "' + $('#leader').val() + '", f: "' + $('#friend').html() + '",\n'
+				+ 'l: "' + $('#leader').val() + '", f: "' + $('#friend').val() + '",\n'
 				+ 'sb: ["'+$('#sub1').val()+'","'+$('#sub2').val()+'","'+$('#sub3').val()+'","'+$('#sub4').val()+'"],\n'
 				+ 'cm: "'+$('#comment').val()+'"\n'
 				+ '}\n}';
 		} else if ('multi' == $('input[name=s_or_m]:checked').val()) {
 			rtn += 'm:{\n0: {\n'
-				+ 'ma: ["'+$('#h_leader').val()+'","'+$('#h_sub1').val()+'","'+$('#h_sub2').val()+'","'+$('#h_sub3').val()+'","'+$('#h_sub4').val()+'"],\n'
-				+ 'mb: ["'+$('#g_leader').val()+'","'+$('#g_sub1').val()+'","'+$('#g_sub2').val()+'","'+$('#g_sub3').val()+'","'+$('#g_sub4').val()+'"],\n'
-				+ 'mc: "'+$('#comment').val()+'"\n'
+				+ '\tma: ["'+$('#h_leader').val()+'","'+$('#h_sub1').val()+'","'+$('#h_sub2').val()+'","'+$('#h_sub3').val()+'","'+$('#h_sub4').val()+'"],\n'
+				+ '\tmb: ["'+$('#g_leader').val()+'","'+$('#g_sub1').val()+'","'+$('#g_sub2').val()+'","'+$('#g_sub3').val()+'","'+$('#g_sub4').val()+'"],\n'
+				+ '\tmc: "'+$('#comment').val()+'"\n'
 				+ '}\n}';
 		}
+		rtn += '\n},';
 		return rtn;
 	};
 
@@ -2201,5 +2233,6 @@ $(function(){
 		let output_html = document.getElementsByTagName('output');
 		// innerHTMLでは、brタグを出力できない
 		output_html[0].innerText = setOutput(ret);
+		window.scrollBy(0,50);
 	});
 });
