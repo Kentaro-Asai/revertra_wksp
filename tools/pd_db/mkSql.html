@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<title>パズドラSQL生成</title>
+	<script src="../../jq.js"></script>
+</head>
+<body>
+	<style>
+		body{
+			font-family:'Times New Roman', Times, serif;
+		}
+		h1{
+			font-size: 16px;
+			font-weight: normal;
+		}
+		fieldset{
+			width: 700px;
+			line-height: 30px;
+		}
+		label{
+			display: block;
+		}
+		span{
+			display: inline-block;
+			width: 150px;
+		}
+		#skill, #leader-skill{
+			width: 250px;
+		}
+		#done{
+			width: 150px;
+			height: 30px;
+			margin: 10px 0 10px 550px;  
+		}
+		output{
+			display: block;
+			background-color: wheat;
+			min-height: 50px;
+		}
+	</style>
+	<h1>パズドラSQL生成</h1>
+	<fieldset>
+		<legend>タイプ</legend>
+		1: <select id="type1">
+			<option>選択しない</option>
+			<option>ドラゴン</option>
+			<option>体力</option>
+			<option>攻撃</option>
+			<option>回復</option>
+			<option>バランス</option>
+			<option>神</option>
+			<option>強化合成用</option>
+			<option>進化用</option>
+			<option>悪魔</option>
+			<option>覚醒用</option>
+			<option>マシン</option>
+			<option>売却用</option>
+		</select>
+		2: <select id="type2">
+				<option>選択しない</option>
+				<option>ドラゴン</option>
+				<option>体力</option>
+				<option>攻撃</option>
+				<option>回復</option>
+				<option>バランス</option>
+				<option>神</option>
+				<option>強化合成用</option>
+				<option>進化用</option>
+				<option>悪魔</option>
+				<option>覚醒用</option>
+				<option>マシン</option>
+				<option>売却用</option>
+			</select>
+	</fieldset>
+	<fieldset>
+		<legend>覚醒</legend>
+		<label>
+			<input type="checkbox" id="contain-super-awaken" name="contain-super-awaken" />
+			超覚醒を含む
+		</label>
+		<select id="awaken1"></select>
+		<select id="awaken-count1"></select><br>
+		<select id="awaken2"></select>
+		<select id="awaken-count2"></select>
+	</fieldset>
+	<fieldset>
+		<legend>スキル(含む文字列)</legend>
+		<span>スキル:</span><input type="text" id="skill" name="skill" value="" /><br>
+		<span>リーダースキル:</span><input type="text" id="leader-skill" name="leader-skill" value="" />
+	</fieldset>
+	<button id="done">SQL文作成</button>
+	<output></output>
+
+	<script>
+const jsExplode = (concatenateAry, separate_word) => {
+	let rtn = "";
+	for (let v of concatenateAry) {
+		rtn += "" != rtn ? (separate_word + v) : v;
+	}
+	return rtn;
+};
+
+$(()=>{
+	const awaken_ary = [
+		"選択しない",
+		"HP強化", "攻撃強化", "回復強化", "マルチブースト", "チームHP強化", "チーム回復強化",
+		"HP弱化", "攻撃弱化", "回復弱化", "火ダメージ軽減", "水ダメージ軽減", "木ダメージ軽減",
+		"光ダメージ軽減", "闇ダメージ軽減", "火ドロップ強化", "水ドロップ強化", "木ドロップ強化",
+		"光ドロップ強化", "闇ドロップ強化", "回復ドロップ強化", "コンボドロップ", "火属性強化",
+		"水属性強化", "木属性強化", "光属性強化", "闇属性強化", "暗闇耐性＋", "暗闇耐性",
+		"お邪魔耐性", "毒耐性", "バインド回復", "封印耐性", "お邪魔耐性＋", "毒耐性＋",
+		"バインド耐性", "バインド耐性+", "雲耐性", "操作不可耐性",
+		"神キラー", "ドラゴンキラー", "攻撃キラー", "悪魔キラー", "体力キラー",
+		"バランスキラー", "回復キラー", "マシンキラー", "売却用キラー", "進化用キラー",
+		"強化合成用キラー", "能力覚醒用キラー", "2体攻撃", "コンボ強化", "超コンボ強化",
+		"HP80％以上強化", "HP50％以下強化", "自動回復", "操作時間延長", "操作時間延長+",
+		"スキルブースト", "スキルブースト+", "追加攻撃", "超追加攻撃", "L字消し攻撃", "回復L字消し",
+		"ダメージ無効貫通", "毒ドロップの加護", "お邪魔ドロップの加護", "ガードブレイク", "覚醒アシスト",
+		"スキルチャージ", "スキルボイス", "ダンジョンボーナス"
+	];
+	//覚醒
+	for (let i = 1; i <= 2; i++) {
+		for (let v of awaken_ary) {
+			$('#awaken'+i).append(`<option>${v}</option>`);
+		}
+		for (let cnt = 0; cnt <= 10; cnt++) {
+			if (1 === cnt) {
+				$('#awaken-count'+i).append(`<option selected>${cnt}</option>`);
+			} else {
+				$('#awaken-count'+i).append(`<option>${cnt}</option>`);
+			}
+		}
+	}
+	//スキル
+	$('#done').on('click', ()=>{
+		const param = {
+			type1: $('#type1').val(), type2: $('#type2').val(),
+			super_awaken_flg: $('#contain-super-awaken').prop('checked'),
+			awaken1: {name: $('#awaken1').val(), cnt: $('#awaken-count1').val()},
+			awaken2: {name: $('#awaken2').val(), cnt: $('#awaken-count2').val()},
+			skill: $('#skill').val(),
+			leader_skill: $('#leader-skill').val()
+		};
+		let limited = []; //WHEREの後ろを追加する
+		if ("選択しない" != param.type1 || "選択しない" != param.type2) {
+			let type_sentense = "選択しない" != param.type1 ? `"${param.type1}"` : "";
+			if (!!type_sentense) {
+				type_sentense += "選択しない" != param.type2 ? ' OR `TYPE` = "'+param.type2+'" ' : ""; 
+			} else {
+				type_sentense = param.type2;
+			}
+			limited.push(' `NO` IN (SELECT `NO` FROM mns_type WHERE `TYPE` = '+type_sentense+')');
+		}
+		if (0 != param.awaken1.cnt && "選択しない" != param.awaken1.name) {
+			if (param.super_awaken_flg) {
+				limited.push(' `NO` IN ('
+					+ 'SELECT A.`NO` FROM (' 
+					+ 'SELECT `NO`, COUNT(*) FROM ('
+						+ ' SELECT `NO` FROM mns_awaken WHERE AWAKEN = "'+param.awaken1.name+'" UNION All '
+						+ ' SELECT `NO` FROM mns_super_awaken WHERE AWAKEN = "'+param.awaken1.name+'"'
+ 					+ ') AS AA GROUP BY AA.NO HAVING COUNT(*) >= '+param.awaken1.cnt+') AS A)');
+			} else {
+				limited.push(' `NO` IN ('
+					+'SELECT A.`NO` FROM ('
+						+'SELECT `NO`, COUNT(*) FROM mns_awaken WHERE AWAKEN = "'+param.awaken1.name+'"' 
+ 					+' GROUP BY `NO` HAVING COUNT(*) >= '+param.awaken1.cnt+') AS A)');
+			}
+		}
+		if (0 != param.awaken2.cnt && "選択しない" != param.awaken2.name) {
+			if (param.super_awaken_flg) {
+				limited.push(' `NO` IN ('
+					+ 'SELECT A.`NO` FROM (' 
+					+ 'SELECT `NO`, COUNT(*) FROM ('
+						+ ' SELECT `NO` FROM mns_awaken WHERE AWAKEN = "'+param.awaken2.name+'" UNION All '
+						+ ' SELECT `NO` FROM mns_super_awaken WHERE AWAKEN = "'+param.awaken2.name+'"'
+ 					+ ') AS AA GROUP BY AA.NO HAVING COUNT(*) >= '+param.awaken2.cnt+') AS A)');
+			} else {
+				limited.push(' `NO` IN ('
+					+'SELECT A.`NO` FROM ('
+						+'SELECT `NO`, COUNT(*) FROM mns_awaken WHERE AWAKEN = "'+param.awaken2.name+'"' 
+ 					+' GROUP BY `NO` HAVING COUNT(*) >= '+param.awaken2.cnt+') AS A)');
+			}
+		}
+		if ("" != param.skill) {
+			limited.push(' `NO` IN (SELECT `NO` FROM `mns` WHERE `SKILL` LIKE "%'+param.skill+'%" )');
+		}
+		if ("" != param.leader_skill) {
+			limited.push(' `NO` IN (SELECT `NO` FROM `mns` WHERE `LEADER_SKILL` LIKE "%'+param.leader_skill+'%" )');
+		}
+		if (0 < limited.length) {
+			let rtn = 'SELECT `NO`, `NAME`, MAIN_ATTRIBUTE, SUB_ATTRIBUTE FROM mns WHERE <br>';
+			// PHPでいうexplodeは無いみたい
+			rtn += jsExplode(limited, " AND <br>");
+			$('output').html(rtn);
+		} else {
+			$('output').html('検索条件が指定されていません。');
+		}
+	});
+});
+	</script>
+</body>
+</html>
