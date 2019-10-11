@@ -1,3 +1,4 @@
+# coding: UTF-8
 import requests
 from pyquery import PyQuery as pq
 # cd C:\xampp\htdocs\revertra\revertra_wksp\tools\pd_db
@@ -72,12 +73,23 @@ class PdScraper:
 		rtn = []
 		hs = html_str
 		while 1 < len(hs):
-			if 0 < hs.find("タイプ"):
-				rtn.append(hs[ : hs.find("タイプ")].strip(" "))
-				hs = hs[hs.find("タイプ")+3 : ].strip(" ")
-			elif 0 < hs.find("モンスター"):
-				rtn.append(hs[ : hs.find("モンスター")].strip(" "))
-				hs = hs[hs.find("モンスター")+5 : ].strip(" ")
+			find_chars = {"type": hs.find("タイプ"), "mns": hs.find("モンスター")}
+			if (-1 != find_chars["type"] and -1 != find_chars["mns"]):
+				# find both
+				if (find_chars["type"] < find_chars["mns"]):
+					rtn.append(hs[ : find_chars["type"]].strip(" "))
+					hs = hs[find_chars["type"]+3 : ].strip(" ")
+				else:
+					rtn.append(hs[ : find_chars["mns"]].strip(" "))
+					hs = hs[find_chars["mns"]+5 : ].strip(" ")
+			elif 0 < find_chars["type"]:
+				# find only type
+				rtn.append(hs[ : find_chars["type"]].strip(" "))
+				hs = hs[find_chars["type"]+3 : ].strip(" ")
+			elif 0 < find_chars["mns"]:
+				# find only monster
+				rtn.append(hs[ : find_chars["mns"]].strip(" "))
+				hs = hs[find_chars["mns"]+5 : ].strip(" ")
 			else:
 				print("input type error: "+hs)
 				break
@@ -145,11 +157,9 @@ class PdScraper:
 			r = requests.get('https://pd.appbank.net/m' + str(v))
 			if 200 == r.status_code:
 				mnsDict = self.createMns(r.text)
+				rtn.append(mnsDict)
 			else:
 				print(f'm{v}: {r.status_code}, cannot read!!')
-
-			rtn.append(mnsDict)
-			# rtn.append([r.content])
 		print(len(rtn))
 		return rtn
 
