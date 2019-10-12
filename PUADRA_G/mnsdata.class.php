@@ -1,8 +1,8 @@
 <?php
 class mnsdata {
 	const NAV_NUM = 3;
-	const SERIES = 6; //現在見せたいコラボ
-	var $g = 6;
+	const SERIES = 26; //現在見せたいコラボ
+	var $g = 26;
 	
 	public function __construct() {
 		$this->g = self::SERIES;
@@ -52,7 +52,8 @@ class mnsdata {
 			22 => "鋼の錬金術師コラボ",
 			23 => "KOFコラボ",
 			24 => "バレンタイン",
-			25 => "幽☆遊☆白書"
+			25 => "幽☆遊☆白書",
+			26 => "サムライスピリッツ"
 		);
 		if ($num == -1) {
 			return $ttl_ary;
@@ -566,6 +567,21 @@ class mnsdata {
 				array("no"=>4316, "nm" => "酎", "rr"=> 5, "pc"=> 10.938),
 				array("no"=>4317, "nm" => "陣", "rr"=> 5, "pc"=> 10.938),
 				array("no"=>4318, "nm" => "鴉", "rr"=> 5, "pc"=> 10.938),
+			),
+			26 => array(
+				array("no"=>5565, "nm" => "覇王丸", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5568, "nm" => "ナコルル", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5571, "nm" => "橘右京", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5574, "nm" => "牙神幻十郎", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5577, "nm" => "色", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5580, "nm" => "鞍馬夜叉丸", "rr"=> 6, "pc"=> 2.5),
+				array("no"=>5583, "nm" => "服部半蔵【侍魂】", "rr"=> 5, "pc"=> 13.59),
+				array("no"=>5586, "nm" => "ガルフォード", "rr"=> 5, "pc"=> 13.59),
+				array("no"=>5589, "nm" => "リムルル", "rr"=> 5, "pc"=> 3.5),
+				array("no"=>5592, "nm" => "柳生十兵衛", "rr"=> 5, "pc"=> 13.58),
+				array("no"=>5595, "nm" => "タムタム", "rr"=> 5, "pc"=> 13.58),
+				array("no"=>5598, "nm" => "シャルロット", "rr"=> 5, "pc"=> 13.58),
+				array("no"=>5601, "nm" => "徳川慶寅", "rr"=> 5, "pc"=> 13.58),
 			)
 		);
 		return $mns_ary[$num];

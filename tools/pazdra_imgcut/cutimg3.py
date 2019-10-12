@@ -4,6 +4,9 @@ from PIL import Image
 # i cannot use this library
 # import pytesseract
 
+# cd C:\xampp\htdocs\revertra\revertra_wksp\tools\pazdra_imgcut
+# python cutimg3.py
+
 # you want to read image (shuugo)
 lst_img = {}
 width = 99 #max645
