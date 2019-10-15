@@ -21,6 +21,10 @@ for number in range(1, 73 + 1):
 		# https://img-pd.appbank.net/i/images/askill_68.png
 		file_nm = hs[hs.rfind('/')+1 :]
 		print(file_nm, aw_nm)
+		#画像保存のコード(未デバッグ)
+		#with open('./img/' + file_nm, 'wb') as f:
+		#	img_r = requests.get(hs)
+		#	f.write(img_r.content)
 		if os.path.exists('./img/' + file_nm):
 			os.rename('./img/' + file_nm, './img/' + aw_nm + '.png')
 			print('changed file name')

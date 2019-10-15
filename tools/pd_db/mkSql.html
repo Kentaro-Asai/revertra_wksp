@@ -3,44 +3,12 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>パズドラSQL生成</title>
+	<link rel="stylesheet" href="mkSql.css" />
 	<script src="../../jq.js"></script>
 </head>
 <body>
-	<style>
-		body{
-			font-family:'Times New Roman', Times, serif;
-		}
-		h1{
-			font-size: 16px;
-			font-weight: normal;
-		}
-		fieldset{
-			width: 700px;
-			line-height: 30px;
-		}
-		label{
-			display: inline-block;
-		}
-		span{
-			display: inline-block;
-			width: 150px;
-		}
-		#skill, #leader-skill{
-			width: 250px;
-		}
-		#done{
-			width: 150px;
-			height: 30px;
-			margin: 10px 0 10px 550px;  
-		}
-		output{
-			display: block;
-			background-color: wheat;
-			min-height: 50px;
-		}
-	</style>
 	<h1>パズドラSQL生成</h1>
-	<p>操作時間延長+とかが2つ分としてカウントできるようにしたい。</p>
+	<p>http://localhost/revertra/revertra_wksp/tools/pd_db/mksql.html</p>
 	<fieldset>
 		<legend>属性</legend>
 		主: <select id="main-attribute">
@@ -63,7 +31,7 @@
 	</fieldset>
 	<fieldset>
 		<legend>タイプ</legend>
-		1: <select id="type1">
+		<select id="type1">
 			<option>選択しない</option>
 			<option>ドラゴン</option>
 			<option>体力</option>
@@ -77,8 +45,8 @@
 			<option>覚醒用</option>
 			<option>マシン</option>
 			<option>売却用</option>
-		</select>
-		2: <select id="type2">
+		</select> または
+		<select id="type2">
 				<option>選択しない</option>
 				<option>ドラゴン</option>
 				<option>体力</option>
@@ -112,7 +80,10 @@
 		<span>リーダースキル:</span><input type="text" id="leader-skill" name="leader-skill" value="" />
 	</fieldset>
 	<button id="done">SQL文作成</button>
-	<output></output>
+	<button id="xampp-done">XAMPPでPHP実行</button>
+	<p id="msg-box"></p>
+	<output id="sql-output"></output>
+	<output id="php-output"></output>
 
 	<script>
 // セレクトタグを次どちらを自動で変えるか
@@ -196,7 +167,7 @@ $(()=>{
 	});
 
 	//スキル
-	$('#done').on('click', ()=>{
+	const mkSql = (break_word)=>{
 		const param = {
 			main_attribute: $('#main-attribute').val(), sub_attribute: $('#sub-attribute').val(),
 			type1: $('#type1').val(), type2: $('#type2').val(),
@@ -224,7 +195,7 @@ $(()=>{
 		}
 		for (let i=1; i <= 2; i++) {
 			if (0 != param["awaken"+i].cnt && "選択しない" != param["awaken"+i].name) {
-				if ("スキルブースト" == param["awaken"+i].name || "操作時間延長" == param["awaken"+i].name) {
+				if ("スキルブースト" == param["awaken"+i].name || "操作時間延長" == param["awaken"+i].name || "バインド耐性" == param["awaken"+i].name) {
 					if (param.super_awaken_flg) {
 						limited.push(' `NO` IN ('
 							+ 'SELECT A.`NO` FROM ('
@@ -263,15 +234,75 @@ $(()=>{
 		if ("" != param.leader_skill) {
 			limited.push(' `NO` IN (SELECT `NO` FROM `mns` WHERE `LEADER_SKILL` LIKE "%'+param.leader_skill+'%" )');
 		}
+		// ここからoutput
+		let rtn = 'SELECT * FROM mns WHERE ' + break_word;
 		if (0 < limited.length) {
-			let rtn = 'SELECT `NO`, `NAME`, MAIN_ATTRIBUTE, SUB_ATTRIBUTE, `HP`, ATK, RECOVER FROM mns WHERE <br>';
 			// PHPでいうexplodeは無いみたい
-			rtn += jsExplode(limited, " AND <br>");
-			$('output').html(rtn);
+			rtn += jsExplode(limited, " AND " + break_word);
 		} else {
-			$('output').html('検索条件が指定されていません。');
+			rtn = '検索条件が指定されていません。';
 		}
+
+		return rtn;
+	};
+	$('#done').on('click', ()=>{
+		$('#sql-output').html(mkSql('<br>'));
 	});
+
+	$('#xampp-done').on('click', ()=>{
+		let output_sql = $('#sql-output').html();
+		if ("" == output_sql) {
+			output_sql = mkSql('\n');
+		}
+		$.getJSON('pd_api.json.php', {sql: output_sql}, ($js)=>{
+			console.log($js);
+			$('#msg-box').html($js.msg);
+			let output_mns = '<table id="mns-table">';
+			output_mns += '<tr><th class="name"></th><th class="awaken">覚醒</th><th class="super-awaken">超覚醒</th>'
+				+'<th class="skill">スキル</th><th class="leader-skill">リーダースキル</th></tr>';
+			for (let v of $js.mns) {
+				output_mns += `<tr class="${getAttrCls(v.MAIN_ATTRIBUTE, v.SUB_ATTRIBUTE)}">`
+					+ `<td>NO. ${v.NO} ★${v.RARE}<br>${v.NAME}<br>${jsExplode(v.TYPE, " / ")}</td>`
+					+ `<td>${getAwakenImgTag(v.AWAKEN)}</td>`
+					+ `<td>${getAwakenImgTag(v.SUPER_AWAKEN)}</td>`
+					+ `<td>${v.SKILL}</td>`
+					+ `<td>${v.LEADER_SKILL}</td></tr>`;
+			}
+			output_mns += '</table>';
+			$('#php-output').html(output_mns);
+		});
+	});
+
+	const getAwakenImgTag = (awaken_ary)=>{
+		let rtn = '';
+		// Ajax通信で持ってきたデータが文字列寄りの配列になっていてfor of文でバグるからconsolelogが必要
+		console.log(awaken_ary);
+		for (let v of awaken_ary) {
+			rtn += '<img src="./img/' + v + '.png" title="' + v + '" />';
+		}
+		return rtn;
+	};
+
+	const getAttrCls = (main, sub)=>{
+		let rtn = 'attr';
+		for (let i=0; i <= 1; i++) {
+			let hs = 0 == i ? main : sub;
+			if ('火' == hs) {
+				rtn += '-1';
+			} else if ('水' == hs) {
+				rtn += '-2';
+			} else if ('木' == hs) {
+				rtn += '-3';
+			} else if ('光' == hs) {
+				rtn += '-4';
+			} else if ('闇' == hs) {
+				rtn += '-5';
+			} else {
+				rtn += '-0';
+			}
+		}
+		return rtn;
+	};
 });
 	</script>
 </body>
