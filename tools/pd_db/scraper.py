@@ -116,6 +116,9 @@ class PdScraper:
 		hs = d('.monster > div > img.image-responsive + p').text()
 		rtn["rare"] = int(hs[ hs.find("★")+1 : hs.find(" / コスト")])
 		rtn["cost"] = int(hs[ hs.find(" / コスト")+7 : hs.find(" / アシスト:")])
+		if rtn["cost"] > 1000:
+			print(str(rtn["no"])+": cost->"+str(rtn["cost"]))
+			#rtn["cost"] = 70
 		#rtn["assist"] = hs[hs.find(" / アシスト:")+9 : ] == "◯"
 		rtn["assist"] = hs[-1 : ] == "◯"
 		rtn["type"] = self.getType(d('.monster > div:nth-child(2) > p.icon-mtype').text())

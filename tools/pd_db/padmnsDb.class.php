@@ -37,4 +37,55 @@ class padmnsDb {
 		$rtn["super_awaken"] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $rtn;
 	}
+
+	public function getPointSql($ary){
+		$sql = "";
+		$onlyOne = 1 == count($ary["awaken"]);
+		$restrict = $this->getRestrictsParts($ary);
+		foreach ($ary["awaken"] as $v) {
+			if ($onlyOne) {
+				$sql = "SELECT COUNT(`NO`) AS CNT, m.* FROM mns_awaken AS a"
+					." LEFT JOIN mns AS m ON m.`NO` = a.NO"
+					. $restrict["left_join"]
+					." WHERE AWAKEN = \"".$v."\"" . $restrict["restrict"]
+					." GROUP BY `NO`"
+					." ORDER BY CNT DESC";
+			} else {
+				$sql .= ("" == $sql) ? "SELECT SUM(a.CNT), m.* FROM ( " : " UNION ALL ";
+				$sql .= " (SELECT `NO`, COUNT(`NO`) AS CNT FROM mns_awaken"
+				." WHERE AWAKEN = \"".$v."\"" 
+				." GROUP BY `NO`"
+				." ORDER BY CNT DESC)";
+			}
+		}
+		if (!$onlyOne) {
+			$sql .= ") AS a	LEFT JOIN mns AS m ON m.`NO` = a.NO"
+				." GROUP BY a.`NO` ORDER BY SUM(a.CNT) DESC";
+		}
+		$sql .= " LIMIT 100";
+		return $sql;
+	}
+
+	private function getRestrictsParts($ary){
+		$restricted = "";
+		$left_join = "";
+		$restricted .= "選択しない" != $ary["main_attribute"] ? (" AND MAIN_ATTRIBUTE = \"".$ary["main_attribute"]."\"") : "";
+		$restricted .= "選択しない" != $ary["sub_attribute"] ? (" AND SUB_ATTRIBUTE = \"".$ary["sub_attribute"]."\"") : "";
+		$restricted .= "" != $ary["skill"] ? (" AND `SKILL` LIKE = \"%".$ary["skill"]."\"%") : "";
+		$restricted .= "" != $ary["leader_skill"] ? (" AND  `LEADER_SKILL` LIKE \"%".$ary["leader_skill"]."\"%") : "";
+		if ("選択しない" != $ary["type1"] || "選択しない" != $ary["type2"]) {
+			$left_join = " LEFT JOIN mns_type AS t ON m.NO = t.NO";
+		}
+		if ("選択しない" == $ary["type1"]) {
+			$restricted .= "選択しない" == $ary["type2"] ? "" : (" AND t.TYPE = ".$ary["type2"]);
+		} elseif ("選択しない" == $ary["type2"]) {
+			$restricted .= " AND t.TYPE = ".$ary["type1"];
+		} else {
+			$restricted .= " AND (t.TYPE = ".$ary["type1"]." OR t.TYPE = ".$ary["type2"].")";
+		}
+		return array(
+			"restrict" => $restricted,
+			"left_join" => $left_join
+		);
+	}
 }

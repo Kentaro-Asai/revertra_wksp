@@ -14,17 +14,17 @@ fieldset{
 label{
 	display: inline-block;
 }
-span{
+#skill-field span{
 	display: inline-block;
 	width: 150px;
 }
 #skill, #leader-skill{
 	width: 250px;
 }
-#done{
+#done, #xampp-done, #xampp-point{
 	width: 150px;
 	height: 30px;
-	margin: 10px 0 10px 550px;  
+	margin: 10px 70px;  
 }
 output{
 	display: block;
@@ -51,6 +51,17 @@ output{
 }
 #mns-table .super-awaken{
 	width: 99px
+}
+#mns-table td:nth-child(3){
+	text-align: center;
+}
+#mns-table .assist1{
+	color: gold;
+	text-shadow: 1px 1px 1px black;
+}
+#mns-table .assist0{
+	color: silver;
+	text-shadow: 1px 1px 1px black;
 }
 .attr-1-1{
 	background: linear-gradient(140deg, #faa, #d88);
