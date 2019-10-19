@@ -16,6 +16,7 @@ if (isset($_REQUEST)) {
 		$mns = $db_obj->getData($ar['sql']);
 	} else {
 		$sql = $db_obj->getPointSql($ar);
+		$rtn["sql"] = $sql;
 		$mns = $db_obj->getData($sql);
 	}
 	$number_ary = $obm->getNo($mns);

@@ -4,7 +4,7 @@ $(function(){
 	];
 	let gatya_sum = 0; //ガチャした回数
 	const SHOSU = 1000; //有効けた数
-	const RARE = {'UNDER':4, 'UPPER': 8}; //ガチャレア範囲
+	const RARE = {'UNDER':4, 'UPPER': 9}; //ガチャレア範囲
 	let nav_toggle = true;
 	
 	for (let i=RARE.UNDER; i <= RARE.UPPER; i++) {

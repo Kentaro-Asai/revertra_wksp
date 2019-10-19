@@ -300,6 +300,9 @@ $(()=>{
 			$.getJSON('pd_search.json.php', send_data, ($js)=>{
 				$('#msg-box').html($js.msg);
 				$('#php-output').html(makeTable($js.mns));
+				if (!!$js.sql) {
+					$('#sql-output').html($js.sql);
+				}
 			});
 		} else {
 			$('#msg-box').html('覚醒スキルを選択していません。');
