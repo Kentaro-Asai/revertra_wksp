@@ -275,6 +275,7 @@ $(()=>{
 		let output_sql = $('#sql-output').html();
 		if ("" == output_sql) {
 			output_sql = mkSql('\n');
+			$('#sql-output').html(output_sql);
 		}
 		$.getJSON('pd_search.json.php', {sql: output_sql}, ($js)=>{
 			$('#msg-box').html($js.msg);
@@ -283,20 +284,25 @@ $(()=>{
 	});
 
 	$('#xampp-point').on('click', ()=>{
-		let selected_awaken = [];
-		for (let i=1; i < AWAKEN_NUM; i++) {
-			if ('選択しない' != $('#awaken' + i).val()) {
-				selected_awaken.push($('#awaken' + i).val());
+		let contain_flg = false;
+		let selected_awaken = {};
+		for (let i=1; i <= AWAKEN_NUM; i++) {
+			if ('選択しない' != $('#awaken' + i).val() && 0 < $('#awaken-count' + i).val()) {
+				contain_flg = true;
+				selected_awaken[i] = {
+					name: $('#awaken' + i).val(),
+					cnt: $('#awaken-count' + i).val(),
+				};
 			}
 		}
-		let send_data = {
+		const send_data = {
 			main_attribute: $('#main-attribute').val(), sub_attribute: $('#sub-attribute').val(),
 			type1: $('#type1').val(), type2: $('#type2').val(),
 			awaken: selected_awaken,
 			skill: $('#skill').val(),
 			leader_skill: $('#leader-skill').val()
 		};
-		if (0 < send_data.awaken.length) {
+		if (contain_flg) {
 			$.getJSON('pd_search.json.php', send_data, ($js)=>{
 				$('#msg-box').html($js.msg);
 				$('#php-output').html(makeTable($js.mns));

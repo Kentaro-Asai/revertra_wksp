@@ -47,23 +47,23 @@ class padmnsDb {
 				$sql = "SELECT COUNT(a.`NO`) AS CNT, m.* FROM mns_awaken AS a"
 					." LEFT JOIN mns AS m ON m.`NO` = a.NO"
 					. $restrict["left_join"]
-					." WHERE a.AWAKEN = \"".$v."\"" . $restrict["restrict"]
+					." WHERE a.AWAKEN = \"".$v["name"]."\"" . $restrict["restrict"]
 					." GROUP BY a.`NO`"
-					." ORDER BY CNT DESC";
+					." HAVING CNT >= ".$v["cnt"];
 			} else {
-				//TODO: こっちは制限かけられていない
-				$sql .= ("" == $sql) ? "SELECT SUM(a.CNT), m.* FROM ( " : " UNION ALL ";
+				$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM ( SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
 				$sql .= " (SELECT `NO`, COUNT(`NO`) AS CNT FROM mns_awaken"
-				." WHERE AWAKEN = \"".$v."\"" 
+				." WHERE AWAKEN = \"".$v["name"]."\"" 
 				." GROUP BY `NO`"
-				." ORDER BY CNT DESC)";
+				." HAVING CNT >= ".$v["cnt"].")";
 			}
 		}
 		if (!$onlyOne) {
-			$sql .= ") AS a LEFT JOIN mns AS m ON m.`NO` = a.NO"
+			$sql .= ") AS a GROUP BY a.NO HAVING COUNT(a.NO) >= ".count($ary["awaken"])
+				.") AS b LEFT JOIN mns AS m ON m.NO = b.NO"
 				.$restrict["left_join"] 
-				.(0 < (mb_strlen($restrict["restrict"])) ? (" WHERE ". mb_substr($restrict["restrict"], 4)) : "") // " AND"を切り出す
-				." GROUP BY a.`NO` ORDER BY SUM(a.CNT) DESC";
+				.(0 < mb_strlen($restrict["restrict"]) ? (" WHERE ". mb_substr($restrict["restrict"], 4)) : "") // " AND"を切り出す
+				." GROUP BY b.NO ORDER BY b.SUM_CNT DESC";
 		}
 		$sql .= " LIMIT 100";
 		return $sql;
