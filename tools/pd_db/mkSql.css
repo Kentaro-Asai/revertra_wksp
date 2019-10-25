@@ -32,7 +32,7 @@ output{
 	min-height: 50px;
 }
 #mns-table{
-	width: 1000px;
+	width: 1100px;
 	font-size: 13px;
 	line-height: 15px;
 	font-family: Arial;
@@ -45,6 +45,10 @@ output{
 }
 #mns-table .name{
 	width: 160px;
+}
+#mns-table .parameter{
+	width: 120px;
+	text-align: center;
 }
 #mns-table .awaken{
 	width: 160px
