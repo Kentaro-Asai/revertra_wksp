@@ -15,7 +15,7 @@ if (isset($_REQUEST)) {
 	if (array_key_exists("sql", $ar)) {
 		$mns = $db_obj->getData($ar['sql']);
 	} else {
-		$sql = $db_obj->getPointSql($ar);
+		$sql = $db_obj->getSql($ar);
 		$rtn["sql"] = $sql;
 		$mns = $db_obj->getData($sql);
 	}

@@ -22,8 +22,8 @@ class connectSql:
 	# モンスターの登録
 	def mnsRegister(self, mns):
 		self.c.execute('INSERT INTO mns VALUES (%(no)s, %(name)s, %(main_attribute)s, %(sub_attribute)s,\
-		%(rare)s, %(cost)s, %(assist)s, %(hp)s, %(atk)s, %(recover)s, %(skill)s, %(leader_skill)s,\
-		%(super_hp)s, %(super_atk)s, %(super_recover)s)', mns)
+		%(rare)s, %(cost)s, %(assist)s, %(hp)s, %(atk)s, %(recover)s, %(skill)s, %(skill_turn)s, %(skill_max_turn)s,\
+		%(leader_skill)s, %(super_hp)s, %(super_atk)s, %(super_recover)s)', mns)
 		self.conn.commit()
 		if 0 < len(mns["type"]):
 			for v in mns["type"]:
@@ -42,7 +42,8 @@ class connectSql:
 	def mnsUpdate(self, mns):
 		self.c.execute('UPDATE mns SET `NAME`=%(name)s, MAIN_ATTRIBUTE=%(main_attribute)s, SUB_ATTRIBUTE=%(sub_attribute)s,\
 			`RARE`=%(rare)s, `COST`=%(cost)s, ASSIST=%(assist)s, HP=%(hp)s, ATK=%(atk)s, RECOVER=%(recover)s, `SKILL`=%(skill)s,\
-			LEADER_SKILL=%(leader_skill)s, SUPER_HP=%(super_hp)s, SUPER_ATK=%(super_atk)s, SUPER_RECOVER=%(super_recover)s WHERE `NO`=%(no)s ', mns)
+			SKILL_TURN=%(skill_turn)s, SKILL_MAX_TURN=%(skill_max_turn)s, LEADER_SKILL=%(leader_skill)s,\
+			SUPER_HP=%(super_hp)s, SUPER_ATK=%(super_atk)s, SUPER_RECOVER=%(super_recover)s WHERE `NO`=%(no)s ', mns)
 		self.conn.commit()
 		if 0 < len(mns["type"]):
 			# 数が増えたり減ったりすることも考えられるので、DELETEしてからが難しくない

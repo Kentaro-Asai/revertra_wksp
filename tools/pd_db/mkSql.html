@@ -143,7 +143,7 @@ $(()=>{
 			for (yoko=1; yoko <= max_yoko; yoko++) {
 				// tableを作成、画像を入れる。
 				if ((tate - 1) * max_yoko + yoko < awaken_ary.length) {
-					html_str += '<td><img id="awaken-img'+((tate -1)* max_yoko + yoko)+'" src="img/'+awaken_ary[(tate -1)* max_yoko + yoko]+'.png"></td>';
+					html_str += `<td><img id="awaken-img${(tate -1)* max_yoko + yoko}" src="img/${awaken_ary[(tate -1)* max_yoko + yoko]}.png" title="${awaken_ary[(tate -1)* max_yoko + yoko]}"></td>`;
 				} else {
 					html_str += '<td></td>';
 				}
@@ -285,35 +285,30 @@ $(()=>{
 	});
 
 	$('#xampp-point').on('click', ()=>{
-		let contain_flg = false;
-		let selected_awaken = {};
+		let selected_awaken = [];
 		for (let i=1; i <= AWAKEN_NUM; i++) {
 			if ('選択しない' != $('#awaken' + i).val() && 0 < $('#awaken-count' + i).val()) {
-				contain_flg = true;
-				selected_awaken[i] = {
+				selected_awaken.push({
 					name: $('#awaken' + i).val(),
 					cnt: $('#awaken-count' + i).val(),
-				};
+				});
 			}
 		}
 		const send_data = {
 			main_attribute: $('#main-attribute').val(), sub_attribute: $('#sub-attribute').val(),
 			type1: $('#type1').val(), type2: $('#type2').val(),
+			super_awaken_flg: $('#contain-super-awaken').prop('checked'),
 			awaken: selected_awaken,
 			skill: ($('#skill').val() || ""),
 			leader_skill: ($('#leader-skill').val() || "")
 		};
-		if (contain_flg) {
-			$.getJSON('pd_search.json.php', send_data, ($js)=>{
+		$.getJSON('pd_search.json.php', send_data, ($js)=>{
 				$('#msg-box').html($js.msg);
 				$('#php-output').html(makeTable($js.mns));
 				if (!!$js.sql) {
 					$('#sql-output').html($js.sql);
 				}
-			});
-		} else {
-			$('#msg-box').html('覚醒スキルを選択していません。');
-		}
+		});
 	});
 
 	const makeTable = (mns)=>{

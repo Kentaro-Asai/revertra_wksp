@@ -1,0 +1,326 @@
+@charset "utf-8";
+
+body{
+	background-color: #777;
+}
+header, main, footer{
+	width: 1100px;
+	margin: 0 auto;
+	background-color: #ddd;
+}
+h1{
+	margin: 0 auto; 
+	text-align: center;
+	width: 800px;
+	background-color: #338;
+	color: white;
+	border: ridge #33a 5px;
+	box-shadow: 15px 15px 10px gray;
+	padding: 0.2em;
+}
+h1 > a{
+	text-decoration: none;
+	color: white;
+	text-shadow: 3px 3px 1px black;
+}
+header p{
+	margin: 0;
+	padding: 10px 250px;
+	
+}
+section{
+	width:800px;
+	margin: 10px 0;
+	padding: 0 0 0 100px;
+}
+h4{
+	background: linear-gradient(0deg, #222 2px, #555 2px) repeat;
+	background-size: 4px 4px;
+	color: snow;
+	font-size: 16px;
+	text-shadow: 1px 1px 1px black;
+	font-weight: 700;
+	margin: 8px 0 3px;
+	padding: 3px 5px;
+}
+h4::before{
+	content: "";
+	border-left: solid 10px maroon;
+	margin: 0px 0px 10px 0px;
+	padding-left: 15px;
+}
+.attribute fieldset{
+	margin: 0 70px;
+}
+.attribute label{
+	display: inline-block;
+	margin: 0 5px 0 0;
+	padding: 0 5px 0 0;
+}
+section.type div{
+	margin: 0 150px;
+	overflow: auto;
+}
+.type label{
+	display: block;
+	float: left;
+	width: 35px;
+	height: 35px;
+	margin: 5px 10px;
+	padding: 13px;
+	border-radius: 17px;
+}
+.type input[type=checkbox]{
+	display: none;
+}
+.type label > img{
+	width: 35px;
+	height: 35px;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.skill p{
+	margin: 8px 95px;
+}
+.skill p:last-child{
+	margin-bottom: 15px;
+}
+.skill span{
+	display: inline-block;
+	font-size: 14px;
+	margin: 0 15px 0 25px;
+	width: 106px;
+	background: maroon;
+	color: white;
+	text-align: center;
+	border-radius: 3px;
+}
+.skill input{
+	display: inline-block;
+	font-size: 14px;
+}
+.skill input[type="number"]{
+	width: 35px;
+}
+.awaken label{
+	display: inline-block;
+	margin: 8px 30px;
+}
+#shortcut-awaken-table{
+	overflow: auto;
+	background-color: #222;
+	padding: 7px;
+	margin: 0 32px;
+	border-radius: 7px;
+}
+#shortcut-awaken-table p{
+	float: left;
+	width: 31px;
+	height: 32px;
+	padding: 4px;
+	margin: 6px 3px;
+	border-radius: 7px;
+	overflow: visible;
+	position: relative;
+}
+#shortcut-awaken-table img{
+	display: block;
+	width: 31px;
+	height: 32px;
+	padding: 4px;
+	border-radius: 7px;
+}
+#shortcut-awaken-table span{
+	width: 17px;
+	height: 17px;
+	display: block;
+	position: absolute;
+	bottom: -8px;
+	right: -9px;
+	background-color: #b39;
+	color: white;
+	font-size: 12px;
+	text-align: center;
+	border-radius: 100%;
+}
+#submit{
+	display: block;
+	margin: 0 auto;
+	width: 200px;
+	height: 50px;
+	border-radius: 25px;
+	background: radial-gradient(#77c, #228);
+	color: #ccc;
+}
+#submit:active{
+	color: black;
+	background: radial-gradient(#aaf, #66b);
+}
+#result{
+	display: block;
+	margin: 15px 0 0;
+}
+#result > p{
+	margin: 5px;
+	text-align: center;
+	background: linear-gradient(0deg, #ccf, #88f, #ccf)
+}
+#mns-table{
+	width: 1100px;
+	font-size: 13px;
+	line-height: 15px;
+	font-family: Arial;
+}
+#mns-table th{
+	background-color: black;
+	color: wheat;
+	font-size: 15px;
+	line-height: 17px;
+}
+#mns-table .name{
+	width: 160px;
+}
+#mns-table .parameter{
+	width: 120px;
+	text-align: center;
+}
+#mns-table .awaken{
+	width: 160px
+}
+#mns-table .super-awaken{
+	width: 99px
+}
+#mns-table td:nth-child(3){
+	text-align: center;
+}
+#mns-table .assist1{
+	color: gold;
+	text-shadow: 1px 1px 1px black;
+}
+#mns-table .assist0{
+	color: silver;
+	text-shadow: 1px 1px 1px black;
+}
+.attr-1-1{
+	background: linear-gradient(140deg, #faa, #d88);
+}
+.attr-1-2{
+	background: linear-gradient(140deg, #faa, #88d);
+}
+.attr-1-3{
+	background: linear-gradient(140deg, #faa, #8d8);
+}
+.attr-1-4{
+	background: linear-gradient(140deg, #faa, #dd8);
+}
+.attr-1-5{
+	background: linear-gradient(140deg, #faa, #96d);
+}
+.attr-1-0{
+	background: linear-gradient(140deg, #faa, transparent);
+}
+.attr-2-1{
+	background: linear-gradient(140deg, #aaf, #d88);
+}
+.attr-2-2{
+	background: linear-gradient(140deg, #aaf, #88d);
+}
+.attr-2-3{
+	background: linear-gradient(140deg, #aaf, #8d8);
+}
+.attr-2-4{
+	background: linear-gradient(140deg, #aaf, #dd8);
+}
+.attr-2-5{
+	background: linear-gradient(140deg, #aaf, #96d);
+}
+.attr-2-0{
+	background: linear-gradient(140deg, #aaf, transparent);
+}
+.attr-3-1{
+	background: linear-gradient(140deg, #afa, #d88);
+}
+.attr-3-2{
+	background: linear-gradient(140deg, #afa, #88d);
+}
+.attr-3-3{
+	background: linear-gradient(140deg, #afa, #8d8);
+}
+.attr-3-4{
+	background: linear-gradient(140deg, #afa, #dd8);
+}
+.attr-3-5{
+	background: linear-gradient(140deg, #afa, #96d);
+}
+.attr-3-0{
+	background: linear-gradient(140deg, #afa, transparent);
+}
+.attr-4-1{
+	background: linear-gradient(140deg, #ffa, #d88);
+}
+.attr-4-2{
+	background: linear-gradient(140deg, #ffa, #88d);
+}
+.attr-4-3{
+	background: linear-gradient(140deg, #ffa, #8d8);
+}
+.attr-4-4{
+	background: linear-gradient(140deg, #ffa, #dd8);
+}
+.attr-4-5{
+	background: linear-gradient(140deg, #ffa, #96d);
+}
+.attr-4-0{
+	background: linear-gradient(140deg, #ffa, transparent);
+}
+.attr-5-1{
+	background: linear-gradient(140deg, #b8f, #d88);
+}
+.attr-5-2{
+	background: linear-gradient(140deg, #b8f, #88d);
+}
+.attr-5-3{
+	background: linear-gradient(140deg, #b8f, #8d8);
+}
+.attr-5-4{
+	background: linear-gradient(140deg, #b8f, #dd8);
+}
+.attr-5-5{
+	background: linear-gradient(140deg, #b8f, #96d);
+}
+.attr-5-0{
+	background: linear-gradient(140deg, #b8f, transparent);
+}
+
+footer{
+	display: block;
+	height: 50px;
+}
+
+#modal-background{
+	background: rgba(0,0,0,0.7);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+}
+#modal-background > p{
+	text-align: center
+}
+#awaken-cnt{
+	display: inline-block;
+	font-size: 45px;
+	width: 90px;
+	height: 45px;
+	text-align: center;
+}
+#awaken-cnt-btn{
+	display: inline-block;
+  margin: 0 0 0 10px;
+  width: 150px;
+  height: 70px;
+  font-size: 45px;
+  border-radius: 13px;
+  color: aliceblue;
+  background: radial-gradient(#777, black);
+}

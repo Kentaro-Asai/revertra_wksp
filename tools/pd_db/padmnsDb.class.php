@@ -38,7 +38,94 @@ class padmnsDb {
 		return $rtn;
 	}
 
-	public function getPointSql($ary){
+	public function getSql($ary){
+		$sql = "";
+		if (array_key_exists("awaken", $ary) && 0 < count($ary["awaken"])) {
+			$sql = $ary["super_awaken_flg"] ? $this->getSuperAwakenSql($ary) : $this->getAwakenSql($ary);
+		} else {
+			$restrict = $this->getRestrictsParts($ary);
+			$sql = "SELECT m.* FROM mns AS m";
+			if (0 < mb_strlen($restrict["left_join"])) {
+				$sql .= $restrict["left_join"];
+			}
+			if (0 < mb_strlen($restrict["restrict"])) {
+				$sql .= " WHERE ". mb_substr($restrict["restrict"], 4);
+			}
+			$sql .= " ORDER BY `NO` DESC LIMIT 100";
+		}
+		return $sql;
+	}
+
+	private function getSuperAwakenSql($ary){
+		$sql = "";
+		$onlyOne = 1 == count($ary["awaken"]);
+		$restrict = $this->getRestrictsParts($ary);
+		foreach ($ary["awaken"] as $v) {
+			switch($v["name"]) {
+				case '操作時間延長': case 'スキルブースト': case 'バインド耐性':
+				$count_option = 1;
+				$v["default_name"] = $v["name"];
+				break;
+				case '操作時間延長+': case 'スキルブースト+': case 'バインド耐性+':
+				$count_option = 2;
+				$v["default_name"] = mb_substr($v["name"], 0, mb_strlen($v["name"]) - 1);
+				break;
+				default:
+				$count_option = 0;
+			}
+			if (0 < $count_option) {
+				// '操作時間延長' 'スキルブースト' 'バインド耐性'
+				if ($onlyOne) {
+					//バグってる
+					$sql = "SELECT SUM(CASE WHEN AWAKEN = \"".$v["default_name"]."\" THEN 1 ELSE 2 END) AS SUM_CNT, m.* FROM mns AS m"
+						." LEFT JOIN mns_awaken AS a ON m.NO = a.NO"
+						." LEFT JOIN mns_super_awaken AS s ON m.NO = s.NO"
+						. $restrict["left_join"]
+						." WHERE (a.AWAKEN = \"".$v["default_name"]."\" OR a.AWAKEN = \"".$v["default_name"]."+\" OR s.AWAKEN = \"".$v["default_name"]."\" OR s.AWAKEN = \"".$v["default_name"]."+\")"
+						. $restrict["restrict"]
+						." GROUP BY m.NO"
+						." HAVING SUM_CNT >= ".($v["cnt"] * $count_option)
+						." ORDER BY SUM_CNT DESC, m.NO DESC";
+				} else {
+					$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM (SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
+					$sql .= " (SELECT `NO`, SUM(CASE WHEN AWAKEN = \"".$v["default_name"]."\" THEN 1 ELSE 2 END) AS CNT FROM ("
+						."(SELECT `NO` FROM mns_awaken WHERE AWAKEN = \"".$v["default_name"]."\" OR AWAKEN = \"".$v["default_name"]."+\") UNION ALL "
+						."(SELECT `NO` FROM mns_super_awaken WHERE AWAKEN = \"".$v["default_name"]."\" OR AWAKEN = \"".$v["default_name"]."+\")"
+						." ) AS a_and_s GROUP BY a_and_s.NO"
+						." HAVING CNT >= ".($v["cnt"] * $count_option).")";
+				}
+			} else { // 通常時
+				if ($onlyOne) {
+					//バグってる
+					$sql = "SELECT COUNT(a.`NO`) AS SUM_CNT, m.* FROM mns AS m"
+						." LEFT JOIN mns_awaken AS a ON m.NO = a.NO"
+						." LEFT JOIN mns_super_awaken AS s ON m.NO = s.NO"
+						. $restrict["left_join"]
+						." WHERE (a.AWAKEN = \"".$v["name"]."\" OR s.AWAKEN = \"".$v["name"]."\")" . $restrict["restrict"]
+						." GROUP BY m.NO HAVING SUM_CNT >= ".$v["cnt"]
+						." ORDER BY SUM_CNT DESC, m.NO DESC";
+				} else {
+					$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM ( SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
+					$sql .= " (SELECT a_and_s.NO, COUNT(a_and_s.NO) AS CNT FROM ("
+						." (SELECT `NO` FROM mns_awaken WHERE AWAKEN = \"".$v["name"]."\") UNION ALL "
+						." (SELECT `NO` FROM mns_super_awaken WHERE AWAKEN = \"".$v["name"]."\")"
+						." ) AS a_and_s GROUP BY a_and_s.NO"
+						." HAVING CNT >= ".$v["cnt"].")";
+				}
+			}
+		}
+		if (!$onlyOne) {
+			$sql .= ") AS a GROUP BY a.NO HAVING COUNT(a.NO) >= ".count($ary["awaken"])
+				.") AS b LEFT JOIN mns AS m ON m.NO = b.NO"
+				.$restrict["left_join"] 
+				.(0 < mb_strlen($restrict["restrict"]) ? (" WHERE ". mb_substr($restrict["restrict"], 4)) : "") // " AND"を切り出す
+				." GROUP BY b.NO ORDER BY b.SUM_CNT DESC, b.NO DESC";
+		}
+		$sql .= " LIMIT 100";
+		return $sql;
+	}
+
+	private function getAwakenSql($ary){
 		$sql = "";
 		$onlyOne = 1 == count($ary["awaken"]);
 		$restrict = $this->getRestrictsParts($ary);
@@ -66,11 +153,11 @@ class padmnsDb {
 						." HAVING SUM_CNT >= ".($v["cnt"] * $count_option)
 						." ORDER BY SUM_CNT DESC, m.NO DESC";
 				} else {
-					$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM ( SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
+					$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM (SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
 					$sql .= " (SELECT `NO`, SUM(CASE WHEN AWAKEN = \"".$v["default_name"]."\" THEN 1 ELSE 2 END) AS CNT FROM mns_awaken"
-					." WHERE AWAKEN = \"".$v["default_name"]."\" OR AWAKEN = \"".$v["default_name"]."+\"" 
-					." GROUP BY `NO`"
-					." HAVING CNT >= ".($v["cnt"] * $count_option).")";
+						." WHERE AWAKEN = \"".$v["default_name"]."\" OR AWAKEN = \"".$v["default_name"]."+\"" 
+						." GROUP BY `NO`"
+						." HAVING CNT >= ".($v["cnt"] * $count_option).")";
 				}
 			} else { // 通常時
 				if ($onlyOne) {
@@ -84,9 +171,9 @@ class padmnsDb {
 				} else {
 					$sql .= ("" == $sql) ? "SELECT b.SUM_CNT, m.* FROM ( SELECT `NO`, SUM(a.CNT) AS SUM_CNT, COUNT(a.NO) FROM (" : " UNION ALL ";
 					$sql .= " (SELECT `NO`, COUNT(`NO`) AS CNT FROM mns_awaken"
-					." WHERE AWAKEN = \"".$v["name"]."\"" 
-					." GROUP BY `NO`"
-					." HAVING CNT >= ".$v["cnt"].")";
+						." WHERE AWAKEN = \"".$v["name"]."\"" 
+						." GROUP BY `NO`"
+						." HAVING CNT >= ".$v["cnt"].")";
 				}
 			}
 		}

@@ -354,6 +354,7 @@ li.output{
 footer p{
 	font-size:8px;
 	text-align:center;
+	height: 50px
 }
 .dia_clr{
 	background: linear-gradient(60deg, #eee, #88f, #7f7, #fd8, #f97, #f88);

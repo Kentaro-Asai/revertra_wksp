@@ -105,7 +105,7 @@ class PdScraper:
 			"hp":0, "atk":0, "recover":0,\
 			"super_hp":0, "super_atk":0, "super_recover":0,\
 			"awaken": [], "super_awaken": [],\
-			"skill": "", "leader_skill": ""\
+			"skill": "", "skill_turn":0, "skill_max_turn":0, "leader_skill": ""\
 		}
 		d = pq(html_txt)
 		hs = d('.monster h2').text()
@@ -116,8 +116,8 @@ class PdScraper:
 		hs = d('.monster > div > img.image-responsive + p').text()
 		rtn["rare"] = int(hs[ hs.find("★")+1 : hs.find(" / コスト")])
 		rtn["cost"] = int(hs[ hs.find(" / コスト")+7 : hs.find(" / アシスト:")])
-		if rtn["cost"] > 1000:
-			print(str(rtn["no"])+": cost->"+str(rtn["cost"]))
+		#if rtn["cost"] > 1000:
+		#	print(str(rtn["no"])+": cost->"+str(rtn["cost"]))
 			#rtn["cost"] = 70
 		#rtn["assist"] = hs[hs.find(" / アシスト:")+9 : ] == "◯"
 		rtn["assist"] = hs[-1 : ] == "◯"
@@ -134,6 +134,9 @@ class PdScraper:
 			title = d(f'.monster > div:nth-child({indent_div}) > h3').text()
 			if "スキル" == title:
 				rtn["skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
+				hs = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(2) > strong').text()
+				rtn["skill_turn"] = int(hs[hs.find("：")+1 : hs.find("（")])
+				rtn["skill_max_turn"] = int(hs[hs.find("（")+1 : hs.find("）")])
 			elif "リーダースキル" == title:
 				rtn["leader_skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
 			elif '覚醒スキル' == title:
