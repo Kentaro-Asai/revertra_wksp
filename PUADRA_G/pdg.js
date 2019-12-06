@@ -171,6 +171,7 @@ $(function(){
 				v.style.fontSize = "12px";
 			} else {
 				v.style.fontSize = "10px";
+				if (18 < v.innerHTML.length) v.innerHTML = v.innerHTML.substr(0, 17) + ".."
 			}
 		}
 	})();

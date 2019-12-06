@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="パズドラのダメージ計算機のWebアプリケーションです。対応モンスターは今後増やしていきます。インストール不要です。">
+<meta name="keywords" content="パズドラ,ダメージ計算機,計算方法,シミュレータ,パズル＆ドラゴンズ">
+<link rel="stylesheet" href="index.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
+<title>パズドラ ダメージ計算機</title>
+<script src="../jq.js"></script>
+</head>
+<body>
+<header>
+	<h1><a href="./">puzzle and dragons ダメージ計算機 cmb2</a></h1>
+	<p>
+		<dfn><abbr title="パズルアンドドラゴンズ">パズドラ</abbr></dfn>のダメージ計算機のWebアプリケーションです。<br>
+		モンスターの選択後、コンボなどのセットをすることでダメージ量を確認できます。<br>
+		モンスター名を変更することで、そのモンスターの攻撃力、回復力、フル覚醒の値に自動で変更されます。<br>
+		覚醒スキル、モンスターの追加をしました。(最終変更日：<time datetime=2019-12-06>2019.12.06</time>)
+	</p>
+	<p>チームの選定（微調整可能）、リーダースキル倍率、コンボ入力（直接入力 or パズル）の３stepで計算できます。</p>
+</header>
+<main>
+<section id="team">
+<h4>チームの選定</h4>
+<table id="team-table">
+	<caption>モンスターを選択してください。</caption>
+	<thead><tr><th>-</th><th>Leader</th><th>Sub1</th><th>Sub2</th><th>Sub3</th><th>Sub4</th><th>Friend</th></tr></thead>
+	<tbody>
+		<tr class="main-select"><th>モンスター名</th><td data-mns="leader">- 未選択 -</td><td data-mns="sub1">- 未選択 -</td><td data-mns="sub2">- 未選択 -</td><td data-mns="sub3">- 未選択 -</td><td data-mns="sub4">- 未選択 -</td><td data-mns="friend">- 未選択 -</td></tr>
+		<tr class="level-110"><th>Lv110</th><td><label><input type="checkbox" name="leader-110"></label></td><td><label><input type="checkbox" name="sub1-110"></label></td><td><label><input type="checkbox" name="sub2-110"></label></td><td><label><input type="checkbox" name="sub3-110"></label></td><td><label><input type="checkbox" name="sub4-110"></label></td><td><label><input type="checkbox" name="friend-110"></label></td></tr>
+		<tr class="assist-select"><th>アシスト</th><td data-mns="leader">- 未選択 -</td><td data-mns="sub1">- 未選択 -</td><td data-mns="sub2">- 未選択 -</td><td data-mns="sub3">- 未選択 -</td><td data-mns="sub4">- 未選択 -</td><td data-mns="friend">- 未選択 -</td></tr>
+		<tr><th>HP</th><td><input type="text" id="leader-hp" value="0"></td><td><input type="text" id="sub1-hp" value="0"></td><td><input type="text" id="sub2-hp" value="0"></td><td><input type="text" id="sub3-hp" value="0"></td><td><input type="text" id="sub4-hp" value="0"></td><td><input type="text" id="friend-hp" value="0"></td></tr>
+		<tr><th>攻撃力</th><td><input type="text" id="leader-atk" value="0"></td><td><input type="text" id="sub1-atk" value="0"></td><td><input type="text" id="sub2-atk" value="0"></td><td><input type="text" id="sub3-atk" value="0"></td><td><input type="text" id="sub4-atk" value="0"></td><td><input type="text" id="friend-atk" value="0"></td></tr>
+		<tr><th>回復力</th><td><input type="text" id="leader-recover" value="0"></td><td><input type="text" id="sub1-recover" value="0"></td><td><input type="text" id="sub2-recover" value="0"></td><td><input type="text" id="sub3-recover" value="0"></td><td><input type="text" id="sub4-recover" value="0"></td><td><input type="text" id="friend-recover" value="0"></td></tr>
+		<tr><th>覚醒スキル</th><td id="leader-awaken"></td><td id="sub1-awaken"></td><td id="sub2-awaken"></td><td id="sub3-awaken"></td><td id="sub4-awaken"></td><td id="friend-awaken"></td></tr>
+		<tr class="super-awaken"><th>超覚醒スキル</th><td id="leader-super-awaken"></td><td id="sub1-super-awaken"></td><td id="sub2-super-awaken"></td><td id="sub3-super-awaken"></td><td id="sub4-super-awaken"></td><td id="friend-super-awaken"></td></tr>
+		<tr><th>潜在覚醒</th><td id="leader-potential">- 未選択 -</td><td id="sub1-potential">- 未選択 -</td><td id="sub2-potential">- 未選択 -</td><td id="sub3-potential">- 未選択 -</td><td id="sub4-potential">- 未選択 -</td><td id="friend-potential">- 未選択 -</td></tr>
+	</tbody>
+</table>
+<div id="team-conclusion">
+	<p>
+		<label><input type="checkbox" id="multi-flg">マルチ判定（マルチブーストや超覚醒の有無）</label><br>
+		<label><input type="radio" name="hp-condition" value="hp-80" checked>HP80%以上</label>
+		<label><input type="radio" name="hp-condition" value="hp-50">HP50%以下</label>
+		<label><input type="radio" name="hp-condition" value="any">HP51~79%</label>
+	</p>
+	<table>
+		<caption>覚醒込みパラメータ</caption>
+		<thead>
+			<tr><th>-</th><th>Leader</th><th>Sub1</th><th>Sub2</th><th>Sub3</th><th>Sub4</th><th>Friend</th><th>合計</th></tr>
+		</thead>
+		<tbody>
+			<tr><th>HP</th><td id="awaken-leader-hp">0</td><td id="awaken-sub1-hp">0</td><td id="awaken-sub2-hp">0</td><td id="awaken-sub3-hp">0</td><td id="awaken-sub4-hp">0</td><td id="awaken-friend-hp">0</td><td id="hp-conclusion">0</td></tr>
+			<tr><th rowspan="2">攻撃力</th><td id="awaken-leader-primary-atk">0</td><td id="awaken-sub1-primary-atk">0</td><td id="awaken-sub2-primary-atk">0</td><td id="awaken-sub3-primary-atk">0</td><td id="awaken-sub4-primary-atk">0</td><td id="awaken-friend-primary-atk">0</td><td rowspan="2" id="atk-conclusion">0</td></tr>
+			<tr><td id="awaken-leader-secondary-atk">0</td><td id="awaken-sub1-secondary-atk">0</td><td id="awaken-sub2-secondary-atk">0</td><td id="awaken-sub3-secondary-atk">0</td><td id="awaken-sub4-secondary-atk">0</td><td id="awaken-friend-secondary-atk">0</td></tr>
+			<tr><th>回復力</th><td id="awaken-leader-recover">0</td><td id="awaken-sub1-recover">0</td><td id="awaken-sub2-recover">0</td><td id="awaken-sub3-recover">0</td><td id="awaken-sub4-recover">0</td><td id="awaken-friend-recover">0</td><td id="recover-conclusion">0</dd></tr>
+		</tbody>
+	</table>
+	<dl>
+		<dt class="leader-skill-atk">リーダースキル攻撃倍率</dt><dd><input type="text" id="leader-skill-atk" value="1"></dd>
+		<dt class="leader-skill-atk">フレンドリーダースキル攻撃倍率</dt><dd><input type="text" id="friend-leader-skill-atk" value="1"></dd>
+		<dt class="leader-skill-recover">リーダースキル回復倍率</dt><dd><input type="text" id="leader-skill-recover" value="1"></dd>
+		<dt class="leader-skill-recover">フレンドリーダースキル回復倍率</dt><dd><input type="text" id="friend-leader-skill-recover" value="1"></dd>
+	</dl>
+	<ul id="awaken">
+		<li><img src="img_awaken/HP強化.png" title="HP強化"><span>0</span></li>
+		<li><img src="img_awaken/攻撃強化.png" title="攻撃強化"><span>0</span></li>
+		<li><img src="img_awaken/回復強化.png" title="回復強化"><span>0</span></li>
+		<li><img src="img_awaken/HP弱化.png" title="HP弱化"><span>0</span></li>
+		<li><img src="img_awaken/攻撃弱化.png" title="攻撃弱化"><span>0</span></li>
+		<li><img src="img_awaken/回復弱化.png" title="回復弱化"><span>0</span></li>
+		<li><img src="img_awaken/チームHP強化.png" title="チームHP強化"><span>0</span></li>
+		<li><img src="img_awaken/チーム回復強化.png" title="チーム回復強化"><span>0</span></li>
+		<li><img src="img_awaken/マルチブースト.png" title="マルチブースト"><span>0</span></li>
+		<li><img src="img_awaken/火ダメージ軽減.png" title="火ダメージ軽減"><span>0</span></li>
+		<li><img src="img_awaken/水ダメージ軽減.png" title="水ダメージ軽減"><span>0</span></li>
+		<li><img src="img_awaken/木ダメージ軽減.png" title="木ダメージ軽減"><span>0</span></li>
+		<li><img src="img_awaken/光ダメージ軽減.png" title="光ダメージ軽減"><span>0</span></li>
+		<li><img src="img_awaken/闇ダメージ軽減.png" title="闇ダメージ軽減"><span>0</span></li>
+		<li><img src="img_awaken/火ドロップ強化.png" title="火ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/水ドロップ強化.png" title="水ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/木ドロップ強化.png" title="木ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/光ドロップ強化.png" title="光ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/闇ドロップ強化.png" title="闇ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/回復ドロップ強化.png" title="回復ドロップ強化"><span>0</span></li>
+		<li><img src="img_awaken/バインド回復.png" title="バインド回復"><span>0</span></li>
+		<li><img src="img_awaken/コンボドロップ.png" title="コンボドロップ"><span>0</span></li>
+		<li><img src="img_awaken/火属性強化.png" title="火属性強化"><span>0</span></li>
+		<li><img src="img_awaken/水属性強化.png" title="水属性強化"><span>0</span></li>
+		<li><img src="img_awaken/木属性強化.png" title="木属性強化"><span>0</span></li>
+		<li><img src="img_awaken/光属性強化.png" title="光属性強化"><span>0</span></li>
+		<li><img src="img_awaken/闇属性強化.png" title="闇属性強化"><span>0</span></li>
+		<li><img src="img_awaken/暗闇耐性.png" title="暗闇耐性"><span>0</span></li>
+		<li><img src="img_awaken/暗闇耐性＋.png" title="暗闇耐性＋"><span>0</span></li>
+		<li><img src="img_awaken/お邪魔耐性.png" title="お邪魔耐性"><span>0</span></li>
+		<li><img src="img_awaken/お邪魔耐性＋.png" title="お邪魔耐性＋"><span>0</span></li>
+		<li><img src="img_awaken/毒耐性.png" title="毒耐性"><span>0</span></li>
+		<li><img src="img_awaken/毒耐性＋.png" title="毒耐性＋"><span>0</span></li>
+		<li><img src="img_awaken/封印耐性.png" title="封印耐性"><span>0</span></li>
+		<li><img src="img_awaken/バインド耐性.png" title="バインド耐性"><span>0</span></li>
+		<li><img src="img_awaken/バインド耐性+.png" title="バインド耐性+"><span>0</span></li>
+		<li><img src="img_awaken/雲耐性.png" title="雲耐性"><span>0</span></li>
+		<li><img src="img_awaken/操作不可耐性.png" title="操作不可耐性"><span>0</span></li>
+		<li><img src="img_awaken/神キラー.png" title="神キラー"><span>0</span></li>
+		<li><img src="img_awaken/ドラゴンキラー.png" title="ドラゴンキラー"><span>0</span></li>
+		<li><img src="img_awaken/攻撃キラー.png" title="攻撃キラー"><span>0</span></li>
+		<li><img src="img_awaken/悪魔キラー.png" title="悪魔キラー"><span>0</span></li>
+		<li><img src="img_awaken/体力キラー.png" title="体力キラー"><span>0</span></li>
+		<li><img src="img_awaken/バランスキラー.png" title="バランスキラー"><span>0</span></li>
+		<li><img src="img_awaken/回復キラー.png" title="回復キラー"><span>0</span></li>
+		<li><img src="img_awaken/マシンキラー.png" title="マシンキラー"><span>0</span></li>
+		<li><img src="img_awaken/売却用キラー.png" title="売却用キラー"><span>0</span></li>
+		<li><img src="img_awaken/進化用キラー.png" title="進化用キラー"><span>0</span></li>
+		<li><img src="img_awaken/強化合成用キラー.png" title="強化合成用キラー"><span>0</span></li>
+		<li><img src="img_awaken/能力覚醒用キラー.png" title="能力覚醒用キラー"><span>0</span></li>
+		<li><img src="img_awaken/2体攻撃.png" title="2体攻撃"><span>0</span></li>
+		<li><img src="img_awaken/コンボ強化.png" title="コンボ強化"><span>0</span></li>
+		<li><img src="img_awaken/超コンボ強化.png" title="超コンボ強化"><span>0</span></li>
+		<li><img src="img_awaken/HP80％以上強化.png" title="HP80％以上強化"><span>0</span></li>
+		<li><img src="img_awaken/HP50％以下強化.png" title="HP50％以下強化"><span>0</span></li>
+		<li><img src="img_awaken/自動回復.png" title="自動回復"><span>0</span></li>
+		<li><img src="img_awaken/操作時間延長.png" title="操作時間延長"><span>0</span></li>
+		<li><img src="img_awaken/操作時間延長+.png" title="操作時間延長+"><span>0</span></li>
+		<li><img src="img_awaken/スキルブースト.png" title="スキルブースト"><span>0</span></li>
+		<li><img src="img_awaken/スキルブースト+.png" title="スキルブースト+"><span>0</span></li>
+		<li><img src="img_awaken/追加攻撃.png" title="追加攻撃"><span>0</span></li>
+		<li><img src="img_awaken/超追加攻撃.png" title="超追加攻撃"><span>0</span></li>
+		<li><img src="img_awaken/L字消し攻撃.png" title="L字消し攻撃"><span>0</span></li>
+		<li><img src="img_awaken/回復L字消し.png" title="回復L字消し"><span>0</span></li>
+		<li><img src="img_awaken/ダメージ無効貫通.png" title="ダメージ無効貫通"><span>0</span></li>
+		<li><img src="img_awaken/ガードブレイク.png" title="ガードブレイク"><span>0</span></li>
+		<li><img src="img_awaken/スキルチャージ.png" title="スキルチャージ"><span>0</span></li>
+		<li><img src="img_awaken/お邪魔ドロップの加護.png" title="お邪魔ドロップの加護"><span>0</span></li>
+		<li><img src="img_awaken/毒ドロップの加護.png" title="毒ドロップの加護"><span>0</span></li>
+		<li><img src="img_awaken/スキルボイス.png" title="スキルボイス"><span>0</span></li>
+		<li><img src="img_awaken/ダンジョンボーナス.png" title="ダンジョンボーナス"><span>0</span></li>
+		<li><img src="img_awaken/覚醒アシスト.png" title="覚醒アシスト"><span>0</span></li>
+	</ul>
+</div>
+</section>
+<section id="combo-table">
+	<h4>コンボの入力</h4>
+	<dl>
+		<dt>コンボ1</dt><dd>
+			<select id="combo-attribute-1"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-1" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-1" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-1">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-1">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-1">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ2</dt><dd>
+			<select id="combo-attribute-2"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-2" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-2" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-2">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-2">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-2">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ3</dt><dd>
+			<select id="combo-attribute-3"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-3" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-3" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-3">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-3">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-3">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ4</dt><dd>
+			<select id="combo-attribute-4"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-4" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-4" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-4">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-4">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-4">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ5</dt><dd>
+			<select id="combo-attribute-5"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-5" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-5" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-5">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-5">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-5">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ6</dt><dd>
+			<select id="combo-attribute-6"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-6" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-6" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-6">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-6">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-6">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ7</dt><dd>
+			<select id="combo-attribute-7"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-7" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-7" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-7">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-7">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-7">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ8</dt><dd>
+			<select id="combo-attribute-8"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-8" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-8" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-8">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-8">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-8">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ9</dt><dd>
+			<select id="combo-attribute-9"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-9" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-9" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-9">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-9">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-9">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ10</dt><dd>
+			<select id="combo-attribute-10"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-10" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-10" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-10">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-10">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-10">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ11</dt><dd>
+			<select id="combo-attribute-11"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-11" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-11" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-11">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-11">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-11">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ12</dt><dd>
+			<select id="combo-attribute-12"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-12" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-12" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-12">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-12">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-12">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ13</dt><dd>
+			<select id="combo-attribute-13"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-13" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-13" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-13">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-13">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-13">3×3正方形判定</label>
+		</dd>
+		<dt>コンボ14</dt><dd>
+			<select id="combo-attribute-14"><option value="無">-無し-</option><option value="火">火ドロップ</option><option value="水">水ドロップ</option><option value="木">木ドロップ</option><option value="光">光ドロップ</option><option value="闇">闇ドロップ</option><option value="回復">回復ドロップ</option></select>
+			<input type="number" id="combo-drop-count-14" value="3" min="3" max="42">個消し (プラスドロップ<input type="number" id="combo-plus-drop-count-14" value="0" min="0" max="42">個)
+			<label><input type="checkbox" id="combo-Lform-flg-14">L字判定</label>
+			<label><input type="checkbox" id="combo-row-flg-14">列判定</label>
+			<label><input type="checkbox" id="combo-square-flg-14">3×3正方形判定</label>
+		</dd>
+		<dt>総コンボ数</dt><dd><input type="number" id="total-combo-number" value="1" min="1">(スキルやリーダースキルでコンボ加算される時は、ここで調整してください。)</dd>
+	</dl>
+</section>
+<section id="enemy">
+	<h4>敵パラメータ</h4>
+	<table>
+		<tr><th>属性</th><td id="enemy-attribute-img" colspan="3">
+			<p><img src="img_attribute/icon_drop.png" alt="火"></p>
+			<p><img src="img_attribute/icon_drop.png" alt="水"></p>
+			<p><img src="img_attribute/icon_drop.png" alt="木"></p>
+			<p><img src="img_attribute/icon_drop.png" alt="光"></p>
+			<p><img src="img_attribute/icon_drop.png" alt="闇"></p>
+			</td>
+		</tr>
+		<tr><th>タイプ</th><td id="enemy-type" colspan="3">
+			<img src="img_type/ドラゴン.png" title="ドラゴン">
+			<img src="img_type/バランス.png" title="バランス">
+			<img src="img_type/マシン.png" title="マシン">
+			<img src="img_type/悪魔.png" title="悪魔">
+			<img src="img_type/回復.png" title="回復">
+			<img src="img_type/攻撃.png" title="攻撃">
+			<img src="img_type/神.png" title="神">
+			<img src="img_type/体力.png" title="体力">
+			<img src="img_type/強化合成用.png" title="強化合成用">
+			<img src="img_type/進化用.png" title="進化用">
+			<img src="img_type/覚醒用.png" title="覚醒用">
+			<img src="img_type/売却用.png" title="売却用">
+			</td>
+		</tr>
+		<tr>
+			<th>総HP</th><td><input type="text" id="enemy-hp" value="100,000,000"></td>
+			<th><label><input type="checkbox" id="enemy-cut_flg">ダメージ無効</label></th><td><input type="text" id="enemy-damage_cut" value="10,000,000"></td>
+		</tr>
+		<tr>
+			<th>防御力</th><td><input type="text" id="enemy-defense" value="0"></td>
+			<th><label><input type="checkbox" id="enemy-absorb_flg">ダメージ吸収</label></th><td><input type="text" id="enemy-damage_absorb" value="1,000,000"></td>
+		</tr>
+	</table>
+</section>
+<section id="result">
+	<button id="result-button">計算結果をみる</button>
+	<table>
+		<thead>
+			<tr><th rowspan="2">-</th><th>Leader</th><th>Sub1</th><th>Sub2</th><th>Sub3</th><th>Sub4</th><th>Friend</th><th rowspan="2">合計</th><th rowspan="2">％</th></tr>
+			<tr>
+				<th id="result-leader-name"></th><th id="result-sub1-name"></th><th id="result-sub2-name"></th><th id="result-sub3-name"></th><th id="result-sub4-name"></th><th id="result-friend-name"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><th rowspan="2">火力</th><td id="result-leader-primary">0</td><td id="result-sub1-primary">0</td><td id="result-sub2-primary">0</td><td id="result-sub3-primary">0</td><td id="result-sub4-primary">0</td><td id="result-friend-primary">0</td><td id="result-sum-primary">0</td><td id="result-percent-primary">0</td></tr>
+			<tr><td id="result-leader-secondary">0</td><td id="result-sub1-secondary">0</td><td id="result-sub2-secondary">0</td><td id="result-sub3-secondary">0</td><td id="result-sub4-secondary">0</td><td id="result-friend-secondary">0</td><td id="result-sum-secondary">0</td><td id="result-percent-secondary">0</td></tr>
+			<tr><th>ダメージ</th><td id="result-leader-damage">0</td><td id="result-sub1-damage">0</td><td id="result-sub2-damage">0</td><td id="result-sub3-damage">0</td><td id="result-sub4-damage">0</td><td id="result-friend-damage">0</td><td id="result-sum-damage">0</td><td id="result-percent-damage">0</td></tr>
+			<tr><th>回復量</th><td id="result-leader-recover">0</td><td id="result-sub1-recover">0</td><td id="result-sub2-recover">0</td><td id="result-sub3-recover">0</td><td id="result-sub4-recover">0</td><td id="result-friend-recover">0</td><td id="result-sum-recover">0</dd><td id="result-percent-recover">0</td></tr>
+		</tbody>
+	</table>
+</section>
+</main>
+<footer></footer>
+<script src="index.js"></script>
+</body>
+</html>

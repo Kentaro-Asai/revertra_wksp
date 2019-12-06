@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+
+.attribute-1_0{
+	background:linear-gradient(140deg, #f77 40%, #ddd);
+}
+.attribute-1_1{
+	background-color: #f77;
+	/*background:linear-gradient(140deg, #f77 40%, #faa);*/
+}
+
+.attribute-1_2{
+	background:linear-gradient(140deg, #f77 40%, #aaf);
+}
+.attribute-1_3{
+	background:linear-gradient(140deg, #f77 40%, #8f8);
+}
+.attribute-1_4{
+	background:linear-gradient(140deg, #f77 40%, #ff8);
+}
+.attribute-1_5{
+	background:linear-gradient(140deg, #f77 40%, #f8f);
+}
+
+.attribute-2_0{
+	background:linear-gradient(140deg, #77f 40%, #ddd);
+}
+.attribute-2_1{
+	background:linear-gradient(140deg, #77f 40%, #faa);
+}
+
+.attribute-2_2{
+	background-color: #77f;
+	/*background:linear-gradient(140deg, #77f 40%, #aaf);*/
+}
+.attribute-2_3{
+	background:linear-gradient(140deg, #77f 40%, #8f8);
+}
+.attribute-2_4{
+	background:linear-gradient(140deg, #77f 40%, #ff8);
+}
+.attribute-2_5{
+	background:linear-gradient(140deg, #77f 40%, #f8f);
+}
+
+.attribute-3_0{
+	background:linear-gradient(140deg, #8e8 40%, #ddd);
+}
+.attribute-3_1{
+	background:linear-gradient(140deg, #8e8 40%, #faa);
+}
+.attribute-3_2{
+	background:linear-gradient(140deg, #8e8 40%, #aaf);
+}
+.attribute-3_3{
+	background-color: #8e8;
+	/*background:linear-gradient(140deg, #8e8 40%, #8f8);*/
+}
+.attribute-3_4{
+	background:linear-gradient(140deg, #8e8 40%, #ff8);
+}
+.attribute-3_5{
+	background:linear-gradient(140deg, #8e8 40%, #f8f);
+}
+
+.attribute-4_0{
+	background:linear-gradient(140deg, #ffa 40%, #ddd);
+}
+.attribute-4_1{
+	background:linear-gradient(140deg, #ffa 40%, #faa);
+}
+.attribute-4_2{
+	background:linear-gradient(140deg, #ffa 40%, #aaf);
+}
+.attribute-4_3{
+	background:linear-gradient(140deg, #ffa 40%, #8f8);
+}
+.attribute-4_4{
+	background-color: #ffa;
+	/*background:linear-gradient(140deg, #ffa 40%, #ff8);*/
+}
+.attribute-4_5{
+	background:linear-gradient(140deg, #ffa 40%, #f8f);
+}
+
+.attribute-5_0{
+	background:linear-gradient(140deg, #c5c 40%, #ddd);
+}
+.attribute-5_1{
+	background:linear-gradient(140deg, #c5c 40%, #faa);
+}
+.attribute-5_2{
+	background:linear-gradient(140deg, #c5c 40%, #aaf);
+}
+.attribute-5_3{
+	background:linear-gradient(140deg, #c5c 40%, #8f8);
+}
+.attribute-5_4{
+	background:linear-gradient(140deg, #c5c 40%, #ff8);
+}
+.attribute-5_5{
+	background-color: #c5c;
+	/*background:linear-gradient(140deg, #c5c 40%, #f8f);*/
+}

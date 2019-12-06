@@ -20,6 +20,33 @@ class searchMns{
 	}
 
 	/**
+	 * get monster for damage calculator
+	 */
+	public function getDamageCalcMns(){
+		$number_ary = array();
+		$ob = new padmnsDb();
+		$mns = $ob->getSearchMns(array("not type" => array("強化合成用", "進化用", "覚醒用", "売却用")));
+		foreach ($mns as $v) {
+			$number_ary[] = $v["NO"];
+		}
+		$typeAry = $ob->getType($number_ary);
+		$awakenAry = $ob->getAwaken($number_ary);
+		$superAwakenAry = $ob->getSuperAwaken($number_ary);
+		for ($i=0; $i < count($mns); $i++) {
+			foreach ($typeAry as $v) {
+				if ($mns[$i]["NO"] == $v["NO"]) $mns[$i]["TYPE"][] = $v["TYPE"];
+			}
+			foreach ($awakenAry as $v) {
+				if ($mns[$i]["NO"] == $v["NO"]) $mns[$i]["AWAKEN"][] = $v["AWAKEN"];
+			}
+			foreach ($superAwakenAry as $v) {
+				if ($mns[$i]["NO"] == $v["NO"]) $mns[$i]["SUPER_AWAKEN"][] = $v["AWAKEN"];
+			}
+		}
+		return $mns;
+	}
+
+	/**
 	 * get monster data
 	 */
 	public function getMns($number_ary){

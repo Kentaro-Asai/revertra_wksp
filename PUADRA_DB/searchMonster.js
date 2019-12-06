@@ -175,6 +175,7 @@ $(()=>{
 	});
 
 	const makeTable = (mns)=>{
+		if (0 == mns.length) return '';
 		let output_mns = '<table id="mns-table">';
 		output_mns += '<tr><th class="name"></th><th class="parameter">パラメータ</th><th class="awaken">覚醒</th><th class="super-awaken">超覚醒</th>'
 			+'<th class="skill_turn">ターン</th><th class="skill">スキル</th><th class="leader-skill">リーダースキル</th>';

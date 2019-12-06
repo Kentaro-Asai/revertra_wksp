@@ -19,8 +19,19 @@ class connectSql:
 		# MySQLdb.escape_string(text.encode("utf-8"))
 		self.c = self.conn.cursor()
 
+	# モンスターのデータを取得しようとし、あれば更新(update)、無ければ登録(insert)する
+	def mnsSelectRegister(self, mns):
+		self.c.execute('SELECT `NO`, `NAME` FROM mns WHERE `NO` = %(no)s', mns)
+		result = self.c.fetchall()
+		if 0 < len(result):
+			print('update No. ' + str(mns["no"]) + ': ' + mns["name"])
+			self.mnsUpdate(mns)
+		else:
+			print('insert No. ' + str(mns["no"]) + ': ' + mns["name"])
+			self.mnsInsert(mns)
+
 	# モンスターの登録
-	def mnsRegister(self, mns):
+	def mnsInsert(self, mns):
 		self.c.execute('INSERT INTO mns VALUES (%(no)s, %(name)s, %(main_attribute)s, %(sub_attribute)s,\
 		%(rare)s, %(cost)s, %(assist)s, %(hp)s, %(atk)s, %(recover)s, %(skill)s, %(skill_turn)s, %(skill_max_turn)s,\
 		%(leader_skill)s, %(super_hp)s, %(super_atk)s, %(super_recover)s)', mns)

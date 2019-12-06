@@ -1,0 +1,505 @@
+@charset "UTF-8";
+@import url("index_attribute.css");
+
+body{
+	font-family:"メイリオ","meiryo","Ubuntu","ヒラギノ角ゴ";
+	background-color: gray;
+}
+header, main, footer{
+	margin:0 auto;
+	width:900px;
+	background-color: white;
+}
+header h1{
+	font-size: 36px;
+	border:solid 5px #66c;
+	background-color: #99f;
+	margin:0;
+	padding:5px;
+	text-align: center;
+	text-shadow:2px 3px 4px;
+	box-shadow:2px 3px 4px inset;
+}
+header h1 a{
+	color: black;
+	text-decoration: none;
+}
+header p{
+	color: #933;
+	text-align: center;
+	margin: 0;
+	padding: 10px 0;
+	font-size:14px;
+}
+header abbr, header dfn{
+	font-style:normal;
+	border-bottom:none;
+}
+h4{
+	margin: 0 0 5px;
+	padding: 2px 15px;
+	background: linear-gradient(0deg, black 2px, #333 2px) repeat;
+	background-size: 4px 4px;
+	color: wheat;
+	text-shadow: 1px 1px 1px black;
+	font-size: 18px;
+}
+
+#team-table{
+	border: solid 3px black;
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+#team-table caption{
+	text-align:center;
+	padding:10px 0px;
+}
+#team-table th, #team-table td{
+	text-align: center;
+	border-collapse: collapse;
+	border:solid 1px #ccc;
+	padding: 3px 5px;
+	font-weight: 400;
+	font-size: 10px;
+}
+#team-table th{
+	background-color: #ddd;
+}
+#team-table tr.main-select td, tr.assist-select td{
+	width: 120px;
+	cursor: pointer;
+}
+#team-table .level-110 label{
+	display: inline-block;
+	padding: 0px 30px;
+}
+#team-table input[type="text"]{
+	width: 100%;
+	border: none;
+	text-align: center;
+	font-size: 12px;
+}
+#team-table .super-awaken td{
+	overflow: auto;
+}
+#team-table .super-awaken label{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 39px;
+	height: 40px;
+}
+#team-table tr.super-awaken img{
+	width: 31px;
+	height: 32px;
+	padding: 4px;
+	background-color: none;
+	border-radius: 6px;
+}
+#team-table .super-awaken label input[type="radio"]{
+	display: none;
+}
+#team-table tr.super-awaken input[type="radio"]:checked + img{
+	background-color: #3ae;
+}
+#team-table td[id$="-potential"]{
+	cursor: pointer;
+}
+#team-table td[id$="-potential"] img.frame-1{
+	width: 24px;
+	height: 24px;
+}
+#team-table td[id$="-potential"] img.frame-2{
+	width: 57px;
+	height: 24px;
+}
+
+#team-conclusion{
+	background: linear-gradient(90deg, #848, #d8d, #848);
+	margin: 8px 2px;
+}
+#team-conclusion > p{
+	line-height: 26px;
+	margin: 0;
+	padding: 15px 0 10px;
+	text-align: center;
+}
+#team-conclusion > p > label{
+	text-shadow: 1px 1px 1px black;
+	color: white;
+}
+#team-conclusion table{
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+#team-conclusion caption{
+	background: linear-gradient(45deg, transparent, black, transparent);
+	color: wheat;
+	text-shadow: 1px 1px 1px black;
+}
+#team-conclusion th{
+	font-weight: normal;
+	background-color:gray;
+	padding: 2px 10px;
+}
+#team-conclusion td{
+	background-color: white;
+	text-align: right;
+	padding: 3px 5px;
+}
+#team-conclusion dl{
+	overflow: hidden;
+	background: linear-gradient(0deg, #737, transparent, #737);
+	padding: 10px 0 10px 40px;
+	width: 626px;
+	margin: 8px auto;
+	display: block;
+}
+#team-conclusion .leader-skill-atk{
+	text-shadow: 1px 1px 1px darkgoldenrod;
+}
+#team-conclusion .leader-skill-recover{
+	color:pink;
+	text-shadow: 1px 1px 1px black;
+}
+#team-conclusion dt, #team-conclusion dd{
+	float: left;
+}
+#team-conclusion dd{
+	width: 90px;
+	margin: 0 5px;
+}
+#team-conclusion dd input{
+	width: 60px;
+	border-radius: 5px;
+	text-align: center;
+}
+#team-conclusion #awaken{
+	list-style: none;
+	margin: 0;
+	padding: 10px 0 10px 10px;
+	overflow: auto;
+	background: radial-gradient(#888, #444);
+}
+#team-conclusion #awaken li{
+	float: left;
+	overflow: auto;
+	margin: 2px;
+	padding: 3px;
+	width: 62px;
+	height: 32px;
+	background-color: #ceb;
+	border-radius: 7px;
+}
+#team-conclusion #awaken li img{
+	display: block;
+	float: left;
+	margin: 0;
+	width: 31px;
+	height: 32px;
+}
+#team-conclusion #awaken li span{
+	display: block;
+	float: left;
+	margin: 0;
+	width: 31px;
+	height: 32px;
+	text-align: center;
+	text-shadow: 1px 1px 1px white;
+	color: #349;
+	font-size: 20px;
+	line-height: 35px;
+}
+#combo-table dl{
+	background-color: #cff;
+	width: 810px;
+	padding: 2px;
+	overflow: auto;
+	margin: 10px auto;
+}
+#combo-table dt{
+	float: left;
+	width: 80px;
+	padding: 2px 20px 0 10px;
+}
+#combo-table dd{
+	float: left;
+	width: 690px;
+	margin: 0;
+	padding: 2px 0 2px 7px;
+}
+#combo-table dd select{
+	font-size: 15px;
+	line-height: 15px;
+	height: 25px;
+	border-radius: 6px;
+}
+#combo-table dd input[type="number"]{
+	width: 32px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+	border-radius: 6px;
+	text-align: right;
+}
+#enemy table{
+	margin: 10px auto;
+	background-color: black;
+	border: solid 1px gray;
+}
+#enemy table th{
+	color: gray;
+	min-width: 100px;
+	font-size: 15px;
+	font-weight: normal;
+}
+#enemy table td{
+	background-color: white;
+}
+#enemy table td input[type="text"] {
+	display: block;
+	border: none;
+	border-bottom: solid 1px gray;
+	text-align: right;
+	width: 80%;
+	padding: 0 10px 0 0;
+	margin: 0 auto;
+}
+#enemy-attribute-img > p{
+	float: left;
+	width: 31px;
+	height: 32px;
+	margin: 3px;
+	overflow: hidden;
+	position: relative;
+	border-radius: 7px;
+	padding: 0px;
+	cursor: pointer;
+	filter: grayscale(1);
+}
+#enemy-attribute-img > p > img{
+	position: absolute;
+	top: 0px;
+}
+#enemy-attribute-img > p:first-child > img{
+	left: 0px;
+}
+#enemy-attribute-img > p:nth-child(2) > img{
+	left: -31px;
+}
+#enemy-attribute-img > p:nth-child(3) > img{
+	left: -62px;
+}
+#enemy-attribute-img > p:nth-child(4) > img{
+	left: -93px;
+}
+#enemy-attribute-img > p:nth-child(5) > img{
+	left: -124px;
+}
+#enemy-type {
+	overflow: auto;
+}
+#enemy-type img{
+	padding: 4px;
+	width: 35px;
+	height: 35px;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+}
+
+#waiting, #mns-selector, #potential-selector{
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+#waiting{
+	text-align: center;
+	color: ivory;
+	text-shadow: 1px 1px 1px black, -1px -1px -1px black;
+}
+#selector-header{
+	list-style: none;
+	margin: 10px auto;
+	padding: 0 0 0 155px;
+	width: 920px;
+	overflow: auto;
+}
+#selector-header li{
+	float: left;
+	background-color: #bbb;
+	border: solid 1px gray;
+	box-shadow: 1px 1px 1px #777;
+	border-radius: 5px;
+	text-align: center;
+	width: 85px;
+	padding: 3px 0;
+	margin: 0 20px;
+	text-shadow: 1px 1px 1px white;
+	cursor: pointer;
+}
+#selector-header li:active{
+	background-color:#ddd;
+	box-shadow: -1px -1px 1px gray;
+	text-shadow: 1px 1px 1px white;
+}
+#selector-main{
+	list-style: none;
+	margin: 10px auto;
+	padding: 0 0 0 80px;
+	width: 920px;
+	height: 504px;
+	overflow: auto;
+}
+#selector-main li{
+	float: left;
+	border: solid 1px gray;
+	box-shadow: 1px 1px 1px #777;
+	border-radius: 5px;
+	width: 260px;
+	margin: 4px;
+	padding: 3px 0;
+	cursor: pointer;
+}
+#selector-main li p{
+	margin: 0;
+	text-align: center;
+	font-size: 16px;
+	line-height: 20px;
+}
+#selector-main li p .assist1{
+	color: gold;
+	text-shadow: 1px 1px 1px black;
+}
+#selector-main li p .assist0{
+	color: silver;
+	text-shadow: 1px 1px 1px black;
+}
+#selector-main li p img{
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin: 0;
+}
+#selector-main li h6{
+	margin: 3px 0 0;
+	text-align: center;
+	font-weight: normal;
+	font-size: 12px;
+	height: 18px;
+	overflow: hidden;
+}
+#selector-main li div{
+	text-align: center;
+	height: 20px;
+	margin: 1px 0;
+}
+#selector-main li div img{
+	width: 20px;
+	height: 20px;
+	margin: 0 1px;
+}
+#selector-footer{
+	margin: 10px auto 0;
+	width: 920px;
+}
+#selector-footer button{
+	display: inline-block;
+	width: 10%;
+	height: 25px;
+	background-color: #bbb;
+	border: solid 1px gray;
+	box-shadow: 1px 1px 1px #777;
+	text-shadow: 1px 1px 1px white;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#selector-footer button:active{
+	background-color:#ddd;
+	box-shadow: -1px -1px 1px gray;
+	text-shadow: 1px 1px 1px white;
+}
+#selector-footer #selector-page{
+	display: inline-block;
+	text-align: right;
+	width: 39%;
+	color: white;
+	text-shadow: 1px 1px 1px black;
+}
+#selector-footer #sort-selector{
+	width: 92px;
+	margin: 0 84px 0 19%;
+}
+
+#potential-selector h6{
+	color: white;
+	font-size: 16px;
+	font-weight: normal;
+	text-shadow: 1px 1px 1px brown;
+	text-align: center;
+	margin: 15px 0 10px;
+}
+#potential-selector .potential-select-box{
+	width: 800px;
+	margin: 5px auto;
+	text-align: center;
+}
+#potential-selector .potential-select-box img{
+	margin: 0 5px;
+}
+#potential-selector img.frame-1{
+	width: 33px;
+	height: 32px;
+}
+#potential-selector img.frame-2{
+	width: 78px;
+	height: 32px;
+}
+#potential-selector #setted-potential{
+	height: 32px;
+	border-bottom: solid 1px gray;
+	width: 450px;
+	margin: 5px auto 10px;
+	padding: 0 100px 10px;
+	text-align: center;
+}
+#potential-selector #potential-decision-button{
+	display: block;
+	margin: 0 auto;
+	width: 200px;
+	height: 80px;
+	border-radius: 22px;
+	font-size: 40px;
+	color: white;
+	background: radial-gradient(black, #222);
+}
+
+#result-button{
+	display: block;
+	margin: 0 auto;
+	width: 150px;
+	height: 40px;
+}
+#result table{
+	border-collapse: collapse;
+	border: solid 1px gray;
+	margin: 10px auto 0;
+	width: 90%;
+}
+#result th{
+	color: lightgray;
+	font-weight: normal;
+	font-size: 12px;
+	background-color: #555;
+}
+#result td{
+	min-width: 90px;
+	font-size: 13px;
+	text-align: right;
+}
+footer{
+	height: 50px;
+}

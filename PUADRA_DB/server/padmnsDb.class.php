@@ -244,8 +244,8 @@ class padmnsDb {
 		for ($i=0; $i < count($number_ary) && $i < 100; $i++) {
 			foreach ($ary as $v) {
 				if ($number_ary[$i] == $v["NO"]) {
-				 $rtn[] = $v;
-				 break;
+					$rtn[] = $v;
+					break;
 				}
 			}
 		}
@@ -274,5 +274,25 @@ class padmnsDb {
 		$stmt->execute();
 		$ary = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $ary;
+	}
+
+	public function getSearchMns($condition) {
+		$sub_query = "SELECT `NO` FROM mns_type ";
+		$where = array();
+		foreach ($condition as $k => $v) {
+			if ("not type" == $k) {
+				$where[] = "`TYPE` = \"" . implode("\" OR `TYPE` = \"", $v) . "\"";
+			}
+		}
+		if (0 < count($where)) {
+			$sub_query .= "WHERE (". implode(" AND ", $where) . ")";// GROUP BY `NO`";
+		}
+		$sql = "SELECT `NO`, `NAME`, MAIN_ATTRIBUTE, SUB_ATTRIBUTE, `RARE`, `COST`, ASSIST, HP, ATK, RECOVER,"
+			." `SUPER_HP`, SUPER_ATK, SUPER_RECOVER"
+			." FROM mns WHERE `NO` NOT IN (" . $sub_query . ") ORDER BY `NO` DESC";
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute();
+		$rtn = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $rtn;
 	}
 }

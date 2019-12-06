@@ -9,20 +9,8 @@ $rtn = array(
 	"mns" => array()
 );
 if (isset($_REQUEST)) {
-	$db_obj = new padmnsDb();
 	$obm = new searchMns();
-  $ar = $_REQUEST;
-	if (array_key_exists("sql", $ar)) {
-		$mns = $db_obj->getData($ar['sql']);
-	} else {
-		$sql = $db_obj->getSql($ar);
-		$rtn["sql"] = $sql;
-		$mns = $db_obj->getData($sql);
-	}
-	$number_ary = $obm->getNo($mns);
-	$ary = $db_obj->getTypeAndAwaken($number_ary);
-	$rtn["mns"] = $obm->getMns($mns, $ary);
-	$rtn["msg"] = $obm->getMsg();
+	$rtn["mns"] = $obm->getDamageCalcMns();
 }
 
 header('Content-type: application/json');
