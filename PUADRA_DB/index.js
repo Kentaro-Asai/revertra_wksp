@@ -72,8 +72,8 @@ $(()=>{
 
 	//pop-up用
 	window.onscroll = ()=>{
-		if (0 < $('#waiting, #mns-selector, #potential-selector').length) {
-			$('#waiting, #mns-selector, #potential-selector').css('top', document.scrollingElement.scrollTop + 'px');
+		if (0 < $('#waiting, #mns-selector, #potential-selector, #team-selector').length) {
+			$('#waiting, #mns-selector, #potential-selector, #team-selector').css('top', document.scrollingElement.scrollTop + 'px');
 		}
 	};
 
@@ -216,7 +216,7 @@ $(()=>{
 			atk: parseInt($(`#${team_position}-atk`).val()),
 			recover: parseInt($(`#${team_position}-recover`).val())
 		};
-		//正確なパラメータを出すメソッドがあるべき。それと比較して、違ったら"param_change"してる
+		//正確なパラメータを出すメソッド。それと比較して、違ったら"param_change"している
 		const template_parameter = getTableMnsParameter(team_position, "unchange_parameter");
 		//ここで比較
 		if (changed_parameter.hp == template_parameter.hp && changed_parameter.atk == template_parameter.atk && changed_parameter.recover == template_parameter.recover) {
@@ -227,7 +227,120 @@ $(()=>{
 			};
 		}
 	});
-	
+
+	//チームの保存
+	$('#save-team').on('click', ()=>{
+		if (null == team_mns.main.leader.NO) {
+			alert('チームにモンスターが入力されていません。');
+			return ;
+		}
+		let team_mns_ary = [];
+		//読み込み
+		let str = localStorage.getItem('team_mns_ary');
+		if (!!str) {
+			team_mns_ary = JSON.parse(str);
+		}
+		//現チームを追加
+		team_mns_ary.push(team_mns);
+		//保存
+		localStorage.setItem('team_mns_ary', JSON.stringify(team_mns_ary));
+		alert('チームのモンスターを保存しました。');
+	});
+	//チームの読み込み
+	const loadTeam = ()=>{
+		let str = localStorage.getItem('team_mns_ary');
+		if (!!str && 3 < str.length) {
+			team_mns_ary = JSON.parse(str);
+			//画面に表示
+			let team_html = '<div id="team-selector">'
+				+ '<table><thead><tr><th>leader</th><th>sub1</th><th>sub2</th><th>sub3</th><th>sub4</th><th>friend</th></tr></thead><tbody>';
+			for (let i in team_mns_ary) {
+				let insert_html = {main: '', assist: ''};
+				for (let it of TEAM_ITERATOR) {
+					// input main
+					insert_html.main += team_mns_ary[i].main[it].NO ? `<td class="${getAttributeClass(team_mns_ary[i].main[it])}">${team_mns_ary[i].main[it].NAME}</td>` : '<td class="blank-color">未登録</td>';
+					// input assist
+					insert_html.assist += team_mns_ary[i].assist[it].NO ? `<td class="${getAttributeClass(team_mns_ary[i].assist[it])}">${team_mns_ary[i].assist[it].NAME}</td>` : '<td class="blank-color">未登録</td>';
+				}
+				team_html += `<tr>
+					<td colspan="6" class="team-title">
+						<h6>チーム${parseInt(i)+1}</h6>
+						<button class="team-select-btn" data-team_read="${i}">選択</button>
+						<button class="team-delete-btn" data-team_read="${i}">削除</button>
+					</td></tr>`;
+				team_html += `<tr>${insert_html.main}</tr>`;
+				team_html += `<tr>${insert_html.assist}</tr>`;
+			}
+			team_html += '</tbody></table><button id="team-selector-back">戻る</button></div>';
+			$('body').append(team_html);
+			$('body > #team-selector').css('top', document.scrollingElement.scrollTop + 'px');
+		} else {
+			let team_html = '<div id="team-selector">'
+				+ '<table><thead><tr><th>leader</th><th>sub1</th><th>sub2</th><th>sub3</th><th>sub4</th><th>friend</th></tr></thead><tbody>';
+			team_html += '<tr><td colspan="6">保存されているチームはありません。</td></tr>';
+			team_html += '</tbody></table><button id="team-selector-back">戻る</button></div>';
+			$('body').append(team_html);
+			$('body > #team-selector').css('top', document.scrollingElement.scrollTop + 'px');
+		}
+	};
+	$('#load-team').on('click', loadTeam);
+	//チームの読み込み 選択ボタン
+	$('body').on('click', '#team-selector .team-select-btn', (e)=>{
+		let str = localStorage.getItem('team_mns_ary');
+		if (!!str) {
+			team_mns_ary = JSON.parse(str);
+			if (!!team_mns_ary[e.currentTarget.dataset.team_read]) {
+				const v = team_mns_ary[e.currentTarget.dataset.team_read];
+				// teamテーブルにinput
+				for (let it of TEAM_ITERATOR) {
+					team_mns.main[it] = $.extend({}, v.main[it]);
+					team_mns.assist[it] = $.extend({}, v.assist[it]);
+					//モンスターの名前入れる
+					if (team_mns.main[it].NO) {
+						for (let td of $('tr.main-select > td')) {
+							if (td.dataset.mns == it) {
+								td.innerHTML = '' + team_mns.main[it].NAME;
+								if (td.hasAttribute('class')) td.removeAttribute('class');
+								td.setAttribute('class', getAttributeClass(team_mns.main[it]));
+								break;
+							}
+						}
+					}
+					if (team_mns.assist[it].NO) {
+						for (let td of $('tr.assist-select > td')) {
+							if (td.dataset.mns == it) {
+								td.innerHTML = '' + team_mns.assist[it].NAME;
+								if (td.hasAttribute('class')) td.removeAttribute('class');
+								td.setAttribute('class', getAttributeClass(team_mns.assist[it]));
+								break;
+							}
+						}
+					}
+				}
+				//パラメータ入力
+				setTeamParameter();
+				$('body > #team-selector').remove();
+			}
+		}
+	});
+	//チームの削除ボタン
+	$('body').on('click', '#team-selector .team-delete-btn', (e)=>{
+		const delete_target_iterator = e.currentTarget.dataset.team_read;
+		let str = localStorage.getItem('team_mns_ary');
+		if (!!str) {
+			team_mns_ary = JSON.parse(str);
+			team_mns_ary.splice(delete_target_iterator, 1);
+			localStorage.setItem('team_mns_ary', JSON.stringify(team_mns_ary));
+			//再描画
+			$('body > #team-selector').remove();
+			loadTeam();
+		}
+	});
+	//チームの選択画面から、戻るためのボタン
+	$('body').on('click', '#team-selector-back', ()=>{
+		$('body > #team-selector').remove();
+	});
+
 	//コンボの入力補助
 	for (let i=1; i <= 14; i++) {
 		$('#combo-attribute-' + i).on('change', (e)=>{
@@ -252,8 +365,8 @@ $(()=>{
 	}
 
 	//敵パラメータ
-	$('#enemy-hp, #enemy-defense, #enemy-damage_cut, #enemy-damage_absorb').on('change', ()=>{
-		const enemy_ary = ['enemy-hp', 'enemy-defense', 'enemy-damage_cut', 'enemy-damage_absorb'];
+	$('#enemy-hit-point, #enemy-defense, #enemy-damage_cut, #enemy-damage_absorb').on('change', ()=>{
+		const enemy_ary = ['enemy-hit-point', 'enemy-defense', 'enemy-damage_cut', 'enemy-damage_absorb'];
 		for (let v of enemy_ary) {
 			const input_parameter = commaRemove($('#' + v).val());
 			enemy_parameter[v.substr(v.indexOf('-') + 1)] = parseInt(input_parameter);
@@ -544,10 +657,10 @@ $(()=>{
 		let rtn = '';
 		if ("火" == attribute_name) rtn = '#f77';
 		else if ("水" == attribute_name) rtn = '#77f';
-		else if ("木" == attribute_name) rtn = '#6d6';
+		else if ("木" == attribute_name) rtn = '#5c5';
 		else if ("光" == attribute_name) rtn = '#ffa';
 		else if ("闇" == attribute_name) rtn = '#c5c';
-		else if ("回復" == attribute_name) rtn = '#d88';
+		else if ("回復" == attribute_name) rtn = '#e99';
 		return rtn;
 	};
 	const getAttributeClass = (mns)=>{
@@ -582,7 +695,7 @@ $(()=>{
 
 	const getDictionarySort = (dictionary_parts_ary)=>{
 		let sorted_ary = [];
-		let attribute_ary = ['火', '水', '木', '光', '闇', '無'];
+		const attribute_ary = ['火', '水', '木', '光', '闇', '無'];
 		if ('属性 ↑' == mns_selector.sort) {
 			const ATTRIBUTE = 'アシスト' == mns_selector.attribute ? 'MAIN_ATTRIBUTE' : 'SUB_ATTRIBUTE';
 			for (let attribute_name of attribute_ary) {

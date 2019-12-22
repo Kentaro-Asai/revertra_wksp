@@ -1,6 +1,6 @@
 # coding: UTF-8
 import MySQLdb
-
+# you can use this from "scCtrl.py"
 #	cd C:\xampp\htdocs\revertra\revertra_wksp\tools\pd_db
 #	python mysqlCon.py
 
@@ -72,6 +72,16 @@ class connectSql:
 			for v in mns["super_awaken"]:
 				self.c.execute('INSERT INTO mns_super_awaken (`NO`, `AWAKEN`) VALUES (%s, %s)', (mns["no"], v))
 				self.conn.commit()
+	
+	# スキルターンのみの更新
+	def skillUpdate(self, mns):
+		# DBの古いデータ取得
+		self.c.execute('SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = %(no)s', mns)
+		result = self.c.fetchall()
+		if 0 < len(result) and None == result[0][2]:
+			print('update No. ' + str(mns["no"]) + ': ' + mns["name"] + ', turn: ' + str(result[0][2]) + ', max_turn: ' + str(result[0][3]))
+			self.c.execute('UPDATE mns SET SKILL_TURN=%(skill_turn)s, SKILL_MAX_TURN=%(skill_max_turn)s WHERE `NO`=%(no)s ', mns)
+			self.conn.commit()
 	
 	# 接続を閉じる
 	def __del__(self):

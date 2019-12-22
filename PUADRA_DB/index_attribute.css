@@ -19,7 +19,7 @@
 	background:linear-gradient(140deg, #f77 40%, #ff8);
 }
 .attribute-1_5{
-	background:linear-gradient(140deg, #f77 40%, #f8f);
+	background:linear-gradient(140deg, #f77 40%, #a3c);
 }
 
 .attribute-2_0{
@@ -40,7 +40,7 @@
 	background:linear-gradient(140deg, #77f 40%, #ff8);
 }
 .attribute-2_5{
-	background:linear-gradient(140deg, #77f 40%, #f8f);
+	background:linear-gradient(140deg, #77f 40%, #a3c);
 }
 
 .attribute-3_0{
@@ -60,7 +60,7 @@
 	background:linear-gradient(140deg, #8e8 40%, #ff8);
 }
 .attribute-3_5{
-	background:linear-gradient(140deg, #8e8 40%, #f8f);
+	background:linear-gradient(140deg, #8e8 40%, #a3c);
 }
 
 .attribute-4_0{
@@ -80,7 +80,7 @@
 	/*background:linear-gradient(140deg, #ffa 40%, #ff8);*/
 }
 .attribute-4_5{
-	background:linear-gradient(140deg, #ffa 40%, #f8f);
+	background:linear-gradient(140deg, #ffa 40%, #a3c);
 }
 
 .attribute-5_0{
@@ -100,5 +100,5 @@
 }
 .attribute-5_5{
 	background-color: #c5c;
-	/*background:linear-gradient(140deg, #c5c 40%, #f8f);*/
+	/*background:linear-gradient(140deg, #c5c 40%, #a3c);*/
 }

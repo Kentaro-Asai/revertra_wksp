@@ -15,7 +15,8 @@
 	<p>
 		<dfn><abbr title="パズルアンドドラゴンズ">パズドラ</abbr></dfn>のダメージ計算機のWebアプリケーションです。<br>
 		モンスターの選択後、コンボなどのセットをすることでダメージ量を確認できます。<br>
-		モンスター名を変更することで、そのモンスターの攻撃力、回復力、フル覚醒の値に自動で変更されます。<br>
+		モンスター名を変更することで、そのモンスターのパラメータに自動で変更されます。<br>
+		チームは保存できますが、Webストレージを使っていますので、ハードウェアかつブラウザ依存のデータ保持になります。<br>
 		覚醒スキル、モンスターの追加をしました。(最終変更日：<time datetime=2019-12-06>2019.12.06</time>)
 	</p>
 	<p>チームの選定（微調整可能）、リーダースキル倍率、コンボ入力（直接入力 or パズル）の３stepで計算できます。</p>
@@ -24,7 +25,11 @@
 <section id="team">
 <h4>チームの選定</h4>
 <table id="team-table">
-	<caption>モンスターを選択してください。</caption>
+	<caption>
+		モンスターを選択してください。
+		<button id="save-team">チームの保存</button>
+		<button id="load-team">チームの読み込み</button>
+	</caption>
 	<thead><tr><th>-</th><th>Leader</th><th>Sub1</th><th>Sub2</th><th>Sub3</th><th>Sub4</th><th>Friend</th></tr></thead>
 	<tbody>
 		<tr class="main-select"><th>モンスター名</th><td data-mns="leader">- 未選択 -</td><td data-mns="sub1">- 未選択 -</td><td data-mns="sub2">- 未選択 -</td><td data-mns="sub3">- 未選択 -</td><td data-mns="sub4">- 未選択 -</td><td data-mns="friend">- 未選択 -</td></tr>
@@ -270,7 +275,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>総HP</th><td><input type="text" id="enemy-hp" value="100,000,000"></td>
+			<th>総HP</th><td><input type="text" id="enemy-hit-point" value="100,000,000"></td>
 			<th><label><input type="checkbox" id="enemy-cut_flg">ダメージ無効</label></th><td><input type="text" id="enemy-damage_cut" value="10,000,000"></td>
 		</tr>
 		<tr>

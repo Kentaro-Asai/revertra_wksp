@@ -54,6 +54,9 @@ h4{
 	text-align:center;
 	padding:10px 0px;
 }
+#team-table #save-team, #team-table #load-team{
+	border-radius: 5px;
+}
 #team-table th, #team-table td{
 	text-align: center;
 	border-collapse: collapse;
@@ -308,7 +311,7 @@ h4{
 	cursor: pointer;
 }
 
-#waiting, #mns-selector, #potential-selector{
+#waiting, #mns-selector, #potential-selector, #team-selector{
 	background: rgba(0,0,0,0.8);
 	position: absolute;
 	width: 100%;
@@ -475,6 +478,48 @@ h4{
 	font-size: 40px;
 	color: white;
 	background: radial-gradient(black, #222);
+}
+#team-selector > table{
+	margin: 20px auto 0;
+	width: 900px;
+	font-size: 15px;
+}
+#team-selector th{
+	color: white;
+	font-weight: normal;
+}
+#team-selector h6{
+	width: 600px;
+	display: inline-block;
+	margin: 2px 0;
+	color: white;
+	font-weight: 400;
+	font-size: 15px;
+	text-shadow: 1px 1px 1px black;
+}
+#team-selector .team-title button{
+	width: 80px;
+	border-radius: 5px
+}
+#team-selector td{
+	width: 140px;
+	height: 50px;
+	font-size: 13px;
+	line-height: 18px;
+	border-radius: 7px;
+	padding: 2px;
+	overflow: hidden;
+	text-align: center;
+}
+#team-selector .blank-color{
+	background: radial-gradient(#bbb, #777);
+}
+#team-selector-back{
+	display: block;
+	width: 200px;
+	height: 40px;
+	margin: 20px auto;
+	border-radius: 15px;
 }
 
 #result-button{
