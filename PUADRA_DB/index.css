@@ -318,6 +318,7 @@ h4{
 	height: 100%;
 	top: 0;
 	left: 0;
+	overflow: scroll;
 }
 #waiting{
 	text-align: center;
@@ -532,7 +533,7 @@ h4{
 	border-collapse: collapse;
 	border: solid 1px gray;
 	margin: 10px auto 0;
-	width: 90%;
+	width: 99%;
 }
 #result th{
 	color: lightgray;

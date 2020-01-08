@@ -101,11 +101,11 @@ class PdScraper:
 			"main_attribute":"", "sub_attribute":"無",\
 			"rare":7,	"cost":25,\
 			"assist":True,\
-			"type":[],\
+			"type":[], "evolve": [],\
 			"hp":0, "atk":0, "recover":0,\
 			"super_hp":0, "super_atk":0, "super_recover":0,\
 			"awaken": [], "super_awaken": [],\
-			"skill": "", "skill_turn":0, "skill_max_turn":0, "leader_skill": ""\
+			"skill": "", "skill_turn":0, "skill_max_turn":0, "leader_skill": "",\
 		}
 		d = pq(html_txt)
 		hs = d('.monster h2').text()
@@ -153,6 +153,18 @@ class PdScraper:
 					rtn["super_awaken"].append(super_awaken_txt)
 					i += 1
 					super_awaken_txt = d(f'.monster > div:nth-child({indent_div}) li:nth-child({i}) div.name').text()
+			elif '進化合成' == title or '究極進化' == title:
+				for v in d(f'.monster > div:nth-child({indent_div}) table'):
+					dmin = pq(v)
+					#tr:nth-child(2) > .monster > a
+					after_no = int(dmin('a').attr('href')[2:])  # href="/m4702"
+					if '究極進化' == title:
+						evolve_name = '究極進化'
+					elif 0 < len(rtn["awaken"]) and "覚醒アシスト" == rtn["awaken"][0]:
+						evolve_name = "アシスト進化"
+					else:
+						evolve_name = "進化"
+					rtn["evolve"].append({"after_no": after_no, "before_no": rtn["no"], "evolve_name": evolve_name})
 			indent_div += 1
 		return rtn
 

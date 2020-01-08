@@ -1,4 +1,4 @@
-# coding: UTF-8
+# coding: utf-8
 import MySQLdb
 # you can use this from "scCtrl.py"
 #	cd C:\xampp\htdocs\revertra\revertra_wksp\tools\pd_db
@@ -76,13 +76,29 @@ class connectSql:
 	# スキルターンのみの更新
 	def skillUpdate(self, mns):
 		# DBの古いデータ取得
-		self.c.execute('SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = %(no)s', mns)
+		print(mns)
+		print(mns["no"])
+		sql = 'SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = ' + str(mns["no"])
+		self.c.execute(sql)
+		#self.c.execute('SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = %(no)s', mns) <-なぜかascii bugになる
 		result = self.c.fetchall()
 		if 0 < len(result) and None == result[0][2]:
 			print('update No. ' + str(mns["no"]) + ': ' + mns["name"] + ', turn: ' + str(result[0][2]) + ', max_turn: ' + str(result[0][3]))
 			self.c.execute('UPDATE mns SET SKILL_TURN=%(skill_turn)s, SKILL_MAX_TURN=%(skill_max_turn)s WHERE `NO`=%(no)s ', mns)
 			self.conn.commit()
-	
+
+	#進化情報のみの登録
+	def evolveRegister(self, mns):
+		if 0 < len(mns['evolve']):
+			for v in mns['evolve']:
+				print(v)
+				self.c.execute('SELECT `NO`, `NAME` FROM mns WHERE `NO` = %(no)s', mns)
+				result = self.c.fetchall()
+				print(result)
+				if 0 == len(result):
+					self.c.execute('INSERT INTO evolve (BEFORE_NO, AFTER_NO, EVOLVE_NAME) VALUES (%(before_no)s, %(after_no)s, %(evolve_name)s)', v)
+					self.conn.commit()
+
 	# 接続を閉じる
 	def __del__(self):
 		self.c.close

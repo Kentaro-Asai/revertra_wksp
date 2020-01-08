@@ -11,7 +11,7 @@ $(()=>{
 	const TEAM_ITERATOR = ['leader', 'sub1', 'sub2', 'sub3', 'sub4', 'friend'];
 	let mns_selector = {attribute: '火', page: 1, select_position: '', select_role: '', sort: 'NO. ↓'};// leader? sub1? / main? assist?
 	let enemy_parameter = {
-		attribute: '火', type: [], hp: 100000000, defense: 0, damage_cut_flg: false, damage_absorb_flg: false, damage_cut: 10000000, damage_absorb: 1000000
+		attribute: '火', type: [], hit_point: 100000000, defense: 0, damage_cut_flg: false, damage_absorb_flg: false, damage_cut: 10000000, damage_absorb: 1000000
 	};
   
 	$('#team tr.main-select > td, #team tr.assist-select > td').on('click', (e)=>{
@@ -365,8 +365,8 @@ $(()=>{
 	}
 
 	//敵パラメータ
-	$('#enemy-hit-point, #enemy-defense, #enemy-damage_cut, #enemy-damage_absorb').on('change', ()=>{
-		const enemy_ary = ['enemy-hit-point', 'enemy-defense', 'enemy-damage_cut', 'enemy-damage_absorb'];
+	$('#enemy-hit_point, #enemy-defense, #enemy-damage_cut, #enemy-damage_absorb').on('change', ()=>{
+		const enemy_ary = ['enemy-hit_point', 'enemy-defense', 'enemy-damage_cut', 'enemy-damage_absorb'];
 		for (let v of enemy_ary) {
 			const input_parameter = commaRemove($('#' + v).val());
 			enemy_parameter[v.substr(v.indexOf('-') + 1)] = parseInt(input_parameter);
@@ -596,7 +596,7 @@ $(()=>{
 		$(`#result-sum-recover`).html(sum.recovery);
 		$(`#result-percent-primary`).html(Math.round(1000 * sum.primary / sum.damage) / 10);
 		$(`#result-percent-secondary`).html(Math.round(1000 * sum.secondary / sum.damage) / 10);
-		$(`#result-percent-damage`).html(Math.round(1000 * sum.damage / enemy_parameter.hp) / 10);
+		$(`#result-percent-damage`).html(Math.round(1000 * sum.damage / enemy_parameter.hit_point) / 10);
 		$(`#result-percent-recover`).html(Math.round(1000 * sum.recovery / parseInt($('#hp-conclusion').html())) / 10);
 	});
 
