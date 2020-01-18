@@ -42,6 +42,7 @@ class searchMns{
 			foreach ($superAwakenAry as $v) {
 				if ($mns[$i]["NO"] == $v["NO"]) $mns[$i]["SUPER_AWAKEN"][] = $v["AWAKEN"];
 			}
+			$mns[$i] = $this->getPlusConversionValue($mns[$i]);
 		}
 		return $mns;
 	}
@@ -80,6 +81,7 @@ class searchMns{
 					}
 				}
 			}
+			$v = $this->getPlusConversionValue($v);
 		}
 		if (0 < count($mns)) {
 			$this->msg = count($mns) . "件 取得しました。";
@@ -94,5 +96,26 @@ class searchMns{
 	 */
 	public function getMsg(){
 		return $this->msg;
+	}
+
+	
+	/**
+	 * プラス換算値、Lv110の上昇幅(HP)を取得
+	*/
+	public function getPlusConversionValue($mns){
+		$plus_value = ["hp" => 10, "atk" => 5, "recover" => 3];
+		$mns["PLUS_CONVERSION"] = round(
+			10 * $mns["HP"] / $plus_value["hp"] + 10 * $mns["ATK"] / $plus_value["atk"] + 10 * $mns["RECOVER"] / $plus_value["recover"]
+			) / 10;
+		if (0 < $mns["SUPER_HP"]) {
+			$mns["SUPER_PLUS_CONVERSION"] = round(
+				10 * $mns["SUPER_HP"] / $plus_value["hp"] + 10 * $mns["SUPER_ATK"] / $plus_value["atk"] + 10 * $mns["SUPER_RECOVER"] / $plus_value["recover"]
+				) / 10;
+			$mns["SUPER_UP_RATE"] = round(100 * ($mns["SUPER_HP"] - $mns["HP"]) / $mns["HP"]);
+		} else {
+			$mns["SUPER_PLUS_CONVERSION"] = $mns["PLUS_CONVERSION"];
+			$mns["SUPER_UP_RATE"] = 0;
+		}
+		return $mns;
 	}
 }

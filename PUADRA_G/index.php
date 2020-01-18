@@ -80,7 +80,7 @@
 		</section>
 	</main>
 	<footer>
-		<p>シミュレータの設定は実際の値から逸脱しているかもしれません。あまり本気にしないでください。</p>
+		<p><small>シミュレータの設定は実際の値から逸脱しているかもしれません。あまり本気にしないでください。</small></p>
 	</footer>
 	<script src="../jq.js"></script>
 	<script src="pdg.js"></script>

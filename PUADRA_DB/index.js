@@ -92,7 +92,7 @@ $(()=>{
 	});
 	//モンスターセレクト-ソート
 	$('body').on('click', '#mns-selector #sort-selector', ()=>{
-		const SORT_OPTIONS = ['NO. ↓', '属性 ↑', 'NO. ↑', '属性 ↓'];
+		const SORT_OPTIONS = ['NO. ↓', '属性 ↑', 'NO. ↑', '属性 ↓', '+換算', '110上昇率'];
 		let sort_choice = SORT_OPTIONS[0];
 		for (let i in SORT_OPTIONS) {
 			if (mns_selector.sort == SORT_OPTIONS[i] && i < SORT_OPTIONS.length - 1) {
@@ -647,7 +647,8 @@ $(()=>{
 			if ((mns_selector.page - 1) * MNS_SELECTOR_VIEW_NUM <= i && i < mns_selector.page * MNS_SELECTOR_VIEW_NUM) {
 				rtn += `<li class="${getAttributeClass(v)}" data-number="${v.NO}">
 					<p>No.${v.NO} <span class="assist${v.ASSIST}">★${v.RARE}</span> ${getTypeImage(v.TYPE)}</p>
-					<h6>${v.NAME}</h6><div>${setAwaken(v.AWAKEN)}</div></li>`;
+					<h6>${v.NAME}</h6><div>${setAwaken(v.AWAKEN)}</div>
+					<div>+換算値:${v.PLUS_CONVERSION}${v.PLUS_CONVERSION < v.SUPER_PLUS_CONVERSION ? ("("+v.SUPER_PLUS_CONVERSION+")") : ""} 限突上昇率:${v.SUPER_UP_RATE ? v.SUPER_UP_RATE : "-"}</div></li>`;
 			}
 		}
 		$('#selector-main').html(rtn);
@@ -712,6 +713,20 @@ $(()=>{
 			}
 		} else if ('NO. ↓' == mns_selector.sort) {
 			sorted_ary = dictionary_parts_ary;
+		} else if ('+換算' == mns_selector.sort) {
+			sorted_ary = $.merge([], dictionary_parts_ary);
+			sorted_ary.sort(function(a,b){ //逆順
+				if (a.SUPER_PLUS_CONVERSION < b.SUPER_PLUS_CONVERSION) return 1;
+				if (a.SUPER_PLUS_CONVERSION > b.SUPER_PLUS_CONVERSION) return -1;
+				return 0;
+			});
+		} else if ('110上昇率' == mns_selector.sort) {
+			sorted_ary = $.merge([], dictionary_parts_ary);
+			sorted_ary.sort(function(a,b){ //逆順
+				if (a.SUPER_UP_RATE < b.SUPER_UP_RATE) return 1;
+				if (a.SUPER_UP_RATE > b.SUPER_UP_RATE) return -1;
+				return 0;
+			});
 		}
 		$('#sort-selector').html(mns_selector.sort);
 		return sorted_ary;

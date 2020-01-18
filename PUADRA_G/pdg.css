@@ -305,10 +305,14 @@ input[type=text]{
 }
 .shoki{  /*ここに結果を示します。の文言*/
 	margin:15px;
+	height:109px;
 	color:#939;
 	font-weight:700;
 	text-align: center;
 	text-shadow:1px 1px 1px #b6b;
+}
+#rst {
+	min-height: 409px;
 }
 #rst ul{
 	list-style-type: none;
@@ -316,6 +320,7 @@ input[type=text]{
 	padding:4px;
 	overflow: auto;
 	width: 720px;
+	min-height: 109px;
 }
 li.none_gatya_result{
 	text-align:center;
@@ -355,6 +360,11 @@ footer p{
 	font-size:8px;
 	text-align:center;
 	height: 50px
+}
+footer small{
+	display: inline-block;
+	margin: 25px 0 0;
+	font-size: 8px;
 }
 .dia_clr{
 	background: linear-gradient(60deg, #eee, #88f, #7f7, #fd8, #f97, #f88);

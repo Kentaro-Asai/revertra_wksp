@@ -184,7 +184,7 @@ $(()=>{
 		for (let v of mns) {
 			output_mns += `<tr class="${getAttrCls(v.MAIN_ATTRIBUTE, v.SUB_ATTRIBUTE)}">`
 				+ `<td>NO. ${v.NO} <span class="assist${v.ASSIST}">★${v.RARE}</span> ${v.MAIN_ATTRIBUTE}/${v.SUB_ATTRIBUTE}<br>${v.NAME}<br>${jsExplode(v.TYPE, " / ")}</td>`
-				+ `<td class="parameter">${+v.HP+990} / ${+v.ATK+495} / ${+v.RECOVER+297}<br>${getSuperParam(v)}</td>`
+				+ `<td class="parameter">${+v.HP+990} / ${+v.ATK+495} / ${+v.RECOVER+297}<br>${getSuperParam(v)}<br>${getPlusConversion(v)}</td>`
 				+ `<td>${getAwakenImgTag(v.AWAKEN)}</td>`
 				+ `<td>${getAwakenImgTag(v.SUPER_AWAKEN)}</td>`
 				+ `<td class="skill-turn">${v.SKILL_MAX_TURN}</td>`
@@ -236,6 +236,17 @@ $(()=>{
 			return "";
 		}
 		return `${+v.SUPER_HP+990} / ${+v.SUPER_ATK+495} / ${+v.SUPER_RECOVER+297}`;
+	}
+
+	const getPlusConversion = (v)=>{
+		if (0 == v.PLUS_CONVERSION) {
+			return "";
+		}
+		let rtn = `+換算値: ${v.PLUS_CONVERSION}`;
+		if (0 < v.SUPER_HP) {
+			rtn += `<br>110+換算値: ${v.SUPER_PLUS_CONVERSION}<br>限界突破上昇率: ${v.SUPER_UP_RATE}`;
+		}
+		return rtn;
 	}
 
 });

@@ -355,7 +355,7 @@ h4{
 	margin: 10px auto;
 	padding: 0 0 0 80px;
 	width: 920px;
-	height: 504px;
+	height: 527px;
 	overflow: auto;
 }
 #selector-main li{
@@ -400,6 +400,8 @@ h4{
 	text-align: center;
 	height: 20px;
 	margin: 1px 0;
+	font-size: 12px;
+	line-height: 20px;
 }
 #selector-main li div img{
 	width: 20px;

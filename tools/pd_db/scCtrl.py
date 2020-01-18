@@ -12,7 +12,7 @@ import connectSql2 as connectSql
 #	python scCtrl.py
 # input ary to get monster data
 ps = scraper.PdScraper()
-rtn = ps.request(4998, 5000)
+rtn = ps.request(5841, 5846)
 # 登録済 一覧
 # 310~397, 597, 854~895, 985~1000, 1191~1201, 1215,1225,1242,1244, 1555~1561, 1601~1658, 1738~1748, 1784~1804
 # 1814, 1838~1889, 1901~1981, 2006~2194, 2205~2298, 2314~2571,   2601~2868, 2891~2989, 3004~4200,
