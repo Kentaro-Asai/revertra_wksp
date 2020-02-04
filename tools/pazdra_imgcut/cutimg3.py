@@ -49,15 +49,15 @@ if None != conn:
 			continue
 		c.execute('SELECT `NO`, `NAME`, `RARE` FROM mns WHERE `NO` = %s', (img_number,))
 		result = c.fetchall()
-		if 0 < len(result):
+		if (0 < len(result) and 0 < len(result[0])):
 			print(result)
-			rtn += f'array("no"=> {result[0][0]}, "nm"=> "{result[0][1]}", "rr"=> {result[0][2]}, "pc"=> 2),\r\n'
+			rtn += 'array("no"=> '+result[0][0]+', "nm"=> "'+result[0][1]+'", "rr"=> '+result[0][2]+', "pc"=> 2),\n'
 		else:
 			print('this number is nothing in db: ' + img_number)
-			rtn += f'array("no"=> {img_number}, "nm"=> "", "rr"=> 6, "pc"=> 2),\r\n'
-		if '' != rtn:
-			# file save
-			with open('php_ary.txt', 'w', newline='', encoding='utf8') as f:
-				f.write(rtn)
-		c.close
-		conn.close
+			rtn += 'array("no"=> '+img_number+', "nm"=> "", "rr"=> 6, "pc"=> 2),\n'
+	if '' != rtn:
+		# file save
+		with open('php_ary.txt', 'w', newline='', encoding='utf8') as f:
+			f.write(rtn)
+	c.close
+	conn.close

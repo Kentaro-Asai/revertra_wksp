@@ -356,6 +356,46 @@ li.output{
 	font-size:12px;
 }
 
+.mns-data table{
+	border-collapse: collapse;
+	border: solid 1px goldenrod;
+	background: black;
+	color: antiquewhite;
+	margin: 5px 0;
+	vertical-align: initial;
+}
+.mns-data table tr{
+	border-top: solid 1px gray;
+}
+.mns-data table tr:first-child{
+	border: none;
+}
+.mns-data table td{
+	vertical-align: middle;
+	text-align: center;
+}
+.mns-data table td .type_image{
+	width: 22px;
+	height: 22px;
+}
+.mns-data table .skill, .mns-data table .leader-skill{
+	color: white;
+	font-size: 11px;
+	line-height: 13px;
+	text-align: left;
+}
+.mns-data table .skill{
+	background-color: darkslategray
+}
+.mns-data table .leader-skill{
+	background-color: darkslateblue
+}
+.mns-data table .awaken{
+	line-height: 37px;
+	font-size: 15px;
+	width: 340px;
+}
+
 footer p{
 	font-size:8px;
 	text-align:center;

@@ -1,215 +1,32 @@
 [
   {
-    "no": 5841,
-    "name": "雲外の大魔女・ファスカ",
-    "main_attribute": "光",
-    "sub_attribute": "光",
-    "rare": 7,
-    "cost": 35,
-    "assist": false,
-    "type": [
-      "攻撃",
-      "悪魔"
-    ],
-    "evolve": [
-      {
-        "after_no": 5843,
-        "before_no": 5841,
-        "evolve_name": "進化"
-      }
-    ],
-    "hp": 2510,
-    "atk": 1325,
-    "recover": 109,
-    "super_hp": 0,
-    "super_atk": 0,
-    "super_recover": 0,
-    "awaken": [
-      "バインド耐性+",
-      "封印耐性",
-      "コンボ強化"
-    ],
-    "super_awaken": [],
-    "skill": "1ターンの間、1コンボ加算される。光翼の大魔女・ファスカに変身。",
-    "skill_turn": 18,
-    "skill_max_turn": 18,
-    "leader_skill": "【7×6マス】8コンボ以上でダメージを軽減、攻撃力が4倍。"
-  },
-  {
-    "no": 5842,
-    "name": "光翼の大魔女・ファスカ",
-    "main_attribute": "光",
-    "sub_attribute": "木",
-    "rare": 8,
-    "cost": 70,
-    "assist": false,
-    "type": [
-      "攻撃",
-      "悪魔"
-    ],
-    "evolve": [],
-    "hp": 6500,
-    "atk": 3350,
-    "recover": 258,
-    "super_hp": 0,
-    "super_atk": 0,
-    "super_recover": 0,
-    "awaken": [
-      "バインド耐性+",
-      "封印耐性",
-      "コンボ強化",
-      "超コンボ強化",
-      "追加攻撃",
-      "ダメージ無効貫通",
-      "操作時間延長+",
-      "操作時間延長+",
-      "操作時間延長+"
-    ],
-    "super_awaken": [],
-    "skill": "消せないドロップ、バインド、覚醒無効状態を全回復。1ターンの間、ドロップ操作を2秒延長。",
-    "skill_turn": 5,
-    "skill_max_turn": 5,
-    "leader_skill": "攻撃タイプのHPが1.5倍、攻撃力と回復力は4倍。8コンボ以上でダメージ軽減、攻撃力が4倍。"
-  },
-  {
-    "no": 5843,
-    "name": "ファスカの魔鳥箒・デザン",
-    "main_attribute": "光",
+    "no": 5899,
+    "name": "たまドラチョコレートムース",
+    "main_attribute": "闇",
     "sub_attribute": "無",
-    "rare": 8,
-    "cost": 70,
+    "rare": 6,
+    "cost": 60,
     "assist": true,
     "type": [
-      "攻撃",
-      "悪魔"
+      "バランス"
     ],
     "evolve": [],
-    "hp": 6500,
-    "atk": 3350,
-    "recover": 258,
+    "hp": 2000,
+    "atk": 1400,
+    "recover": 214,
     "super_hp": 0,
     "super_atk": 0,
     "super_recover": 0,
     "awaken": [
       "覚醒アシスト",
-      "光ドロップ強化",
-      "光ドロップ強化",
-      "光ドロップ強化",
-      "光ドロップ強化",
-      "光ドロップ強化",
-      "攻撃強化"
+      "スキルブースト",
+      "進化用キラー",
+      "回復強化"
     ],
     "super_awaken": [],
-    "skill": "消せないドロップ、バインド、覚醒無効状態を全回復。3ターンの間、回復力とドロップ操作を2秒延長。",
-    "skill_turn": 15,
-    "skill_max_turn": 15,
-    "leader_skill": ""
-  },
-  {
-    "no": 5844,
-    "name": "鏡室の大魔女・ネレ",
-    "main_attribute": "闇",
-    "sub_attribute": "闇",
-    "rare": 7,
-    "cost": 35,
-    "assist": false,
-    "type": [
-      "バランス",
-      "悪魔"
-    ],
-    "evolve": [
-      {
-        "after_no": 5846,
-        "before_no": 5844,
-        "evolve_name": "進化"
-      }
-    ],
-    "hp": 2610,
-    "atk": 1120,
-    "recover": 205,
-    "super_hp": 0,
-    "super_atk": 0,
-    "super_recover": 0,
-    "awaken": [
-      "バインド耐性+",
-      "封印耐性",
-      "闇属性強化",
-      "闇属性強化"
-    ],
-    "super_awaken": [],
-    "skill": "最下段横1列を闇ドロップに変化。謎獣の大魔女・ネレに変身。",
-    "skill_turn": 18,
-    "skill_max_turn": 18,
-    "leader_skill": "【7×6マス】闇を7個以上つなげて消すとダメージを軽減、攻撃力が4倍。"
-  },
-  {
-    "no": 5845,
-    "name": "謎獣の大魔女・ネレ",
-    "main_attribute": "闇",
-    "sub_attribute": "水",
-    "rare": 8,
-    "cost": 70,
-    "assist": false,
-    "type": [
-      "バランス",
-      "悪魔"
-    ],
-    "evolve": [],
-    "hp": 7020,
-    "atk": 2840,
-    "recover": 410,
-    "super_hp": 0,
-    "super_atk": 0,
-    "super_recover": 0,
-    "awaken": [
-      "バインド耐性+",
-      "封印耐性",
-      "闇属性強化",
-      "闇属性強化",
-      "闇属性強化",
-      "追加攻撃",
-      "ダメージ無効貫通",
-      "ダメージ無効貫通",
-      "ダメージ無効貫通"
-    ],
-    "super_awaken": [],
-    "skill": "1ターンの間、ダメージ吸収を無効化する。左端縦1列を闇に、右端縦1列を回復ドロップに変化。",
-    "skill_turn": 6,
-    "skill_max_turn": 6,
-    "leader_skill": "バランスタイプの全パラメータが2倍。ドロップ操作を2秒延長。闇を7個以上つなげて消すとダメージを軽減、攻撃力が9倍。"
-  },
-  {
-    "no": 5846,
-    "name": "ネレの魔石杖・ビリオス",
-    "main_attribute": "闇",
-    "sub_attribute": "無",
-    "rare": 8,
-    "cost": 70,
-    "assist": true,
-    "type": [
-      "バランス",
-      "悪魔"
-    ],
-    "evolve": [],
-    "hp": 7020,
-    "atk": 2840,
-    "recover": 410,
-    "super_hp": 0,
-    "super_atk": 0,
-    "super_recover": 0,
-    "awaken": [
-      "覚醒アシスト",
-      "闇ドロップ強化",
-      "闇ドロップ強化",
-      "闇ドロップ強化",
-      "闇ドロップ強化",
-      "闇ドロップ強化",
-      "攻撃強化"
-    ],
-    "super_awaken": [],
-    "skill": "2ターンの間、ダメージ吸収を無効化する。左端縦1列を闇に、右端縦1列を回復ドロップに変化。",
-    "skill_turn": 22,
-    "skill_max_turn": 22,
+    "skill": "HPを全回復。",
+    "skill_turn": 14,
+    "skill_max_turn": 9,
     "leader_skill": ""
   }
 ]

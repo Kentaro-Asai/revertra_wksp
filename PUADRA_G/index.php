@@ -1,7 +1,8 @@
 <?php
 	//require_once($_SERVER["DOCUMENT_ROOT"]."/wksp/PUADRA_G/mnsdata.class.php");
 	require_once($_SERVER["DOCUMENT_ROOT"]."/revertra/revertra_wksp/PUADRA_G/mnsdata.class.php");
-	
+	@include_once($_SERVER["DOCUMENT_ROOT"]."/revertra/revertra_wksp/PUADRA_G/mnsDb.class.php");
+
 	$ob = new mnsdata();
 	$g = $ob->series();
 	$ttl = $ob->ttl($g);
@@ -9,6 +10,17 @@
 	$mns_ary = $ob->createMnsList($g);
 	$g_ary = $ob->createNav($g);
 	$summary_ary = $ob->createSummary($g);
+	// mnsDbで、DBが無いと動かない
+	if (class_exists("mnsDb")) {
+		$obdb = new mnsDb();
+		$number_ary = array();
+		foreach($mns_ary as $mns){
+			$number_ary[] = $mns["no"];
+		}
+		$mns_data = $obdb->getNumberMns($number_ary);
+	} else {
+		$mns_data = null;
+	}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -77,6 +89,92 @@
 					<p class="shoki">ここに結果を示します。</p>
 				</div>
 			</div>
+		</section>
+		<section class="mns-data">
+		<?php
+		if (null != $mns_data && 0 < count($mns_data)) {
+			foreach ($mns_data as $mns) {
+				echo "<table>";
+					echo "<tr>";
+						echo "<td rowspan=\"2\"><img src=\"img/i".$g."/c".$mns["NO"].".jpg\"></td>";
+						echo "<td>".$mns["NAME"]."<br>★".$mns["RARE"]." ";
+						foreach ($mns["TYPE"] as $type) {
+							echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
+						}
+							echo "<br>スキル ".$mns["SKILL_TURN"]." / ".$mns["SKILL_MAX_TURN"]."</td>";
+						echo "<td class=\"awaken\">";
+						foreach ($mns["AWAKEN"] as $aw) {
+							echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";
+						}
+						if (0 < count($mns["SUPER_AWAKEN"])) {
+							echo "<br>超覚醒";
+							foreach ($mns["SUPER_AWAKEN"] as $sa) {
+								echo "<img src=\"../PUADRA_DB/img_awaken/".$sa.".png\">";
+							}
+						}
+						echo "</td>";
+					echo "</tr>\n<tr>";	
+						echo "<td class=\"skill\">".$mns["SKILL"]."</td>";
+						echo "<td class=\"leader-skill\">".(!!$mns["LEADER_SKILL"] ? $mns["LEADER_SKILL"] : "-無し-")."</td>";
+					echo "</tr>";
+					if (!array_key_exists("EVOLVE", $mns)) continue;
+					if (0 < count($mns["EVOLVE"])) {
+						foreach ($mns["EVOLVE"] as $m) {
+							echo "<tr>";
+								echo "<td rowspan=\"2\">".$m["EVOLVE_NAME"]."</td>";
+								echo "<td>".$m["NAME"]."<br>★".$m["RARE"]." ";
+								foreach ($m["TYPE"] as $type) {
+									echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
+								}
+								echo "<br>スキル ".$m["SKILL_TURN"]." / ".$m["SKILL_MAX_TURN"]."</td>";
+								echo "<td class=\"awaken\">";
+								foreach ($m["AWAKEN"] as $aw) {
+									echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";
+								}
+								if (0 < count($m["SUPER_AWAKEN"])) {
+									echo "<br>超覚醒";
+									foreach ($m["SUPER_AWAKEN"] as $sa) {
+										echo "<img src=\"../PUADRA_DB/img_awaken/".$sa.".png\">";
+									}
+								}
+								echo "</td>";
+							echo "</tr>\n<tr>";	
+								echo "<td class=\"skill\">".$m["SKILL"]."</td>";
+								echo "<td class=\"leader-skill\">".(!!$m["LEADER_SKILL"] ? $m["LEADER_SKILL"] : "-無し-")."</td>";
+							echo "</tr>";
+							if (!array_key_exists("EVOLVE", $m)) continue;
+							if (0 < count($m["EVOLVE"])) {
+								foreach ($m["EVOLVE"] as $ev) {
+									echo "<tr>";
+										echo "<td rowspan=\"2\">".$m["EVOLVE_NAME"]."後の".$ev["EVOLVE_NAME"]."</td>";
+										echo "<td>★".$ev["RARE"]." ".$ev["NAME"]." ";
+										foreach ($ev["TYPE"] as $type) {
+											echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
+										}
+										echo "<br>スキル ".$ev["SKILL_TURN"]." / ".$ev["SKILL_MAX_TURN"]."</td>";
+										echo "<td class=\"awaken\">";
+										foreach ($ev["AWAKEN"] as $aw) {
+											echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";
+										}
+										if (0 < count($ev["SUPER_AWAKEN"])) {
+											echo "<br>超覚醒";
+											foreach ($ev["SUPER_AWAKEN"] as $sa) {
+												echo "<img src=\"../PUADRA_DB/img_awaken/".$sa.".png\">";
+											}
+										}
+										echo "</td>";
+									echo "</tr>\n<tr>";	
+										echo "<td class=\"skill\">".$ev["SKILL"]."</td>";
+										echo "<td class=\"leader-skill\">".(!!$ev["LEADER_SKILL"] ? $ev["LEADER_SKILL"] : "-無し-")."</td>";
+									echo "</tr>";
+								}
+							}
+						}
+					}
+				echo "</table>\n";
+			}
+		}
+		?>
 		</section>
 	</main>
 	<footer>
