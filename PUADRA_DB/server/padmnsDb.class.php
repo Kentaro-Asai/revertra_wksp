@@ -276,6 +276,14 @@ class padmnsDb {
 		return $ary;
 	}
 
+	public function getEvolve($number_ary) {
+		$sql = "SELECT * FROM evolve WHERE `NO` IN (" .implode(",", $number_ary). ")";
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute();
+		$ary = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $ary;
+	}
+
 	public function getSearchMns($condition) {
 		$sub_query = "SELECT `NO` FROM mns_type ";
 		$where = array();

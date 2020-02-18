@@ -56,6 +56,7 @@ class searchMns{
 		$typeAry = $ob->getType($number_ary);
 		$awakenAry = $ob->getAwaken($number_ary);
 		$superAwakenAry = $ob->getSuperAwaken($number_ary);
+		$evolveAry = $ob->getEvolve($number_ary);
 		foreach ($mns as &$v) {
 			$v["SUM_CNT"] = 0;
 			$input_super_awaken_flg = false;
@@ -80,6 +81,9 @@ class searchMns{
 						$input_super_awaken_flg = true;
 					}
 				}
+			}
+			foreach ($evolveAry as $val) {
+				if ($v["NO"] == $val["BEFORE_NO"]) $v["EVOLVE"][] = $val;
 			}
 			$v = $this->getPlusConversionValue($v);
 		}

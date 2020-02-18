@@ -101,7 +101,8 @@
 						foreach ($mns["TYPE"] as $type) {
 							echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
 						}
-							echo "<br>スキル ".$mns["SKILL_TURN"]." / ".$mns["SKILL_MAX_TURN"]."</td>";
+							echo " ".$mns["MAIN_ATTRIBUTE"]."/".$mns["SUB_ATTRIBUTE"];
+							echo "<br>スキル ".$mns["SKILL_TURN"]." → ".$mns["SKILL_MAX_TURN"]."</td>";
 						echo "<td class=\"awaken\">";
 						foreach ($mns["AWAKEN"] as $aw) {
 							echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";
@@ -126,7 +127,8 @@
 								foreach ($m["TYPE"] as $type) {
 									echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
 								}
-								echo "<br>スキル ".$m["SKILL_TURN"]." / ".$m["SKILL_MAX_TURN"]."</td>";
+								echo " ".$m["MAIN_ATTRIBUTE"]."/".$m["SUB_ATTRIBUTE"];
+								echo "<br>スキル ".$m["SKILL_TURN"]." → ".$m["SKILL_MAX_TURN"]."</td>";
 								echo "<td class=\"awaken\">";
 								foreach ($m["AWAKEN"] as $aw) {
 									echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";
@@ -151,7 +153,8 @@
 										foreach ($ev["TYPE"] as $type) {
 											echo "<img src=\"../PUADRA_DB/img_type/".$type.".png\" class=\"type_image\">";
 										}
-										echo "<br>スキル ".$ev["SKILL_TURN"]." / ".$ev["SKILL_MAX_TURN"]."</td>";
+										echo " ".$ev["MAIN_ATTRIBUTE"]."/".$ev["SUB_ATTRIBUTE"];
+										echo "<br>スキル ".$ev["SKILL_TURN"]." → ".$ev["SKILL_MAX_TURN"]."</td>";
 										echo "<td class=\"awaken\">";
 										foreach ($ev["AWAKEN"] as $aw) {
 											echo "<img src=\"../PUADRA_DB/img_awaken/".$aw.".png\">";

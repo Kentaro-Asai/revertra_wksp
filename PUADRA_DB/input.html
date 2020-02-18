@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>パスドラモンスター入力フォーム</title>
+	<link rel="stylesheet" href="input.css">
+	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
+	<script src="../jq.js"></script>
+</head>
+<body>
+	<input type="number" id="mns-number" value="1000">
+	<button id="done">モンスターナンバー変更</button>
+	<h3>名前: <input type="text" id="name"></h3>
+	<p>
+		★<input type="number" value="6" id="rare">
+		<select id="main-attribute">
+			<option>火</option>
+			<option>水</option>
+			<option>木</option>
+			<option>光</option>
+			<option>闇</option>
+		</select>
+		<select id="sub-attribute">
+			<option>無</option>
+			<option>火</option>
+			<option>水</option>
+			<option>木</option>
+			<option>光</option>
+			<option>闇</option>
+		</select>
+		コスト: <input type="number" value="20" id="cost">
+		<select id="assist">
+			<option value="1">アシスト可</option>
+			<option value="0">アシスト不可</option>
+		</select>
+	</p>
+	<div class="type">
+		<label><input type="checkbox" data-type="神"><img src="img_type/神.png" title="神"></label>
+		<label><input type="checkbox" data-type="ドラゴン"><img src="img_type/ドラゴン.png" title="ドラゴン"></label>
+		<label><input type="checkbox" data-type="悪魔"><img src="img_type/悪魔.png" title="悪魔"></label>
+		<label><input type="checkbox" data-type="マシン"><img src="img_type/マシン.png" title="マシン"></label>
+		<label><input type="checkbox" data-type="バランス"><img src="img_type/バランス.png" title="バランス"></label>
+		<label><input type="checkbox" data-type="攻撃"><img src="img_type/攻撃.png" title="攻撃"></label>
+		<label><input type="checkbox" data-type="体力"><img src="img_type/体力.png" title="体力"></label>
+		<label><input type="checkbox" data-type="回復"><img src="img_type/回復.png" title="回復"></label>
+		<label><input type="checkbox" data-type="進化用"><img src="img_type/進化用.png" title="進化用"></label>
+		<label><input type="checkbox" data-type="覚醒用"><img src="img_type/覚醒用.png" title="覚醒用"></label>
+		<label><input type="checkbox" data-type="強化合成用"><img src="img_type/強化合成用.png" title="強化合成用"></label>
+		<label><input type="checkbox" data-type="売却用"><img src="img_type/売却用.png" title="売却用"></label>
+	</div>
+	<table>
+		<tr><td id="type1"></td><td id="type2"></td><td id="type3"></td></tr>
+	</table>
+	<table>
+		<tr><td><input type="text" id="hp"></td><td><input type="text" id="atk"></td><td><input type="text" id="recover"></td></tr>
+		<tr><td><input type="text" id="super_hp"></td><td><input type="text" id="super_atk"></td><td><input type="text" id="super_recover"></td></tr>
+	</table>
+	<table class="awaken-table">
+		<tr>
+			<td id="awaken1"></td>
+			<td id="awaken2"></td>
+			<td id="awaken3"></td>
+			<td id="awaken4"></td>
+			<td id="awaken5"></td>
+			<td id="awaken6"></td>
+			<td id="awaken7"></td>
+			<td id="awaken8"></td>
+			<td id="awaken9"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="awaken-name1"></td>
+			<td><input type="text" id="awaken-name2"></td>
+			<td><input type="text" id="awaken-name3"></td>
+			<td><input type="text" id="awaken-name4"></td>
+			<td><input type="text" id="awaken-name5"></td>
+			<td><input type="text" id="awaken-name6"></td>
+			<td><input type="text" id="awaken-name7"></td>
+			<td><input type="text" id="awaken-name8"></td>
+			<td><input type="text" id="awaken-name9"></td>
+		</tr>
+	</table>
+	<table class="awaken-table">
+		<tr>
+			<td id="super-awaken1"></td>
+			<td id="super-awaken2"></td>
+			<td id="super-awaken3"></td>
+			<td id="super-awaken4"></td>
+			<td id="super-awaken5"></td>
+			<td id="super-awaken6"></td>
+			<td id="super-awaken7"></td>
+			<td id="super-awaken8"></td>
+			<td id="super-awaken9"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="super-awaken-name1"></td>
+			<td><input type="text" id="super-awaken-name2"></td>
+			<td><input type="text" id="super-awaken-name3"></td>
+			<td><input type="text" id="super-awaken-name4"></td>
+			<td><input type="text" id="super-awaken-name5"></td>
+			<td><input type="text" id="super-awaken-name6"></td>
+			<td><input type="text" id="super-awaken-name7"></td>
+			<td><input type="text" id="super-awaken-name8"></td>
+			<td><input type="text" id="super-awaken-name9"></td>
+		</tr>
+	</table>
+	<p>
+		<input type="number" id="skill-max-turn"> / <input type="number" id="skill-turn"><br>
+		<textarea id="skill"></textarea><br>
+		<textarea id="leader-skill"></textarea>
+	</p>
+	<dl class="evolve">
+		<dt><select id="evolve-name1"><option>進化</option><option>究極進化</option></select></dt><dd><input type="number" id="evolve-after-number1"></dd>
+		<dt><select id="evolve-name2"><option>進化</option><option>究極進化</option></select></dt><dd><input type="number" id="evolve-after-number2"></dd>
+		<dt><select id="evolve-name3"><option>進化</option><option>究極進化</option></select></dt><dd><input type="number" id="evolve-after-number3"></dd>
+		<dt><select id="evolve-name4"><option>進化</option><option>究極進化</option></select></dt><dd><input type="number" id="evolve-after-number4"></dd>
+	</dl>
+	<button id="mns-done">モンスター情報投稿</button>
+	<p id="output-insert-sentence"></p>
+	<p id="output-update-sentence"></p>
+	<script src="input.js"></script>
+</body>
+</html>
