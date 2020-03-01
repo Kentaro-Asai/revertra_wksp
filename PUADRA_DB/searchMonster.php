@@ -16,7 +16,7 @@
 		<dfn><abbr title="パズルアンドドラゴンズ">パズドラ</abbr></dfn>のモンスター検索のWebアプリケーションです。<br>
 		覚醒スキル、モンスターの追加をしました。(最終更新日：<time datetime="2019-11-01">2019.11.01</time>)
 	</p>
-	<p><a href="../PUADRA_G/">ガチャシミュレータ</a>、<a href="./index.html">ダメージ計算機</a>も開発しました。</p>
+	<p><a href="./input.html">DBへの登録ページ</a>、<a href="./index.html">ダメージ計算機</a>も開発しました。</p>
 </header>
 <main>
 	<section class="attribute">

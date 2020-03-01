@@ -26,7 +26,7 @@ class PdScraper:
 			print(type(anyd))
 		
 	# 「,」を外す
-	def explodeComma(self, html_txt):
+	def explodeComma(self, html_txt, mns_no):
 		#rint("html_txt: "+html_txt)
 		while 0 < html_txt.find(","):
 			html_txt = html_txt[: html_txt.find(",")] + html_txt[html_txt.find(",")+1 :]
@@ -36,7 +36,7 @@ class PdScraper:
 			rtn = int(html_txt)
 		except ValueError:
 			rtn = 0
-			print("function explodeComma: " + html_txt)
+			print("function explodeComma: " + html_txt + " in mns_no: " + str(mns_no))
 		return rtn
 
 	def getAttribute(self, html_str):
@@ -122,13 +122,13 @@ class PdScraper:
 		#rtn["assist"] = hs[hs.find(" / アシスト:")+9 : ] == "◯"
 		rtn["assist"] = hs[-1 : ] == "◯"
 		rtn["type"] = self.getType(d('.monster > div:nth-child(2) > p.icon-mtype').text())
-		rtn["hp"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(3)').text())
-		rtn["atk"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(4)').text())
-		rtn["recover"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(5)').text())
+		rtn["hp"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(3)').text(), rtn["no"])
+		rtn["atk"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(4)').text(), rtn["no"])
+		rtn["recover"] = self.explodeComma(d('.table-monster-status tr:nth-child(2) > td:nth-child(5)').text(), rtn["no"])
 		if d('.table-monster-status tr:nth-child(4)').text():
-			rtn["super_hp"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(3)').text())
-			rtn["super_atk"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(4)').text())
-			rtn["super_recover"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(5)').text())
+			rtn["super_hp"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(3)').text(), rtn["no"])
+			rtn["super_atk"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(4)').text(), rtn["no"])
+			rtn["super_recover"] = self.explodeComma(d('.table-monster-status tr:nth-child(4) > td:nth-child(5)').text(), rtn["no"])
 		indent_div = 3
 		while indent_div < 10:
 			title = d(f'.monster > div:nth-child({indent_div}) > h3').text()

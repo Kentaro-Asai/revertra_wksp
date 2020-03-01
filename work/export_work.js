@@ -7,7 +7,7 @@ $(function(){
 		if(!!tblAry){
 			let copy_str = excelStr(tblAry);
 			let ret = execCopy(copy_str);
-			alert(ret ? 'クリップボードにコピーしました。\nプレーンテキストで貼り付けてください。':'webブラウザが対応していません。');
+			alert(ret ? 'クリップボードにコピーしました。\nプレーンテキストで表計算アプリに貼り付けてください。':'webブラウザが対応していません。');
 		}else{
 			alert('勤務実績がありません。');
 		}
