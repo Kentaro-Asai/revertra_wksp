@@ -79,8 +79,6 @@ class connectSql:
 		# DBの古いデータ取得
 		print(mns)
 		print(mns["no"])
-		#sql = 'SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = ' + str(mns["no"])
-		#self.c.execute(sql)
 		self.c.execute('SELECT `NO`, `NAME`, SKILL_TURN, SKILL_MAX_TURN FROM mns WHERE `NO` = %(no)s', mns)
 		result = self.c.fetchall()
 		if 0 < len(result) and None == result[0][2]:
@@ -93,7 +91,7 @@ class connectSql:
 		if 0 < len(mns['evolve']):
 			for v in mns['evolve']:
 				print(v)
-				self.c.execute('SELECT `NO`, `NAME` FROM mns WHERE `NO` = %(no)s', mns)
+				self.c.execute('SELECT BEFORE_NO, AFTER_NO FROM evolve WHERE `BEFORE_NO` = %(before_no)s AND AFTER_NO = %(after_no)s', v)
 				result = self.c.fetchall()
 				print(result)
 				if 0 == len(result):

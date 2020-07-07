@@ -29,9 +29,9 @@ class padmnsDb {
 		}
 		if ('以下' == $search_param["skill_turn_option"]) {
 			$where[] = "m.SKILL_MAX_TURN <= " . $search_param["skill_max_turn"];
-		} elseif ('以上' == $search_param["skill_max_turn"]) {
+		} elseif ('以上' == $search_param["skill_turn_option"]) {
 			$where[] = "m.SKILL_MAX_TURN >= " . $search_param["skill_max_turn"];
-		} elseif ('丁度' == $search_param["skill_max_turn"]) {
+		} elseif ('丁度' == $search_param["skill_turn_option"]) {
 			$where[] = "m.SKILL_MAX_TURN = " . $search_param["skill_max_turn"];
 		}
 		if ("" != $search_param["leader_skill"]) {

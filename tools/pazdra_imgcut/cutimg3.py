@@ -20,7 +20,7 @@ direct = r'C:\xampp\htdocs\revertra\revertra_wksp\tools\pazdra_imgcut'
 filer = os.listdir(direct)
 a = 0
 for f in filer:
-	if ('cutimg3.py' != f and 'php_ary.txt' != f):
+	if ('.jpg' == f[(len(f) - 4):]):
 		lst_img[a] = f
 		a += 1
 

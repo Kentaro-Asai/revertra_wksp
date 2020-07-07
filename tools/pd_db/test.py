@@ -5,7 +5,10 @@ import sys
 #	python test.py
 
 sys.getdefaultencoding()
-
+mylist = list(range(1,5))
+mylist += list(range(6,10))
+#print([**mylist])
+print([*mylist, 5])
 
 #for v in range(5317, 5326):
 #	r = requests.get('https://pd.appbank.net/m' + str(v))

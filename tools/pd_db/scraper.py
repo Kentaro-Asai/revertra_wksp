@@ -168,8 +168,9 @@ class PdScraper:
 			indent_div += 1
 		return rtn
 
-	def request(self, start_num, end_num):
-		ary = range(start_num, end_num + 1) # end is not entering, because +1
+	def request(self, start_args, end_num):
+		# end is not entering, because +1
+		ary = list(range(start_args, end_num + 1)) if (type(start_args) is int) else start_args
 		rtn = []
 		for v in ary:
 			r = requests.get('https://pd.appbank.net/m' + str(v))
@@ -180,4 +181,3 @@ class PdScraper:
 				print(f'm{v}: {r.status_code}, cannot read!!')
 		print(len(rtn))
 		return rtn
-

@@ -12,7 +12,12 @@ import connectSql2 as connectSql
 #	python scCtrl.py
 # input ary to get monster data
 ps = scraper.PdScraper()
-rtn = ps.request(5966, 5998) #5882 - 5890
+#rtn = ps.request(6197, 6223)
+mns_num_list = list(range(3393, 3398 +1))
+#mns_num_list += list(range(3393, 3398 +1))
+#rtn = ps.request(mns_num_list, 0)
+rtn = ps.request(5966, 5974)
+
 # 登録済 一覧
 # 310~397, 597, 854~895, 985~1000, 1191~1201, 1215,1225,1242,1244, 1555~1561, 1601~1658, 1738~1748, 1784~1804
 # 1814, 1838~1889, 1901~1981, 2006~2194, 2205~2298, 2314~2571,   2601~2868, 2891~2989, 3004~4200,
@@ -24,12 +29,13 @@ with open('pd.csv', 'w', newline='') as f:
 	writer = csv.writer(f)
 	writer.writerows(rtn)
 """
+# 1. JSONファイルにデータを入れて、mysqlcon.jsでDBに登録
 with open('scrapy.json', 'w', newline='', encoding='utf8') as f:
 	json.dump(rtn, f, indent=2, ensure_ascii=False)
-# データベースに入れる
+# 2. データベースに入れる
 #con = connectSql.connectSql()
 #for mns in rtn:
-	#con.skillUpdate(mns)
-	#con.evolveRegister(mns) #4701
-	#con.mnsSelectRegister(mns)
+#	con.skillUpdate(mns)
+#	con.evolveRegister(mns) #4701
+#	con.mnsSelectRegister(mns)
 	#print(mns)
