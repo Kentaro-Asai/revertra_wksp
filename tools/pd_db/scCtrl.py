@@ -13,10 +13,13 @@ import connectSql2 as connectSql
 # input ary to get monster data
 ps = scraper.PdScraper()
 #rtn = ps.request(6197, 6223)
-mns_num_list = list(range(3393, 3398 +1))
-#mns_num_list += list(range(3393, 3398 +1))
-#rtn = ps.request(mns_num_list, 0)
-rtn = ps.request(5966, 5974)
+mns_num_list = list(range(6459, 6477 +1))
+#mns_num_list = list(range(3539, 3549, 2))
+#mns_num_list = [6458, 6461, 6463]
+#mns_num_list += list(range(3539, 3549, 2))
+print(mns_num_list)
+rtn = ps.request(mns_num_list, 0)
+#rtn = ps.request(6345, 6349)
 
 # 登録済 一覧
 # 310~397, 597, 854~895, 985~1000, 1191~1201, 1215,1225,1242,1244, 1555~1561, 1601~1658, 1738~1748, 1784~1804

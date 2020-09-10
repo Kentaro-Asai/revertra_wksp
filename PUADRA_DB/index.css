@@ -355,7 +355,6 @@ h4{
 	margin: 10px auto;
 	padding: 0 0 0 80px;
 	width: 920px;
-	height: 527px;
 	overflow: auto;
 }
 #selector-main li{
@@ -438,6 +437,11 @@ h4{
 #selector-footer #sort-selector{
 	width: 92px;
 	margin: 0 84px 0 19%;
+}
+#selector-footer .cancel-button{
+	width: 200px;
+	display: block;
+	margin: 10px auto 0;
 }
 
 #potential-selector h6{

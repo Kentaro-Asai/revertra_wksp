@@ -43,7 +43,8 @@ $(()=>{
 		const selector_header = '<ul id="selector-header"><li>火</li><li>水</li><li>木</li><li>光</li><li>闇</li><li>アシスト</li></ul>';
 		const selector_footer = '<div id="selector-footer">'
 			+'<button class="pager-button">＜＜ before</button><span id="selector-page">'+mns_selector.page+'</span>'
-			+'<button id="sort-selector">'+mns_selector.sort+'</button><button class="pager-button">after ＞＞</button></div>';
+			+'<button id="sort-selector">'+mns_selector.sort+'</button><button class="pager-button">after ＞＞</button>'
+			+'<button class="cancel-button">cancel</button></div>';
 		let selector_main = '<ul id="selector-main"></ul>';
 
 		$('#mns-selector').html(selector_header + selector_main + selector_footer);
@@ -108,6 +109,10 @@ $(()=>{
 	$('body').on('click', '#mns-selector #selector-footer .pager-button', (e)=>{
 		mns_selector.page += (e.currentTarget.innerHTML == '＜＜ before') ? -1 : 1;
 		mnsSelectorView();
+	});
+	//モンスターセレクト-キャンセルボタン
+	$('body').on('click', '#mns-selector #selector-footer .cancel-button', ()=>{
+		$('#mns-selector').remove();
 	});
 
 	//潜在覚醒

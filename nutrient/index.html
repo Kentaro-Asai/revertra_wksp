@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="あなたの栄養のメモを支援します。その日のカロリーと栄養分を見えるようにします。">
+	<meta name="keywords" content="カロリー,栄養管理">
+	<script src="../jq.js"></script>
+	<link rel="stylesheet" href="index.css" type="text/css">
+	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
+	<title>栄養管理メモ</title>
+</head>
+<body>
+	<header>
+		<h1>栄養管理メモ</h1>
+		<p>あなたのその日の摂取栄養素を視覚化します。<br>データはあなたのWebブラウザに保存します(webStorage)。</p>
+		<ol>
+			<li><span style="color:#422">あなたの目標栄養素算出のためのパラメータ</span>を入力（選択）します。</li>
+			<li><span style="color:#060">素材（料理の材料）</span>を登録後、<span style="color:#660">メニューの登録・変更・削除</span>でメニューを作成します。</li>
+			<li><span style="color:#333">その日のメニュー</span>を選択します。</li>
+			<li>本日の摂取量に表示されますので確認することができます。</li>
+		</ol>
+	</header>
+	<main>
+		<section id="your-nutrient">
+			<div id="your-abstract"></div>
+			<div id="your-input-area">
+				<h4>あなたの目標栄養素算出のためのパラメータ</h4>
+				<fieldset class="fundamental">
+					<legend>性別</legend>
+					<label><input type="radio" name="gender" id="gender-male" checked />男</label>
+					<label><input type="radio" name="gender" id="gender-female" />女</label>
+				</fieldset>
+				<fieldset class="fundamental">
+					<legend>年齢</legend>
+					<input type="number" name="body-age" id="body-age" value="30"> 歳
+				</fieldset>
+				<fieldset class="fundamental">
+					<legend>身長</legend>
+					<input type="number" name="body-height" id="body-height" value="160">cm
+				</fieldset>
+				<fieldset class="fundamental">
+					<legend>体重</legend>
+					<input type="number" name="body-weight" id="body-weight" value="60">kg
+				</fieldset>
+				<fieldset>
+					<legend>活動係数</legend>
+					<label><input type="radio" name="AF" value="1.0" />ベッド上安静</label>
+					<label><input type="radio" name="AF" value="1.2" />ベッド上安静</label>
+					<label><input type="radio" name="AF" value="1.3" checked />ベッド以外での活動あり</label>
+					<label><input type="radio" name="AF" value="1.5" />やや軽い労働作業</label>
+					<label><input type="radio" name="AF" value="1.7" />中等度労働作業</label>
+					<label><input type="radio" name="AF" value="1.9" />重度労働作業</label>
+				</fieldset>
+				<fieldset>
+					<legend>傷害係数</legend>
+					<label><input type="radio" name="SF" value="0.84" />飢餓</label>
+					<label><input type="radio" name="SF" value="1.0" checked />ストレスなし</label>
+					<label><input type="radio" name="SF" value="1.1" />手術(軽度)</label>
+					<label><input type="radio" name="SF" value="1.2" />手術(中等度)</label>
+					<label><input type="radio" name="SF" value="1.8" />手術(高度)</label>
+					<label><input type="radio" name="SF" value="1.35" />外傷(骨折)</label>
+					<label><input type="radio" name="SF" value="1.6" />外傷(頭部損傷+ステロイド使用)</label>
+					<label><input type="radio" name="SF" value="1.2" />感染症(軽度)</label>
+					<label><input type="radio" name="SF" value="1.5" />感染症(中等度)</label>
+					<!-- <label><input type="radio" name="SF" value="1.2" />ガン</label> -->
+				</fieldset>
+				<fieldset>
+					<legend>蛋白異化亢進の程度</legend>
+					<label><input type="radio" name="accelerate-protein" value="0.8" checked />健常成人(日常生活)</label>
+					<label><input type="radio" name="accelerate-protein" value="1.1" />内科的疾患(発熱なし)</label>
+					<label><input type="radio" name="accelerate-protein" value="2.9" />異化亢進患者</label>
+				</fieldset>
+				<button id="your-input-area-button">入力エリアを隠す</button>
+			</div>
+			<h5>本日の摂取量 / 推奨摂取量<small>Harris-Benedict式</small></h5>
+			<dl>
+				<dt>カロリー</dt><dd><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</dd>
+				<dt>タンパク質</dt><dd><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</dd>
+				<dt>脂質</dt><dd><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</dd>
+				<dt>食物繊維</dt><dd><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g以上</dd>
+				<dt>ビタミンA</dt><dd><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</dd>
+				<dt>ビタミンB1</dt><dd><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</dd>
+				<dt>ビタミンB2</dt><dd><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</dd>
+				<dt>ビタミンB6</dt><dd><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</dd>
+				<dt>ビタミンB12</dt><dd><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</dd>
+				<dt>ビタミンC</dt><dd><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</dd>
+				<dt>ビタミンD</dt><dd><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</dd>
+				<dt>ビタミンE</dt><dd><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</dd>
+				<dt>ビタミンK</dt><dd><span id="intake-vitaminK">0</span> / <span id="need-vitaminK">0</span> μg</dd>
+				<dt>食塩相当量</dt><dd><span id="intake-Na">0</span> / <span id="need-Na">0</span> g</dd>
+				<dt>カリウム</dt><dd><span id="intake-K">0</span> / <span id="need-K">0</span> mg</dd>
+				<dt>カルシウム</dt><dd><span id="intake-Ca">0</span> / <span id="need-Ca">0</span> mg</dd>
+				<dt>マグネシウム</dt><dd><span id="intake-Mg">0</span> / <span id="need-Mg">0</span> mg</dd>
+				<dt>リン</dt><dd><span id="intake-P">0</span> / <span id="need-P">0</span> mg</dd>
+				<dt>鉄</dt><dd><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</dd>
+				<dt>亜鉛</dt><dd><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</dd>
+				<dt>銅</dt><dd><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</dd>
+				<!-- 必須アミノ酸 -->
+				<dt>トリプトファン</dt><dd><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</dd>
+				<dt>リジン</dt><dd><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</dd>
+				<dt>メチオニン</dt><dd><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</dd>
+				<dt>フェニルアラニン</dt><dd><span id="intake-Phe">0</span> / <span id="need-Phe">0</span> mg</dd>
+				<dt>スレオニン</dt><dd><span id="intake-Thr">0</span> / <span id="need-Thr">0</span> mg</dd>
+				<dt>バリン</dt><dd><span id="intake-Val">0</span> / <span id="need-Val">0</span> mg</dd>
+				<dt>ロイシン</dt><dd><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</dd>
+				<dt>イソロイシン</dt><dd><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</dd>
+				<dt>ヒスチジン</dt><dd><span id="intake-His">0</span> / <span id="need-His">0</span> mg</dd>
+			</dl>
+			<div id="select-menu">
+				<p>メニューを選択することで本日の摂取量の項目に栄養分が加算されます。</p>
+				<h4>あなたの朝食</h4>
+				<ul id="morning-list">
+					<li><select class="morning-menu"><option>カレーうどん</option><option>キーマ</option></select></li>
+				</ul>
+				<h4>あなたの昼食</h4>
+				<ul id="runch-list">
+					<li><select class="runch-menu"><option>カレーうどん</option></select></li>
+				</ul>
+				<h4>あなたの夕食</h4>
+				<ul id="dinner-list">
+					<li><select class="dinner-menu"><option>カレーうどん</option></select></li>
+				</ul>
+			</div>
+		</section>
+		<div id="section-selecter">
+			<section id="menu-creator">
+				<h5>メニューの登録・変更・削除</h5>
+				<p>
+					<select id="menu-creator-select"></select>
+					<input type="text" id="menu-name" value="" placeholder="新規メニュー名を入力" />
+					<input type="number" id="menu-serving" value="1" /> 人前
+				</p>
+				<ul id="materials-in-menu">
+					<li>
+						<select class="mim-select"></select>
+						<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g
+					</li>
+				</ul>
+				<h6 id="menu-suggestion">の栄養素</h6>
+				<dl></dl>
+				<p>
+					<button id="menu-regist-button">メニューの登録</button>
+					<button id="menu-change-button">メニューの変更</button>
+					<button id="menu-delete-button">メニューの削除</button>
+				</p>
+			</section>
+			<section id="material-creator">
+				<h5>素材（料理の材料）の登録・変更・削除</h5>
+				<p>
+					<select id="material-select"></select>
+					<input type="text" id="material-name" value="" placeholder="新規素材名を入力" />
+					<input type="number" id="material-weight" value="0" placeholder="グラム数を入力" /> g
+				</p>
+				<h6 id="material-suggestion">0グラム当たりの素材の栄養素</h6>
+				<dl></dl>
+				<p>
+					<button id="material-regist-button">素材の登録</button>
+					<button id="material-change-button">素材の変更</button>
+					<button id="material-delete-button">素材の削除</button>
+				</p>
+			</section>
+		</div>
+	</main>
+	<footer>
+		<p>
+			ビタミンA: レチノール活性当量(μgRAE)に変換してください。
+			β-カロテン(μg): 1/12、α-カロテン(μg): 1/24、β-クリプトキサンチン(μg): 1/24、その他のプロビタミンAカロテノイド(μg): 1/24を乗算の後、加算してください。<br>
+			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、40/23倍してください。
+		</p>
+</footer>
+	<script src="index.js"></script>
+</body>
+</html>

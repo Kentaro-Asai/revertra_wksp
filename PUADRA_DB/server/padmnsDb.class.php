@@ -28,7 +28,7 @@ class padmnsDb {
 			$where[] = "m.SKILL LIKE \"%".$search_param["skill"]."%\"";
 		}
 		if ('以下' == $search_param["skill_turn_option"]) {
-			$where[] = "m.SKILL_MAX_TURN <= " . $search_param["skill_max_turn"];
+			$where[] = "m.SKILL_MAX_TURN <= " . $search_param["skill_max_turn"] . " AND m.SKILL_MAX_TURN <> 0";
 		} elseif ('以上' == $search_param["skill_turn_option"]) {
 			$where[] = "m.SKILL_MAX_TURN >= " . $search_param["skill_max_turn"];
 		} elseif ('丁度' == $search_param["skill_turn_option"]) {
