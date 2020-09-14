@@ -268,14 +268,16 @@ $(function(){
 		const material_str = localStorage.getItem('materials');
 		if (!!material_str) {
 			const materials_ary = JSON.parse(material_str);
-			if (0 < request_material_ary.length) {
+			if (!request_material_ary || 0 < request_material_ary.length) {
 				let select_view = '';
-				for (let v of request_material_ary) {
-					select_view += '<li><select class="mim-select"><option>'+unselect_option+'</option>';
-					for (let a_material of materials_ary) {
-						select_view += `<option ${a_material.name == v.name ? 'selected' : ''}>${a_material.name}</option>`;
+				if (!!request_material_ary && 0 < request_material_ary.length) {
+					for (let v of request_material_ary) {
+						select_view += '<li><select class="mim-select"><option>'+unselect_option+'</option>';
+						for (let a_material of materials_ary) {
+							select_view += `<option ${a_material.name == v.name ? 'selected' : ''}>${a_material.name}</option>`;
+						}
+						select_view += '</select><input type="number" class="mim-weight" value="'+v.weight+'" placeholder="グラム数を入力" /> g</li>';
 					}
-					select_view += '</select><input type="number" class="mim-weight" value="'+v.weight+'" placeholder="グラム数を入力" /> g</li>';
 				}
 				$('#materials-in-menu').html(select_view);
 				mim_select_option = materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
@@ -453,6 +455,11 @@ $(function(){
 		alert('メニューを登録しました。');
 		//登録したらメニューのセレクトに登録
 		setYourMenu();
+		//表示初期化
+		$('#menu-name').val('');
+		$('#menu-suggestion').html('');
+		setMaterialsInMenu(null);
+		$('#menu-creator dl').html('');
 	});
 
 	//引数のメニュー名の栄養素を表示
@@ -603,10 +610,17 @@ $(function(){
 				$('#' + intake_id).css('color', quota_param <= parseFloat($(v).children('span')[0].innerHTML) ? '#6b6' : 'red');
 			}
 		}
-		//メニュー追加
-		const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
-		const added_sel = '<li><select class="'+e.target.className+'"><option>'+unselect_option+'</option>'+sel_menu_str+'</select></li>';
-		$('#' + e.target.className.substr(0, e.target.className.indexOf('-')) + '-list').append(added_sel);
+		//もしunselectが無ければ、メニューを追加
+		let exist_unselect = false;
+		for (let v of $('.' + e.target.className)) {
+			console.log(v);
+			if (unselect_option == v.value) exist_unselect = true;
+		}
+		if (!exist_unselect) {
+			const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
+			const added_sel = '<li><select class="'+e.target.className+'"><option>'+unselect_option+'</option>'+sel_menu_str+'</select></li>';
+			$('#' + e.target.className.substr(0, e.target.className.indexOf('-')) + '-list').append(added_sel);
+		}
 	});
 
 	$('#menu-register, #material-creator dl').on('focus', 'input', ()=>{

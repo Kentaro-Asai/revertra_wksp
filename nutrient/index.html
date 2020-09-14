@@ -12,13 +12,22 @@
 <body>
 	<header>
 		<h1>栄養管理メモ</h1>
-		<p>あなたのその日の摂取栄養素を視覚化します。<br>データはあなたのWebブラウザに保存します(webStorage)。</p>
+		<p>あなたのその日の摂取栄養素を数値で視覚化します。<br>データはあなたのWebブラウザに保存します(webStorage)。</p>
+		<h5>使い方</h5>
 		<ol>
 			<li><span style="color:#422">あなたの目標栄養素算出のためのパラメータ</span>を入力（選択）します。</li>
 			<li><span style="color:#060">素材（料理の材料）</span>を登録後、<span style="color:#660">メニューの登録・変更・削除</span>でメニューを作成します。</li>
 			<li><span style="color:#333">その日のメニュー</span>を選択します。</li>
 			<li>本日の摂取量に表示されますので確認することができます。</li>
 		</ol>
+		<h4>素材とメニューについて</h4>
+		<p class="explain-this-site">
+			メニューを選択して本日の栄養を加算していきます。メニューは素材を内包します。<br>
+			<img src="menu_explain.svg" width="170" height="135" />
+			<img src="menu_explain2.svg" width="170" height="135" /><br>
+			例えば、お茶漬けのメニューを作る場合、素材にお米・緑茶・お茶漬けの素の3種を登録することで実現します。<br>
+			（素材の数は1つ以上幾らでも選択できます。ごはんならお米180gでメニューに追加します。）
+		</p>
 	</header>
 	<main>
 		<section id="your-nutrient">

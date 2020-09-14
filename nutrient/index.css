@@ -20,15 +20,46 @@ header p{
 	text-align: center;
 	margin: 15px 0 11px;
 }
+header h5{
+	width: 675px;
+	margin: 10px auto 0px;
+	color: #bbb;
+	text-shadow: 1px 1px 1px #444;
+	font-size: 16px;
+	text-align: center;
+	background: linear-gradient(90deg, white, #aaa, white);
+	border-top: solid 1px #ccc;
+}
 header ol{
 	border: solid 1px black;
 	background-color: white;
 	width: 640px;
 	padding: 10px 0 10px 35px;
-	margin: 11px auto 15px;
+	margin: 0px auto 15px;
 }
 header ol span{
 	text-shadow: 1px 1px 1px black;
+}
+header h4{
+	font-size: 16px;
+	color: #bbb;
+	text-shadow: 1px 1px 1px #777;
+	margin: 15px 0 2px 75px;
+}
+header .explain-this-site{
+	text-align: center;
+	font-size: 13px;
+	padding: 3px 50px;
+	margin: 0px 75px 15px;
+	border: solid 1px #ccc;
+	border-top: dotted 1px #eee;
+	background-color: #e0e0e0;
+}
+header .explain-this-site img{
+	display: inline-block;
+	width: 170px;
+	height: 135px;
+	margin: 3px 5px;
 }
 #your-nutrient{
 	width: 920px;
@@ -213,7 +244,7 @@ header ol span{
 	border-radius: 5px;
 	margin: 10px;
 	padding: 10px;
-	background-color: #999;
+	background-color: #8d5;
 	float: left;
 }
 #menu-creator > ul select{
