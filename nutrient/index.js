@@ -299,7 +299,6 @@ $(function(){
 					}
 				});
 				if (0 < request_ary.length && request_ary.length == $('#materials-in-menu li').length) {
-					//TODO: $('#materials-in-menu').htmlからselectでやると、今まさに素材登録した物が使えるようになる
 					//追加途中なのでemptyを追加
 					mim_select_option = materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
 					$('#materials-in-menu').append( '<li>'
@@ -558,7 +557,7 @@ $(function(){
 	$('#select-menu').on('change', 'ul select', (e)=>{
 		const menu_str = localStorage.getItem('menu');
 		if (!menu_str) return;
-		let menu_ary = JSON.parse(menu_str);
+		const menu_ary = JSON.parse(menu_str);
 		//メニュー表示
 		let selected_menu = [];
 		for (let v of $('#select-menu ul select')) {
@@ -566,6 +565,9 @@ $(function(){
 			selected_menu.push(v.value);
 		}
 		//一旦、栄養を0に設定する
+		for (let k in standard_nutrient) {
+			$('#intake-' + k).html('0');
+		}
 		for (let genre in nutrient_table) {
 			for (let nutrient_name in nutrient_table[genre]) {
 				const intake_name = 'vitamin' == genre ? ('vitamin' + nutrient_name) : nutrient_name;
@@ -613,7 +615,6 @@ $(function(){
 		//もしunselectが無ければ、メニューを追加
 		let exist_unselect = false;
 		for (let v of $('.' + e.target.className)) {
-			console.log(v);
 			if (unselect_option == v.value) exist_unselect = true;
 		}
 		if (!exist_unselect) {
@@ -757,4 +758,3 @@ $(function(){
 		return Math.round(num);
 	};
 });
-// 素材のみの登録をしまくりたい。素材を入れたい
