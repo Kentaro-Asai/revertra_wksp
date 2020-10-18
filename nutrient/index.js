@@ -9,57 +9,94 @@ $(function(){
 	};
 	const nutrient_table = {
 		vitamin: {
-			A: { //年齢:[目安or推奨, 上限]
+			vitaminA: { //年齢:[目安or推奨, 上限]
 				male: {2:[400,600], 5:[500,700], 7:[450,900], 9:[500,1200], 11:[600,1500], 14:[800,2100], 17:[900,2600], 29:[850,2700], 49:[900,2700], 69:[850,2700], 70:[800,2700]},
 				female: {2:[350,600], 5:[400,700], 7:[400,900], 9:[500,1200], 11:[600,1500], 14:[700,2100], 17:[650,2600], 29:[650,2700], 49:[700,2700], 69:[700,2700], 70:[650,2700]},
+				pregnant: {first: 0, middle: 0, last: 80, lactating: 450, option: '追加'},
 				unit: 'μgRAE',
 				label: "ビタミンA"
 			},
-			B1: {
+			vitaminB1: {
 				male: {2:[0.5,0],5:[0.7,0],7:[0.8,0],9:[1.0,0],11:[1.2,0],14:[1.4,0],17:[1.5,0],29:[1.4,0],49:[1.4,0],69:[1.3,0],70:[1.2,0]},
 				female: {2:[0.5,0],5:[0.7,0],7:[0.8,0],9:[0.9,0],11:[1.1,0],14:[1.3,0],17:[1.2,0],29:[1.1,0],49:[1.1,0],69:[1.0,0],70:[0.9,0]},
+				pregnant: {first: 0.2, middle: 0.2, last: 0.2, lactating: 0.2, option: '追加'},
 				unit: 'mg',
 				label: "ビタミンB1"
 			},
-			B2: {
+			vitaminB2: {
 				male: {2:[0.6,0],5:[0.8,0],7:[0.9,0],9:[1.1,0],11:[1.4,0],14:[1.6,0],17:[1.7,0],29:[1.6,0],49:[1.6,0],69:[1.5,0],70:[1.3,0]},
 				female: {2:[0.5,0],5:[0.8,0],7:[0.9,0],9:[1.0,0],11:[1.3,0],14:[1.4,0],17:[1.4,0],29:[1.2,0],49:[1.2,0],69:[1.1,0],70:[1.1,0]},
+				pregnant: {first: 0.3, middle: 0.3, last: 0.3, lactating: 0.6, option: '追加'},
 				unit: 'mg',
 				label: "ビタミンB2"
 			},
-			B6: {
+			niacin: {
+				male:{2:[5,60],5:[7,80],7:[9,100],9:[11,150],11:[13,200],14:[15,250],17:[16,300],29:[15,300],49:[15,350],69:[14,350],70:[13,350]},
+				female: {2:[5,60],5:[7,80],7:[8,100],9:[10,150],11:[12,200],14:[14,250],17:[13,250],29:[11,250],49:[12,250],69:[11,250],70:[10,250]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 3, option: '追加'},
+				unit: 'mgNE',
+				label: "ナイアシン"
+			},
+			vitaminB6: {
 				male: {2:[0.5,10],5:[0.6,15],7:[0.8,20],9:[0.9,25],11:[1.2,30],14:[1.4,40],17:[1.5,50],29:[1.4,55],49:[1.4,60],69:[1.4,55],70:[1.4,50]},
 				female: {2:[0.5,10],5:[0.6,15],7:[0.7,20],9:[0.9,25],11:[1.2,30],14:[1.3,40],17:[1.3,45],29:[1.2,45],49:[1.2,45],69:[1.2,45],70:[1.2,40]},
+				pregnant: {first: 0.2, middle: 0.2, last: 0.2, lactating: 0.3, option: '追加'},
 				unit: 'mg',
 				label: "ビタミンB6"
 			},
-			B12: {
+			vitaminB12: {
 				male: {2:[0.9,0],5:[1.0,0],7:[1.3,0],9:[1.5,0],11:[1.8,0],14:[2.3,0],17:[2.5,0],29:[2.4,0],49:[2.4,0],69:[2.4,0],70:[2.4,0]},
 				female: {2:[0.9,0],5:[1.0,0],7:[1.3,0],9:[1.5,0],11:[1.8,0],14:[2.3,0],17:[2.5,0],29:[2.4,0],49:[2.4,0],69:[2.4,0],70:[2.4,0]},
+				pregnant: {first: 0.4, middle: 0.4, last: 0.4, lactating: 0.8, option: '追加'},
 				unit: 'μg',
 				label: "ビタミンB12"
 			},
-			C: {
+			folic_acid: {
+				male: {2:[90,200],5:[100,300],7:[130,400],9:[150,500],11:[180,700],14:[230,900],17:[250,900],29:[240,900],49:[240,1000],69:[240,1000],70:[240,900]},
+				female: {2:[90,200],5:[100,300],7:[130,400],9:[150,500],11:[180,700],14:[230,900],17:[250,900],29:[240,900],49:[240,1000],69:[240,1000],70:[240,900]},
+				pregnant: {first: 240, middle: 240, last: 240, lactating: 100, option: '追加'},
+				unit: 'μg',
+				label: "葉酸"
+			},
+			pantothenic_acid: {
+				male: {2:[3,0],5:[4,0],7:[5,0],9:[5,0],11:[6,0],14:[7,0],17:[7,0],29:[5,0],49:[5,0],69:[5,0],70:[5,0]},
+				female: {2:[3,0],5:[4,0],7:[5,0],9:[5,0],11:[6,0],14:[7,0],17:[7,0],29:[4,0],49:[4,0],69:[5,0],70:[5,0]},
+				pregnant: {first: 5, middle: 5, last: 5, lactating: 5, option: '置換'},
+				unit: 'mg',
+				label: "パントテン酸"
+			},
+			biotin: {
+				male: {2:[20,0],5:[20,0],7:[25,0],9:[30,0],11:[35,0],14:[50,0],17:[50,0],29:[50,0],49:[50,0],69:[50,0],70:[50,0]},
+				female: {2:[20,0],5:[20,0],7:[25,0],9:[30,0],11:[35,0],14:[50,0],17:[50,0],29:[50,0],49:[50,0],69:[50,0],70:[50,0]},
+				pregnant: {first: 50, middle: 50, last: 50, lactating: 50, option: '置換'},
+				unit: 'μg',
+				label: "ビオチン"
+			},
+			vitaminC: {
 				male: {2:[35,0],5:[40,0],7:[55,0],9:[60,0],11:[75,0],14:[95,0],17:[100,0],29:[100,0],49:[100,0],69:[100,0],70:[100,0]},
 				female: {2:[35,0],5:[40,0],7:[55,0],9:[60,0],11:[75,0],14:[95,0],17:[100,0],29:[100,0],49:[100,0],69:[100,0],70:[100,0]},
+				pregnant: {first: 10, middle: 10, last: 10, lactating: 45, option: '追加'},
 				unit: 'mg',
 				label: "ビタミンC"
 			},
-			D: {
+			vitaminD: {
 				male: {2:[2,20], 5:[2.5,30], 7:[3,40], 9:[3.5,40], 11:[4.5,60], 14:[5.5,80], 17:[6,90], 29:[5.5,100], 49:[5.5,100], 69:[5.5,100], 70:[5.5,100]},
 				female: {2:[5.0, 25], 5:[5.0, 25], 7:[2.0, 20], 9:[2.5, 30], 11:[3.0, 40], 14:[3.5, 40], 17:[4.5, 60], 29:[5.5, 80], 49:[6.0, 90], 69:[5.5, 100], 70:[5.5, 100]},
+				pregnant: {first: 7, middle: 7, last: 7, lactating: 8, option: '置換'},
 				unit: 'μg',
 				label: "ビタミンD"
 			},
-			E: {
+			vitaminE: {
 				male: {2:[3.5,150],5:[4.5,200],7:[5.0,300],9:[5.5,350],11:[5.5,450],14:[7.5,650],17:[7.5,750],29:[6.5,800],49:[6.5,900],69:[6.5,850],70:[6.5,750]},
 				female: {2:[3.5,150],5:[4.5,200],7:[5.0,300],9:[5.5,350],11:[5.5,450],14:[6.0,600],17:[6.0,650],29:[6.0,650],49:[6.0,700],69:[6.0,700],70:[6.0,650]},
+				pregnant: {first: 6.5, middle: 6.5, last: 6.5, lactating: 7, option: '置換'},
 				unit: 'mg',
 				label: "ビタミンE"
 			},
-			K: {
+			vitaminK: {
 				male: {2:[60,0],5:[70,0],7:[85,0],9:[100,0],11:[120,0],14:[150,0],17:[160,0],29:[150,0],49:[150,0],69:[150,0],70:[150,0]},
 				female: {2:[60,0],5:[70,0],7:[85,0],9:[100,0],11:[120,0],14:[150,0],17:[160,0],29:[150,0],49:[150,0],69:[150,0],70:[150,0]},
+				pregnant: {first: 150, middle: 150, last: 150, lactating: 150, option: '置換'},
 				unit: 'μg',
 				label: "ビタミンK"
 			}
@@ -68,51 +105,94 @@ $(function(){
 			Na: {
 				male: {2:[0,3.0],5:[0,4.0],7:[0,5.0],9:[0,5.5],11:[0,6.5],14:[0,8.0],17:[0,8.0],29:[0,8.0],49:[0,8.0],69:[0,8.0],70:[0,8.0]},
 				female: {2:[0,3.5],5:[0,4.5],7:[0,5.5],9:[0,6.0],11:[0,7.0],14:[0,7.0],17:[0,7.0],29:[0,7.0],49:[0,7.0],69:[0,7.0],70:[0,7.0]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 0, option: '追加'},
 				unit: 'g',
 				label: "食塩相当量"
 			},
 			K: {
 				male: {2:[900,0],5:[1100,0],7:[1800,0],9:[2000,0],11:[2200,0],14:[2600,0],17:[3000,0],29:[3000,0],49:[3000,0],69:[3000,0],70:[3000,0]},
 				female:{2:[800,0],5:[1000,0],7:[1800,0],9:[2000,0],11:[2000,0],14:[2400,0],17:[2600,0],29:[2600,0],49:[2600,0],69:[2600,0],70:[2600,0]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 0, option: '追加'},
 				unit: 'mg',
 				label: "カリウム"
 			},
 			Ca: {
 				male: {2:[450,0],5:[600,0],7:[600,0],9:[650,0],11:[700,0],14:[1000,0],17:[800,0],29:[800,2500],49:[650,2500],69:[700,2500],70:[700,2500]},
 				female: {2:[400,0],5:[550,0],7:[550,0],9:[750,0],11:[750,0],14:[800,0],17:[650,0],29:[650,2500],49:[650,2500],69:[650,2500],70:[650,2500]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 0, option: '追加'},
 				unit: 'mg',
 				label: "カルシウム"
 			},
 			Mg: {
 				male: {2:[70,0],5:[100,0],7:[130,0],9:[170,0],11:[210,0],14:[290,0],17:[360,0],29:[340,0],49:[370,0],69:[350,0],70:[320,0]},
 				female: {2:[70,0],5:[100,0],7:[130,0],9:[160,0],11:[220,0],14:[290,0],17:[310,0],29:[270,0],49:[290,0],69:[290,0],70:[270,0]},
+				pregnant: {first: 40, middle: 40, last: 40, lactating: 0, option: '追加'},
 				unit: 'mg',
 				label: "マグネシウム"
 			},
 			P: {
 				male: {2:[500,0],5:[800,0],7:[900,0],9:[1000,0],11:[1100,0],14:[1200,0],17:[1200,0],29:[1000,3000],49:[1000,3000],69:[1000,3000],70:[1000,3000]},
 				female: {2:[500,0],5:[600,0],7:[900,0],9:[900,0],11:[1000,0],14:[1100,0],17:[900,0],29:[800,3000],49:[800,3000],69:[800,3000],70:[800,3000]},
+				pregnant: {first: 800, middle: 800, last: 800, lactating: 800, option: '置換'},
 				unit: 'mg',
 				label: "リン"
 			},
 			Fe: {
 				male: {2:[4.5,25],5:[5.5,25],7:[6.5,30],9:[8.0,35],11:[10.0,35],14:[11.5,50],17:[9.5,50],29:[7.0,50],49:[7.5,55],69:[7.5,50],70:[7.0,50]},
 				female: {2:[4.5,20],5:[5.0,25],7:[6.5,30],9:[8.5,35],11:[14.0,35],14:[14.0,50],17:[10.5,40],29:[10.5,40],49:[10.5,40],69:[10.5,40],70:[6.0,40]},
+				pregnant: {first: 2.5, middle: 15, last: 15, lactating: 2.5, option: '追加'},
 				unit: 'mg',
 				label: "鉄"
 			},
 			Zn: {
 				male: {2:[3,0],5:[4,0],7:[5,0],9:[6,0],11:[7,0],14:[9,0],17:[10,0],29:[10,40],49:[10,45],69:[10,45],70:[9,40]},
 				female: {2:[3,0],5:[4,0],7:[5,0],9:[5,0],11:[7,0],14:[8,0],17:[8,0],29:[8,35],49:[8,35],69:[8,35],70:[7,35]},
+				pregnant: {first: 2, middle: 2, last: 2, lactating: 3, option: '追加'},
 				unit: 'mg',
 				label: "亜鉛"
 			},
 			Cu: {
 				male: {2:[0.3,0],5:[0.4,0],7:[0.5,0],9:[0.6,0],11:[0.7,0],14:[0.8,0],17:[1.0,0],29:[0.9,10],49:[1.0,10],69:[0.9,10],70:[0.9,10]},
 				female: {2:[0.3,0],5:[0.4,0],7:[0.5,0],9:[0.5,0],11:[0.7,0],14:[0.8,0],17:[0.8,0],29:[0.8,10],49:[0.8,10],69:[0.8,10],70:[0.7,10]},
+				pregnant: {first: 0.1, middle: 0.1, last: 0.1, lactating: 0.5, option: '追加'},
 				unit: 'mg',
 				label: "銅"
-			}
+			},
+			Mo: {
+				male: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[25,550],49:[30,550],69:[25,550],70:[25,550]},
+				female: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[20,450],49:[25,450],69:[25,450],70:[20,450]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 3, option: '追加'},
+				unit: 'μg',
+				label: "モリブデン"
+			},
+			Mn: {
+				male: {2:[1.5,0],5:[1.5,0],7:[2.0,0],9:[2.5,0],11:[3,0],14:[4,0],17:[4.5,0],29:[4,11],49:[4,11],69:[4,11],70:[4,11]},
+				female: {2:[1.5,0],5:[1.5,0],7:[2.0,0],9:[2.5,0],11:[3,0],14:[4,0],17:[3.5,0],29:[3.5,11],49:[3.5,11],69:[3.5,11],70:[3.5,11]},
+				pregnant: {first: 3.5, middle: 3.5, last: 3.5, lactating: 3.5, option: '置換'},
+				unit: 'mg',
+				label: "マンガン"
+			},
+			Se: {
+				male: {2:[10,80],5:[15,110],7:[15,150],9:[20,190],11:[25,240],14:[30,330],17:[35,400],29:[30,420],49:[30,460],69:[30,440],70:[30,400]},
+				female: {2:[10,70],5:[10,110],7:[15,150],9:[20,180],11:[25,240],14:[30,320],17:[25,350],29:[25,330],49:[25,350],69:[25,350],70:[25,330]},
+				pregnant: {first: 5, middle: 5, last: 5, lactating: 20, option: '追加'},
+				unit: 'μg',
+				label: "セレン"
+			},
+			I: {
+				male: {2:[50,250],5:[60,350],7:[75,500],9:[90,500],11:[110,500],14:[140,1200],17:[140,2000],29:[130,3000],49:[130,3000],69:[130,3000],70:[130,3000]},
+				female: {2:[50,250],5:[60,350],7:[75,500],9:[90,500],11:[110,500],14:[140,1200],17:[140,2000],29:[130,3000],49:[130,3000],69:[130,3000],70:[130,3000]},
+				pregnant: {first: 110, middle: 110, last: 110, lactating: 140, option: '追加'},
+				unit: 'μg',
+				label: "ヨウ素"
+			},
+			Cr: {
+				male: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[10,0],49:[10,0],69:[10,0],70:[10,0]},
+				female: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[10,0],49:[10,0],69:[10,0],70:[10,0]},
+				pregnant: {first: 10, middle: 10, last: 10, lactating: 10, option: '置換'},
+				unit: 'μg',
+				label: "クロム"
+			},
 		},
 		amino_acid: {
 			Trp:{dose:4,unit:'mg',label: "トリプトファン"}, Met:{dose:15,unit:'mg',label: "メチオニン"},
@@ -121,6 +201,7 @@ $(function(){
 			Ile:{dose:20,unit:'mg',label: "イソロイシン"}, His:{dose:10,unit:'mg',label: "ヒスチジン"}, Lys:{dose:45,unit:'mg',label: "リジン"}
 		}
 	};
+
 	//data in localStorage
 	// body_parameter = {gender: "", height:160, ...}
 	//menu contain materials(it's copies. because if you delete the material, could not regain menu). materials contain nutrients.
@@ -129,9 +210,21 @@ $(function(){
 
 	//Harris-Benedict式
 	//http://fph.pref.fukui.lg.jp/introhospital/wp-content/uploads/sites/7/2014/08/doc3.pdf
-	$('#your-nutrient input').on('change keydown focus blur', ()=>{
+	$('#your-nutrient input').on('change keydown focus blur', (e)=>{
+		if ('gender' == e.target.getAttribute('name')) {
+			$('#only-female-fieldset').css('display', e.target.id == 'gender-female' ? 'block' : 'none');
+		} else if ('pregnant-stage' == e.target.getAttribute('name')) {
+			//2個以上のチェックにならないようにする
+			$('input[name="pregnant-stage"]').each((i, v)=>{
+				if (v.getAttribute('id') != e.target.id) {
+					//$('#'+v.getAttribute('id')).removeAttr('checked');
+					v.checked = false;
+				}
+			});
+		}
 		const body_parameter = {
 			gender: $('input[name="gender"]:checked').attr('id'),
+			pregnantStage: $('input[name="pregnant-stage"]:checked').attr('id') || "",
 			weight: parseFloat($('#body-weight').val()),
 			height: parseFloat($('#body-height').val()),
 			age: parseInt($('#body-age').val()),
@@ -155,10 +248,21 @@ $(function(){
 			//BEE = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age)
 			wanted_energy = 65500 + (960 * body_parameter.weight) + (170 * body_parameter.height) - (470 * body_parameter.age);
 			wanted_energy *= (100 * body_parameter.AF) * (100 * body_parameter.SF) / 1000000;
+			if ('pregnant-first' == body_parameter.pregnantStage) wanted_energy += 50;
+			else if ('pregnant-middle' == body_parameter.pregnantStage) wanted_energy += 250;
+			else if ('pregnant-last' == body_parameter.pregnantStage) wanted_energy += 450;
+			else if ('lactating' == body_parameter.pregnantStage) wanted_energy += 350;
 		}
 		$('#need-calory').html(Math.round(wanted_energy));
 		//タンパク質必要量
-		$('#need-protein').html(10 * parseFloat($('#your-nutrient input[name="accelerate-protein"]:checked').val()) * body_parameter.weight / 10);
+		let need_protein = 10 * parseFloat($('#your-nutrient input[name="accelerate-protein"]:checked').val()) * body_parameter.weight / 10;
+		if ('gender-female' == body_parameter.gender) {
+			if ('pregnant-first' == body_parameter.pregnantStage) need_protein += 0;
+			else if ('pregnant-middle' == body_parameter.pregnantStage) need_protein += 10;
+			else if ('pregnant-last' == body_parameter.pregnantStage) need_protein += 25;
+			else if ('lactating' == body_parameter.pregnantStage) need_protein += 20;
+		}
+		$('#need-protein').html(need_protein);
 		//脂質必要量
 		const need_oil = Math.round(wanted_energy * 25 / 90) / 10;
 		$('#need-oil').html((need_oil <= 2.5 * body_parameter.weight) ? need_oil : (2.5 * body_parameter.weight));
@@ -176,25 +280,23 @@ $(function(){
 		//ビタミン
 		//https://www.fukushihoken.metro.tokyo.lg.jp/kensui/ei_syo/katsuyou/ichinichi_eiyo/vitamin.html
 		//https://www.tyojyu.or.jp/net/kenkou-tyoju/eiyouso/vitamin-b6.html
-		let vitamin_ary = {A:[], B1:[], B2:[], B6:[], B12:[], C:[], D:[], E:[], K:[]};
-		const vitamin_table = nutrient_table.vitamin;
-		for (let a in vitamin_ary) {
-			for (let i in vitamin_table[a][gender]) {
-				vitamin_ary[a] = vitamin_table[a][gender][i];
+		for (let genre in nutrient_table.vitamin) {
+			let age_nutrient = [];
+			for (let i in nutrient_table.vitamin[genre][gender]) {
+				age_nutrient = nutrient_table.vitamin[genre][gender][i];
 				if (body_parameter.age <= i) break;
 			}
-			$('#need-vitamin' + a).html(vitamin_ary[a][0] + '～' + (0 == vitamin_ary[a][1] ? '' : vitamin_ary[a][1]));
+			$('#need-' + genre).html(age_nutrient[0] + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
 		}
 		//ミネラル
 		// https://jp.glico.com/navi/e07-3.html
-		let mineral_ary = {Na:[], K:[], Ca:[], Mg:[], P:[], Fe:[], Zn:[], Cu:[]};
-		const mineral_table = nutrient_table.mineral;
-		for (let a in mineral_ary) {
-			for (let i in mineral_table[a][gender]) {
-				mineral_ary[a] = mineral_table[a][gender][i];
+		for (let genre in nutrient_table.mineral) {
+			let age_nutrient = [];
+			for (let i in nutrient_table.mineral[genre][gender]) {
+				age_nutrient = nutrient_table.mineral[genre][gender][i];
 				if (body_parameter.age <= i) break;
 			}
-			$('#need-' + a).html((0 == mineral_ary[a][0] ? '' : mineral_ary[a][0]) + '～' + (0 == mineral_ary[a][1] ? '' : mineral_ary[a][1]));
+			$('#need-' + genre).html((0 == age_nutrient[0] ? '' : age_nutrient[0]) + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
 		}
 		//必須アミノ酸
 		// https://www.orthomolecular.jp/nutrition/amino/
@@ -206,29 +308,31 @@ $(function(){
 	
 	// get body_parameter => view
 	(function bodyParameter(){
-			const body_parameter_str = localStorage.getItem('body_parameter');
-			if (!!body_parameter_str) {
-				const body_parameter = JSON.parse(body_parameter_str);
-				$('#'+body_parameter.gender).attr('checked', 'checked');
-				$('#body-weight').val(body_parameter.weight);
-				$('#body-height').val(body_parameter.height);
-				$('#body-age').val(body_parameter.age);
-				for (let v of $('input[name="AF"]')) {
-					if (v.value == body_parameter.AF) v.setAttribute('checked', 'checked');
-					else v.removeAttribute('checked');
-				}
-				for (let v of $('input[name="SF"]')) {
-					if (v.value == body_parameter.SF) v.setAttribute('checked', 'checked');
-					else v.removeAttribute('checked');
-				}
-				bodyParameterView(body_parameter);
-				// hide this input area.
-				$('#your-input-area').css('display', 'none');
-				$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm`);
-			} else {
-				// there is nothing in localStorage, because first visit.
-				$('#your-abstract').css('display', 'none');
+		const body_parameter_str = localStorage.getItem('body_parameter');
+		if (!!body_parameter_str) {
+			const body_parameter = JSON.parse(body_parameter_str);
+			$('#'+body_parameter.gender).attr('checked', 'checked');
+			$('#'+body_parameter.pregnantStage).attr('checked', 'checked');
+			$('#body-weight').val(body_parameter.weight);
+			$('#body-height').val(body_parameter.height);
+			$('#body-age').val(body_parameter.age);
+			for (let v of $('input[name="AF"]')) {
+				if (v.value == body_parameter.AF) v.setAttribute('checked', 'checked');
+				else v.removeAttribute('checked');
 			}
+			for (let v of $('input[name="SF"]')) {
+				if (v.value == body_parameter.SF) v.setAttribute('checked', 'checked');
+				else v.removeAttribute('checked');
+			}
+			bodyParameterView(body_parameter);
+			// hide this input area.
+			$('#your-input-area').css('display', 'none');
+			$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm`);
+		} else {
+			// there is nothing in localStorage, because first visit.
+			$('#your-abstract').css('display', 'none');
+		}
+		$('#only-female-fieldset').css('display', document.getElementById('gender-female').checked ? 'block' : 'none');
 	})();
 
 	$('#your-abstract').on('click',()=>{
@@ -251,8 +355,15 @@ $(function(){
 		const menu_str = localStorage.getItem('menu');
 		if (!!menu_str) {
 			const menu_ary = JSON.parse(menu_str);
-			let sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
-			$('#select-menu select').html('<option>'+unselect_option+'</option>' + sel_menu_str);
+			//選択されているメニューを取得する
+			for (let selected_menu of $('#select-menu select')) {
+				let select_option = '<option>'+unselect_option+'</option>';
+				for (const a_menu of menu_ary) {
+					select_option += `<option ${a_menu.name == selected_menu.value ? 'selected': ''}>${a_menu.name}</option>`;
+				}
+				selected_menu.innerHTML = select_option;
+			}
+			const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
 			$('#menu-creator-select').html('<option>新規メニュー</option>' + sel_menu_str);
 		} else {
 			$('#select-menu select').html('<option>- メニューが登録されていません -</option>');
@@ -334,7 +445,7 @@ $(function(){
 			$('#menu-regist-button').removeAttr('disabled');
 			$('#menu-change-button').attr('disabled', 'disabled');
 			$('#menu-delete-button').attr('disabled', 'disabled');
-			let material_ary = setMaterialsInMenu([]);
+			let material_ary = setMaterialsInMenu('');
 			$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
 			setMenuNutrients(material_ary);
 		} else {
@@ -377,15 +488,19 @@ $(function(){
 			materials: []
 		};
 		const serving = parseFloat($('#menu-serving').val());
+		const menu_ary = JSON.parse(localStorage.getItem('menu'));
 		const materials_str = localStorage.getItem('materials');
 		if (!!materials_str) {
 			const materials_ary = JSON.parse(materials_str);
 			$('#materials-in-menu li').each((i, v)=>{
+				let new_material = {
+					name: "", weight: 0, nutrients: {}
+				};
+				const new_material_weight = parseFloat($(v).children('input').val());
 				for (let a_material of materials_ary) {
-					if (!$(v).children('input').val()) break;
+					if (0 == new_material_weight) break;
 					if ($(v).children('select').val() == a_material.name) {
-						const new_material_weight = parseFloat($(v).children('input').val());
-						let new_material = {
+						new_material = {
 							name: a_material.name,
 							weight: new_material_weight / serving,
 							nutrients: {}
@@ -393,9 +508,23 @@ $(function(){
 						for (const nutrient_category in a_material.nutrients) {
 							new_material.nutrients[nutrient_category] = maxNumberDisplay(a_material.nutrients[nutrient_category] * new_material_weight / a_material.weight / serving, 6);
 						}
-						rtn.materials.push(new_material);
 					}
 				}
+				//昔登録した素材（今は存在していない）の値を既存メニューから取得
+				if (!new_material.name) {
+					const selected_menu_name = $('#menu-creator-select').val();
+					for (let a_menu of menu_ary) {
+						if (selected_menu_name == a_menu.name) {
+							for (let a_material of a_menu.materials) {
+								if (a_material.name == $(v).children('select').val()) {
+									new_material = Object.assign(a_material, {});
+									break;
+								}
+							}
+						}
+					}
+				}
+				if (0 != new_material_weight || unselect_option == $(v).children('select').val()) rtn.materials.push(new_material);
 			});
 		}
 		return rtn;
@@ -403,36 +532,35 @@ $(function(){
 
 	//material_ary = [{name:'', weight:0}, ]
 	const setMenuNutrients = (material_ary)=>{
-		let added_nutrient = '';
-		const registed_materials_str = localStorage.getItem('materials');
-		if (!registed_materials_str) return;
-		const registed_materials = JSON.parse(registed_materials_str);
+		let rtn = '';
+		const registed_materials = JSON.parse(localStorage.getItem('materials'));
 		const serving = parseFloat($('#menu-serving').val());
 		//栄養分を集計
 		let nutrient_add_up = {};
-		for (let a_registed_material of registed_materials) {
-			for (let a_material of material_ary) {
-				if (a_material.name == a_registed_material.name) {
-					for (let key in a_registed_material.nutrients) {
-						if (!nutrient_add_up[key]) nutrient_add_up[key] = 0;  
+		if (!!registed_materials) {
+			for (let a_registed_material of registed_materials) {
+				for (let a_material of material_ary) {
+					if (a_material.name == a_registed_material.name) {
+						for (let key in a_registed_material.nutrients) {
+							if (!nutrient_add_up[key]) nutrient_add_up[key] = 0;  
 							nutrient_add_up[key] += parseFloat(a_registed_material.nutrients[key]) * parseFloat(a_material.weight) / parseFloat(a_registed_material.weight);
+						}
 					}
 				}
 			}
 		}
 		//栄養分を表示
 		for (let category in standard_nutrient) {
-			added_nutrient += `<dt>${standard_nutrient[category].label}(${standard_nutrient[category].unit})</dt>`
+			rtn += `<dt>${standard_nutrient[category].label}(${standard_nutrient[category].unit})</dt>`
 			+`<dd class="${category}">${maxNumberDisplay(nutrient_add_up[category] / serving, 6)}</dd>`;
 		}
 		for (let genre in nutrient_table) {
 			for (let i in nutrient_table[genre]) {
-				const key = 'vitamin' == genre ? ('vitamin'+i) : i;
-				added_nutrient += `<dt>${'vitamin' == genre ? ('ビタミン'+i) : i} (${nutrient_table[genre][i].unit})</dt>`
-				+`<dd class="${key}">${maxNumberDisplay(nutrient_add_up[key] / serving, 6)}</dd>`;
+				rtn += `<dt>${nutrient_table[genre][i].label} (${nutrient_table[genre][i].unit})</dt>`
+				+`<dd class="${i}">${maxNumberDisplay(nutrient_add_up[i] / serving, 6)}</dd>`;
 			}
 		}
-		$('#menu-creator > dl').html(added_nutrient);
+		$('#menu-creator > dl').html(rtn);
 	};
 
 	$('#menu-regist-button').on('click', ()=>{
@@ -486,10 +614,9 @@ $(function(){
 					+`<dd class="${category}">${maxNumberDisplay(nutrient_add_up[category] / serving, 6)}</dd>`;
 				}
 				for (let genre in nutrient_table) {
-					for (let i in nutrient_table[genre]) {
-						const key = 'vitamin' == genre ? ('vitamin'+i) : i;
-						added_nutrient += `<dt>${'vitamin' == genre ? ('ビタミン'+i) : i} (${nutrient_table[genre][i].unit})</dt>`
-						+`<dd class="${key}">${maxNumberDisplay(nutrient_add_up[key] / serving, 6)}</dd>`;
+					for (let a_nutrient_name in nutrient_table[genre]) {
+						added_nutrient += `<dt>${nutrient_table[genre][a_nutrient_name].label} (${nutrient_table[genre][a_nutrient_name].unit})</dt>`
+						+`<dd class="${a_nutrient_name}">${maxNumberDisplay(nutrient_add_up[a_nutrient_name] / serving, 6)}</dd>`;
 					}
 				}
 				break;
@@ -543,7 +670,7 @@ $(function(){
 		}
 		for (let genre in nutrient_table) {
 			for (let i in nutrient_table[genre]) {
-				nutrients += `<dt>${'vitamin' == genre ? ('ビタミン'+i) : i} (${nutrient_table[genre][i].unit})</dt><dd><input type="number" value="0" class="${'vitamin' == genre ? ('vitamin'+i) : i}" /></dd>`;
+				nutrients += `<dt>${nutrient_table[genre][i].label} (${nutrient_table[genre][i].unit})</dt><dd><input type="number" value="0" class="${i}" /></dd>`;
 			}
 		}
 		$('#material-creator dl').html(nutrients);
@@ -570,8 +697,7 @@ $(function(){
 		}
 		for (let genre in nutrient_table) {
 			for (let nutrient_name in nutrient_table[genre]) {
-				const intake_name = 'vitamin' == genre ? ('vitamin' + nutrient_name) : nutrient_name;
-				$('#intake-'+intake_name).html('0');
+				$('#intake-'+nutrient_name).html('0');
 			}
 		}
 		//栄養を加算しまくる
@@ -584,8 +710,7 @@ $(function(){
 						}
 						for (let genre in nutrient_table) {
 							for (let nutrient_name in nutrient_table[genre]) {
-								const intake_name = 'vitamin' == genre ? ('vitamin' + nutrient_name) : nutrient_name;
-								$('#intake-'+intake_name).html(maxNumberDisplay(parseFloat(a_menu.materials[i].nutrients[intake_name]) + parseFloat($('#intake-'+intake_name).html()), 6));
+								$('#intake-'+nutrient_name).html(maxNumberDisplay(parseFloat(a_menu.materials[i].nutrients[nutrient_name]) + parseFloat($('#intake-'+nutrient_name).html()), 6));
 							}
 						}
 					}
@@ -637,7 +762,7 @@ $(function(){
 		let registed_menu = getMaterialsInMenu();
 		registed_menu.name = $('#menu-creator-select').val();
 		let changed_menu_ary = [];
-		//deleteは、飛ばす。changeは、代わりに取得したものを代わりに入れる
+		//deleteは、飛ばす。changeは、代わりに取得したものを入れる
 		for (let a_menu of menu_ary) {
 			if (registed_menu.name != a_menu.name) {
 				changed_menu_ary.push(a_menu);
@@ -650,6 +775,11 @@ $(function(){
 		localStorage.setItem('menu', JSON.stringify(changed_menu_ary));
 		alert(registed_menu.name + '\n' + ("menu-change-button" == button_id ? 'メニューを変更しました。' : 'メニューを消去しました。'));
 		setYourMenu();
+		//表示初期化
+		$('#menu-name').val('');
+		$('#menu-suggestion').html('');
+		setMaterialsInMenu(null);
+		$('#menu-creator dl').html('');
 	});
 
 	$('#material-select').on('change',(e)=>{
@@ -695,10 +825,11 @@ $(function(){
 		setMaterialSelect();
 		setMaterialsInMenu([]);
 		$('#material-name').val('');
-		$('#material-suggestion').val('');
+		$('#material-suggestion').html('');
+		$('#material-weight').val('');
 		//素材が登録されたリアクション
 		$('#material-creator dl dd input[type="number"]').val('0');
-		alert("素材は登録されました。");
+		alert("素材を登録しました。");
 	});
 
 	//素材の変更ボタン
@@ -742,9 +873,44 @@ $(function(){
 		}
 	});
 
+	$('#create-menu-button').on('click',(e)=>{
+		const materials = JSON.parse(localStorage.getItem('materials'));
+		if (null === materials || 0 == materials.length) return alert('素材（料理の材料）が登録されていません。\n素材を登録しないとメニューを作成できません。');
+		e.target.style.backgroundColor = '#cc8';
+		e.target.style.color = '#995';
+		e.target.style.boxShadow = 'none';
+		$('#create-material-button').css('background-color', 'white').css('color', '#595').css('box-shadow', '1px 1px 1px #aaa');
+		$('#menu-creator').css('display', 'block');
+		$('#material-creator').css('display', 'none');
+		$('#section-selecter').css('display', 'block');
+		setMenuNutrients(setMaterialsInMenu(''));
+	});
+
+	$('#create-material-button').on('click',(e)=>{
+		e.target.style.backgroundColor = '#3c3';
+		e.target.style.color = '#373';
+		e.target.style.boxShadow = 'none';
+		$('#create-menu-button').css('background-color', 'white').css('color', '#995').css('box-shadow', '1px 1px 1px #aaa');
+		$('#menu-creator').css('display', 'none');
+		$('#material-creator').css('display', 'block');
+		$('#section-selecter').css('display', 'block');
+	});
+
+	$('#hide-button, #hide-button2').on('click',()=>{
+		$('#create-menu-button').css('background-color', 'white').css('color', '#995').css('box-shadow', '1px 1px 1px #aaa');
+		$('#create-material-button').css('background-color', 'white').css('color', '#595').css('box-shadow', '1px 1px 1px #aaa');
+		$('#menu-creator').css('display', 'none');
+		$('#material-creator').css('display', 'none');
+		$('#section-selecter').css('display', 'none');
+	});
+
+	window.addEventListener('scroll', (e)=>{
+		$('#section-selecter').css('top', e.target.scrollingElement.scrollTop+'px');
+	});
+
 	const maxNumberDisplay = (num, characters)=>{
 		const num_str = num.toString();
-		if (num_str.length <= characters) return num;
+		if (num_str.length <= characters) return num || 0;
 		const decimal_point = num_str.indexOf('.');
 		if (-1 == decimal_point) return num;
 		if (decimal_point <= characters) {
@@ -757,4 +923,5 @@ $(function(){
 		//小数点が桁数より多い時は、小数点より上を返す
 		return Math.round(num);
 	};
+
 });

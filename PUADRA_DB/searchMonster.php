@@ -42,7 +42,11 @@
 		</fieldset>
 	</section>
 	<section class="type">
-		<h4>タイプ(複数選択時、or検索です)</h4>
+		<h4>タイプ</h4>
+		<p>
+			<label><input type="radio" name="type-or_search" value="1" checked />OR検索</label>
+			<label><input type="radio" name="type-or_search" value="0" />AND検索</label>
+		</p>
 		<div>
 			<label><input type="checkbox" data-type="神"><img src="img_type/神.png" title="神"></label>
 			<label><input type="checkbox" data-type="ドラゴン"><img src="img_type/ドラゴン.png" title="ドラゴン"></label>

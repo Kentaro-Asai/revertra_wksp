@@ -40,10 +40,18 @@ class padmnsDb {
 		if (array_key_exists("type", $search_param) && 0 < count($search_param["type"])) {
 			$left_join = "LEFT JOIN mns_type AS t ON t.`NO` = m.`NO`";
 			$type = "";
-			foreach ($search_param["type"] as $v) {
-				$type .= "" == $type ? (" (t.TYPE = \"".$v."\"") : (" OR t.TYPE = \"".$v."\"");
+			if ("AND検索" == $search_param["type_search"] && 1 < count($search_param["type"])) {
+				foreach ($search_param["type"] as $v) {
+					$type .= "" == $type ? "" : " AND ";
+					$type .= " t.`NO` IN (SELECT `NO` from mns_type WHERE `TYPE` = \"".$v."\")";
+				}
+				$type .= " GROUP BY m.`NO`";
+			} else {
+				foreach ($search_param["type"] as $v) {
+					$type .= "" == $type ? (" (t.TYPE = \"".$v."\"") : (" OR t.TYPE = \"".$v."\"");
+				}
+				$type .= ") GROUP BY m.`NO`";
 			}
-			$type .= ") GROUP BY m.`NO`";
 			$where[] = $type;
 		}
 		if (0 < count($where)) { //検索条件があるならSQL発行

@@ -78,6 +78,15 @@ $(()=>{
 			mns_attribute.sub = '無';
 		}
 	});
+	(()=>{
+		$('.type p input[type="radio"]:checked').parent().css('background', 'dodgerblue').css('color', 'white');
+	})();
+	$('.type p input[type="radio"]').on('click', (e)=>{
+		$('.type p label').css('background', 'none');
+		$('.type p label').css('color', 'dodgerblue');
+		e.target.parentElement.style.background = 'dodgerblue';
+		e.target.parentElement.style.color = 'white';
+	});
 	//チェックボックスの色変え
 	$('.type input[type=checkbox]').on('click', (e)=>{
 		e.target.parentElement.style.background = e.target.checked ? "radial-gradient(#9fd, #6ca)" : null;
@@ -155,12 +164,13 @@ $(()=>{
 
 	$('#submit').on('click', ()=>{
 		let type_ary = [];
-		for (let v of $('.type input:checked')) { //map使えない
+		for (let v of $('.type input[type="checkbox"]:checked')) { //map使えない
 			type_ary.push(v.dataset.type);
 		}
 		const send_data = {
 			main_attribute: mns_attribute.main,
 			sub_attribute: mns_attribute.sub,
+			type_search: '1' === $('.type p input[type="radio"]:checked').val() ? 'OR検索' : 'AND検索',
 			type: type_ary,
 			super_awaken_flg: $('#contain-super-awaken').prop('checked') ? 1 : 0,
 			awaken: selected_awaken_ary,

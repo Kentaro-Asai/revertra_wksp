@@ -1,6 +1,6 @@
 $(function(){
-	var z=[0,1,2,3,4];//火、水、木、光、闇
-	var ar_k = {
+	const z=[0,1,2,3,4];//火、水、木、光、闇
+	const ar_k = {
 		0:{'ttl':'かぐや姫','z1':2,'z2':3,
 			's':{
 				0:{
@@ -1248,6 +1248,13 @@ $(function(){
 		},
 		72: {
 			ttl: "ベレト", z1: 0, z2: 1,
+			s:{
+				0: {
+					l: "リータ(独眼神の愛刀)", f: "バレンタインイデアル（スキルブースト）",
+					sb: ["進化前ローネ(NEOGEO mini)","ラギアクルス(龍蒼丸)","滅神機ラグナロクドラゴン(スキルブースト)","超転生ツクヨミ(スキルブースト)"],
+					cm: "B1 ツクヨミ使う 光L字で突破<br>B2 全力コンボで丁度良い。リータ変身できればワンパン<br>B3 リータ変身してれば全力コンボでクリアできる<br>B4 変身してればクリア可能<br>B5 落ち着いてルーレットを操作してコンボすればいける"
+				}
+			},
 			m:{
 				0: {
 				ma: ["武藤遊戯(スキブ武器)","リュウセイカイザー(スキブ武器)","範馬勇次郎(スキブ武器)","ヘラニクス(スキブ武器)","ゼウス＆ヘラ(スキブ武器)"],
@@ -1320,10 +1327,20 @@ $(function(){
 					mc: "全属性必須<br>B1 日番谷<br>B2 日番谷<br>B3 リザ<br>B4 無効貫通+カラット+マシンノア<br>B5 サクヤ→30％グラビティ→ニクス+ヴァース"
 				}
 			}
-		}
+		},
+		78: {
+			ttl: "牛魔王", z1: 0, z2: 1,
+			s:{
+				0: {
+					l: "バージル（崩玉）", f: "バージル（スキルブースト）",
+					sb: ["水ネイ（キュウビのメダル）","超転生イシス（ウルムースマッシャー）","エルシャ（リクウ）","超究極サラスヴァティ（シンジ＆カヲルマスコット）"],
+					cm: "B1 バージル×2→ネイ→エルシャ<br>B2 ウルムースマッシャー<br>B3 バージル(水正方形9個消し)<br>B4 バージル<br>B5 イシス→ネイ<br> バージル→吸収無効エンハ"
+				}
+			}
+		},
 	};
 	
-	var ar_j = {
+	const ar_j = {
 		0:{'ttl':'降臨カーニバル1', 'z1':2,'z2':3,
 			's':{
 				0:{
@@ -2104,7 +2121,7 @@ $(function(){
 		},
 	};
 	
-	var ar_n = {
+	const ar_n = {
 		0:{'ttl':'天元の黒龍', 'z1':4,'z2':4,
 			's':{
 				0:{
@@ -2303,7 +2320,7 @@ $(function(){
 		},
 	};
 	
-	var ar_y = {
+	const ar_y = {
 		0:{'ttl':'火曜ダンジョン', 'z1':3,'z2':0,
 			'l':'ベルゼブブ','f':'赤ソニア',
 			'sb':['赤ソニア','パンドラ','リリス','呂布'],
@@ -2376,14 +2393,14 @@ $(function(){
 	//hidden
 	$('article').children().children(0).slideToggle();
 	
-	$('article').on('click', function(){
+	$('article').on('click', ()=>{
 		let a = $(this).children();
 		//console.log(a[1]);
 		a.children(0).slideToggle();
 	});
 
 	//データ入力用
-	$('input[name=s_or_m]').on('click', function(e){
+	$('input[name=s_or_m]').on('click', (e)=>{
 		let hs ='';
 		if ('solo' == e.target.value) {
 			hs = 'leader:<input type="text" id="leader" value=""><br>'
@@ -2468,7 +2485,7 @@ $(function(){
 		return rtn;
 	};
 
-	$('#submit_team').on('click', function(){
+	$('#submit_team').on('click', ()=>{
 		const ret = getInput();
 		let output_html = document.getElementsByTagName('output');
 		// innerHTMLでは、brタグを出力できない

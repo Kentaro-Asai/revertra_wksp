@@ -51,6 +51,13 @@
 					<legend>体重</legend>
 					<input type="number" name="body-weight" id="body-weight" value="60">kg
 				</fieldset>
+				<fieldset class="fundamental" id="only-female-fieldset">
+					<legend>女性のみ</legend>
+					<label><input type="checkbox" name="pregnant-stage" id="pregnant-first" />妊娠初期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="pregnant-middle" />妊娠中期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="pregnant-last" />妊娠後期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="lactating" />授乳婦</label>
+				</fieldset>
 				<fieldset>
 					<legend>活動係数</legend>
 					<label><input type="radio" name="AF" value="1.0" />ベッド上安静</label>
@@ -90,8 +97,12 @@
 				<dt>ビタミンA</dt><dd><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</dd>
 				<dt>ビタミンB1</dt><dd><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</dd>
 				<dt>ビタミンB2</dt><dd><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</dd>
+				<dt>ナイアシン</dt><dd><span id="intake-niacin">0</span> / <span id="need-niacin">0</span> mgNE</dd>
 				<dt>ビタミンB6</dt><dd><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</dd>
 				<dt>ビタミンB12</dt><dd><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</dd>
+				<dt>葉酸</dt><dd><span id="intake-folic_acid">0</span> / <span id="need-folic_acid">0</span> μg</dd>
+				<dt>パントテン酸</dt><dd><span id="intake-pantothenic_acid">0</span> / <span id="need-pantothenic_acid">0</span> mg</dd>
+				<dt>ビオチン</dt><dd><span id="intake-biotin">0</span> / <span id="need-biotin">0</span> μg</dd>
 				<dt>ビタミンC</dt><dd><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</dd>
 				<dt>ビタミンD</dt><dd><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</dd>
 				<dt>ビタミンE</dt><dd><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</dd>
@@ -104,6 +115,11 @@
 				<dt>鉄</dt><dd><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</dd>
 				<dt>亜鉛</dt><dd><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</dd>
 				<dt>銅</dt><dd><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</dd>
+				<dt>モリブデン</dt><dd><span id="intake-Mo">0</span> / <span id="need-Mo">0</span> μg</dd>
+				<dt>マンガン</dt><dd><span id="intake-Mn">0</span> / <span id="need-Mn">0</span> mg</dd>
+				<dt>セレン</dt><dd><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</dd>
+				<dt>ヨウ素</dt><dd><span id="intake-I">0</span> / <span id="need-I">0</span> μg</dd>
+				<dt>クロム</dt><dd><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</dd>
 				<!-- 必須アミノ酸 -->
 				<dt>トリプトファン</dt><dd><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</dd>
 				<dt>リジン</dt><dd><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</dd>
@@ -119,19 +135,24 @@
 				<p>メニューを選択することで本日の摂取量の項目に栄養分が加算されます。</p>
 				<h4>あなたの朝食</h4>
 				<ul id="morning-list">
-					<li><select class="morning-menu"><option>カレーうどん</option><option>キーマ</option></select></li>
+					<li><select class="morning-menu"><option>- メニューが登録されていません -</option></select></li>
 				</ul>
 				<h4>あなたの昼食</h4>
 				<ul id="runch-list">
-					<li><select class="runch-menu"><option>カレーうどん</option></select></li>
+					<li><select class="runch-menu"><option>- メニューが登録されていません -</option></select></li>
 				</ul>
 				<h4>あなたの夕食</h4>
 				<ul id="dinner-list">
-					<li><select class="dinner-menu"><option>カレーうどん</option></select></li>
+					<li><select class="dinner-menu"><option>- メニューが登録されていません -</option></select></li>
 				</ul>
 			</div>
 		</section>
+		<section id="button-section">
+			<button id="create-menu-button">メニューの編集画面の表示</button>
+			<button id="create-material-button">素材（料理の材料）の編集画面の表示</button>
+		</section>
 		<div id="section-selecter">
+			<button id="hide-button">×</button>
 			<section id="menu-creator">
 				<h5>メニューの登録・変更・削除</h5>
 				<p>
@@ -168,6 +189,7 @@
 					<button id="material-delete-button">素材の削除</button>
 				</p>
 			</section>
+			<button id="hide-button2">閉じる</button>
 		</div>
 	</main>
 	<footer>

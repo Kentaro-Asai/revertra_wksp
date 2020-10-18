@@ -57,11 +57,26 @@ h4::before{
 	margin: 0 5px 0 0;
 	padding: 0 5px 0 0;
 }
+section.type p{
+	margin: 25px 150px 10px;
+}
+section.type p label:first-child{
+	margin: 0 20px 0 0;
+}
+section.type p label{
+	border: solid 2px dodgerblue;
+	padding: 4px 12px;
+	border-radius: 15px;
+	color: dodgerblue;
+}
+section.type label input[type="radio"]{
+	display: none;
+}
 section.type div{
 	margin: 0 150px;
 	overflow: auto;
 }
-.type label{
+.type > div > label{
 	display: block;
 	float: left;
 	width: 35px;
