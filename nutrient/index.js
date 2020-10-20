@@ -459,7 +459,7 @@ $(function(){
 		}
 	});
 
-	$('#menu-serving').on('change', ()=>{
+	$('#menu-name, #menu-serving').on('change, input', ()=>{
 		let material_ary = setMaterialsInMenu([]);
 		if (0 < material_ary.length) {
 			$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
@@ -586,7 +586,7 @@ $(function(){
 		$('#menu-name').val('');
 		$('#menu-suggestion').html('');
 		setMaterialsInMenu(null);
-		$('#menu-creator dl').html('');
+		$('#menu-creator dl dd').html('0');
 	});
 
 	//引数のメニュー名の栄養素を表示
@@ -706,11 +706,15 @@ $(function(){
 				if (v == a_menu.name) {
 					for (let i=0; i < a_menu.materials.length; i++) {
 						for (let k in standard_nutrient) {
-							$('#intake-' + k).html(maxNumberDisplay(parseFloat(a_menu.materials[i].nutrients[k]) + parseFloat($('#intake-' + k).html()), 6));
+							const additional_value = isNaN(a_menu.materials[i].nutrients[k]) ? 0 : a_menu.materials[i].nutrients[k];
+							const added_value = isNaN($('#intake-' + k).html()) ? 0 : $('#intake-' + k).html();
+							$('#intake-' + k).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
 						}
 						for (let genre in nutrient_table) {
 							for (let nutrient_name in nutrient_table[genre]) {
-								$('#intake-'+nutrient_name).html(maxNumberDisplay(parseFloat(a_menu.materials[i].nutrients[nutrient_name]) + parseFloat($('#intake-'+nutrient_name).html()), 6));
+								const additional_value = isNaN(a_menu.materials[i].nutrients[nutrient_name]) ? 0 : a_menu.materials[i].nutrients[nutrient_name];
+								const added_value = isNaN($('#intake-' + nutrient_name).html()) ? 0 : $('#intake-' + nutrient_name).html();
+								$('#intake-'+nutrient_name).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
 							}
 						}
 					}
@@ -720,21 +724,24 @@ $(function(){
 		//色を変更
 		for (let v of $('#your-nutrient dd')) {
 			const need_param = $(v).children('span')[1].innerHTML;
-			const quota_param = -1 != need_param.indexOf('～') ? parseFloat(need_param.substr(0, need_param.indexOf('～'))) : parseFloat(need_param);
-			const limit_param = -1 == need_param.indexOf('～') ? 0 : parseFloat(need_param.substr(need_param.indexOf('～') + 1));
+			const range_param = {
+				quota: -1 != need_param.indexOf('～') ? parseFloat(need_param.substr(0, need_param.indexOf('～'))) : parseFloat(need_param),
+				limit: -1 == need_param.indexOf('～') ? 0 : parseFloat(need_param.substr(need_param.indexOf('～') + 1))
+			};
 			const intake_id = $(v).children('span')[0].id;
-			if (!!quota_param && !!limit_param) {
-				if (quota_param <= parseFloat($(v).children('span')[0].innerHTML) && parseFloat($(v).children('span')[0].innerHTML) <= limit_param) {
+			const your_intake_param = parseFloat($(v).children('span')[0].innerHTML);
+			if (!!range_param.quota && !!range_param.limit) {
+				if (range_param.quota <= your_intake_param && your_intake_param <= range_param.limit) {
 					$('#' + intake_id).css('color', '#6b6');
-				} else if (limit_param < parseFloat($(v).children('span')[0].innerHTML)) {
+				} else if (range_param.limit < your_intake_param) {
 					$('#' + intake_id).css('color', '#c53');
 				} else {
 					$('#' + intake_id).css('color', 'red');
 				}
-			} else if (!quota_param && !!limit_param) {
-				$('#' + intake_id).css('color', parseFloat($(v).children('span')[0].innerHTML) <= limit_param ? '#6b6' : '#c53');
-			} else {
-				$('#' + intake_id).css('color', quota_param <= parseFloat($(v).children('span')[0].innerHTML) ? '#6b6' : 'red');
+			} else if (!range_param.quota && !!range_param.limit) { // ~ x
+				$('#' + intake_id).css('color', your_intake_param <= range_param.limit ? '#6b6' : '#c53');
+			} else { // x ~ 
+				$('#' + intake_id).css('color', range_param.quota <= your_intake_param ? '#6b6' : 'red');
 			}
 		}
 		//もしunselectが無ければ、メニューを追加
@@ -779,7 +786,7 @@ $(function(){
 		$('#menu-name').val('');
 		$('#menu-suggestion').html('');
 		setMaterialsInMenu(null);
-		$('#menu-creator dl').html('');
+		$('#menu-creator dl dd').html('0');
 	});
 
 	$('#material-select').on('change',(e)=>{
@@ -909,6 +916,7 @@ $(function(){
 	});
 
 	const maxNumberDisplay = (num, characters)=>{
+		if (isNaN(num)) return 0;
 		const num_str = num.toString();
 		if (num_str.length <= characters) return num || 0;
 		const decimal_point = num_str.indexOf('.');
