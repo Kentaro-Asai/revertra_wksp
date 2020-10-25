@@ -14,10 +14,12 @@ h1{
 	padding: 3px;
 	text-align: center;
 	font-size: 36px;
+	text-shadow: 2px 2px 2px #aaa;
 	margin: 10px;
 }
 header p{
 	text-align: center;
+	font-size: 15px;
 	margin: 15px 0 11px;
 }
 header h5{
@@ -33,6 +35,7 @@ header h5{
 header ol{
 	border: solid 1px black;
 	background-color: white;
+	font-size: 16px;
 	width: 640px;
 	padding: 10px 0 10px 35px;
 	margin: 0px auto 15px;
@@ -105,6 +108,7 @@ header .explain-this-site img{
 }
 #button-section button{
 	background-color: white;
+	width: 180px;
 	margin: 6px 10px;
 	padding: 6px 12px;
 	border-radius: 15px;

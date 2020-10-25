@@ -2391,12 +2391,10 @@ $(function(){
 	$('#yobi').append(outputData(ar_y));
 	
 	//hidden
-	$('article').children().children(0).slideToggle();
+	$('article > div').slideToggle();
 	
-	$('article').on('click', ()=>{
-		let a = $(this).children();
-		//console.log(a[1]);
-		a.children(0).slideToggle();
+	$('article').on('click', (e)=>{
+		$(e.currentTarget.childNodes[1]).slideToggle();
 	});
 
 	//データ入力用
