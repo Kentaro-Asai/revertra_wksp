@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+body {
+	background-color: #EEEEEE
+}
+header, main, footer{
+	width: 785px;
+	margin: 0 auto;
+}
+h1{
+	background-color: #277;
+	color: white;
+	border: ridge 6px #277;
+	padding: 3px;
+	text-align: center;
+	font-size: 36px;
+	text-shadow: 2px 2px 2px #aaa;
+	margin: 10px;
+}
+h1 > a{
+	text-decoration: none;
+	color: white;
+}
+header p{
+	text-align: center;
+	font-size: 15px;
+	margin: 15px 0 11px;
+}
+#question-output{
+	display: block;
+}
+#question-output h4{
+	margin: 10px 10px 20px;
+	font-size: 18px;
+	padding: 0 0 0 10px;
+}
+#question-output h4::after{
+	content: '';
+	display: block;
+	left: 0px;
+	bottom: 1px;
+	background: linear-gradient(90deg, black, #eee);
+	width: 100%;
+	height: 2px;
+}
+#question-output p.button-box{
+	height: 200px;
+}
+#question-output p > button{
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px;
+	width: 238px;
+	font-size: 18px;
+	box-shadow: 2px 2px 2px #333;
+	cursor: pointer;
+}
+#question-output p > button:nth-child(2n){
+	background-color: #3fb;
+	border: solid 3px #398;
+}
+#question-output p > button:nth-child(2n+1){
+	background-color: #b3f;
+	border: solid 3px #638;
+}
+#question-output p > button:last-child{
+	background-color: #bb6;
+	border: solid 3px #880;
+}
+#question-output p > button:first-child{
+	background-color: #fb3;
+	border: solid 3px #b93;
+}
+.result-output{
+	display: block;
+}
+.question-result-table, .type-result-table{
+	margin: 10px auto;
+	border: solid 2px black;
+	background-color: white;
+	font-size: 16px;
+}
+.question-result-table th, .type-result-table{
+	text-align: center;
+	background-color: black;
+	color: wheat;
+	min-width: 300px;
+}
+.question-result-table td{
+	/*background-color: #eef;*/
+	color: #444;
+	padding: 2px 5px;
+}
+.question-result-table tr:nth-child(2n){
+	background-color: #ccd;
+}
+.question-result-table tr:nth-child(2n+1){
+	background-color: #bcc;
+}
+.empty-answer{
+	text-align: center;
+	background-color: whitesmoke;
+	color: #222;
+}
+.type-result-table th{
+	padding: 1px 4px;
+	font-weight: normal;
+}
+.type-result-table td{
+	text-align: center;
+	background-color: ivory;
+	color: black;
+}
+
+footer{
+	font-size: 12px;
+	text-align: center;
+	margin: 30px auto;
+}

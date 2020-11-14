@@ -41,6 +41,13 @@
 			<label><input type="radio" id="sub-attribute-null" name="sub-attribute">無</label>
 		</fieldset>
 	</section>
+	<section class="rarelity">
+		<h4>レアリティ</h4>
+		<p>
+			<input type="number" id="rarelity-number" value="5" disabled />
+			<button id="rarelity-button">無効</button>
+		</p>
+	</section>
 	<section class="type">
 		<h4>タイプ</h4>
 		<p>

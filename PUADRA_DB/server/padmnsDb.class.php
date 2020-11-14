@@ -24,6 +24,13 @@ class padmnsDb {
 		if ("" != $search_param["sub_attribute"]) {
 			$where[] = "m.SUB_ATTRIBUTE = \"".$search_param["sub_attribute"]."\"";
 		}
+		if ('以下' == $search_param["rarelity_option"]) {
+			$where[] = "m.RARE <= " . $search_param["rarelity"];
+		} elseif ('以上' == $search_param["rarelity_option"]) {
+			$where[] = "m.RARE >= " . $search_param["rarelity"];
+		} elseif ('丁度' == $search_param["rarelity_option"]) {
+			$where[] = "m.RARE = " . $search_param["rarelity"];
+		}
 		if ("" != $search_param["skill"]) {
 			$where[] = "m.SKILL LIKE \"%".$search_param["skill"]."%\"";
 		}

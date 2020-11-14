@@ -92,21 +92,22 @@ $(()=>{
 		e.target.parentElement.style.background = e.target.checked ? "radial-gradient(#9fd, #6ca)" : null;
 	});
 
-	$('#skill-turn-button').on('click', (e)=>{
-		const skill_turn_btn_ary = ["無効", "以上", "以下", "丁度"];
+	$('#skill-turn-button, #rarelity-button').on('click', (e)=>{
+		const btn_ary = ["無効", "以上", "以下", "丁度"];
+		const number_id = 'skill-turn-button' == e.target.id ? '#skill-turn': '#rarelity-number';
 		let rtn = 0;
-		for (let i in skill_turn_btn_ary) {
-			if (e.target.innerText == skill_turn_btn_ary[i]) {
-				rtn = (parseInt(i) + 1 == skill_turn_btn_ary.length) ? 0 : (parseInt(i) + 1);
-				if ("無効" == skill_turn_btn_ary[rtn]) {
-					$('#skill-turn').attr('disabled', 'disabled');
+		for (let i in btn_ary) {
+			if (e.target.innerText == btn_ary[i]) {
+				rtn = (parseInt(i) + 1 == btn_ary.length) ? 0 : (parseInt(i) + 1);
+				if ("無効" == btn_ary[rtn]) {
+					$(number_id).attr('disabled', 'disabled');
 				} else {
-					$('#skill-turn').removeAttr('disabled');
+					$(number_id).removeAttr('disabled');
 				}
 				break;
 			}
 		}
-		e.target.innerText = skill_turn_btn_ary[rtn];
+		e.target.innerText = btn_ary[rtn];
 	});
 
 	//覚醒スキル(上限数まで選択できるように変更)
@@ -170,6 +171,8 @@ $(()=>{
 		const send_data = {
 			main_attribute: mns_attribute.main,
 			sub_attribute: mns_attribute.sub,
+			rarelity: parseInt($('#rarelity-number').val()),
+			rarelity_option: $('#rarelity-button').html(),
 			type_search: '1' === $('.type p input[type="radio"]:checked').val() ? 'OR検索' : 'AND検索',
 			type: type_ary,
 			super_awaken_flg: $('#contain-super-awaken').prop('checked') ? 1 : 0,
