@@ -1,4 +1,15 @@
 $(()=>{
+	const explain_type_sentence = {
+		type1: 'タイプ1は、正しい事をすることを大事にしています。内省的で自分の作ったルールに縛られています。時に自身が不利になるような公正な選択ができます。',
+		type2: 'タイプ2は、他者を気にかけます。楽観的で陽気で、人に好かれることを大事にします。',
+		type3: 'タイプ3は、成功することに重きを置いています。合理的に考え有利になるように物事を進めます。',
+		type4: 'タイプ4は、他者とは違う魅力的な人になりたいと思っています。ロマンチストでナルシストです。',
+		type5: 'タイプ5は、調べて考える人です。専門的スキルを獲得して、得られた知識をこねくり回して独特な世界観を構築します。',
+		type6: 'タイプ6は、他者からの信頼を大事にしています。不安から逃れられる絶対的信頼をおける存在を求めています。',
+		type7: 'タイプ7は、楽しさを求めています。活動的でムードメーカー的存在です。',
+		type8: 'タイプ8は、強さを求めています。競争心が豊富で力がみなぎっています。',
+		type9: 'タイプ9は、心の平穏を求めています。人当たりが良く、共感力の高い人です。',
+	};
 	//全問出題
 	let question_number = 0;
 	const full_question_tbl = [
@@ -47,6 +58,7 @@ $(()=>{
 			answer: [
 				{label: "元気が無いと言われる", point: {type1:0, type2:0, type3:0, type4:1, type5:2, type6:2, type7:0, type8:0, type9:0}},
 				{label: "元気と言われる", point: {type1:1, type2:1, type3:1, type4:0, type5:0, type6:0, type7:2, type8:2, type9:1}},
+				{label: "気持ちにムラがある", point: {type1:0, type2:0, type3:0, type4:2, type5:0, type6:0, type7:1, type8:0, type9:0}},
 			]
 		},
 		{question: "望む方向性",
@@ -109,13 +121,23 @@ $(()=>{
 
 	const display_result = ()=>{
 		let rtn = '<table class="question-result-table">';
-		rtn += '<tr><th>質問</th><th>あなたの回答</th></tr>';
+		rtn += '<tr><th>質問</th><th>あなたの回答</th><th>あなたに選ばれなかった回答</th></tr>';
 		for (let v of your_point_tbl.choice) {
-			rtn += `<tr><td>${v.question}</td><td>${v.answer}</td></tr>`;
+			rtn += `<tr><td>${v.question}</td><td>${v.answer}</td><td>`;
+			for (let tbl of full_question_tbl) {
+				if (tbl.question == v.question) {
+					for (let btn of tbl.answer) {
+						if (btn.label != v.answer) rtn += `<span>${btn.label}</span>`;
+					}
+				}
+			}
+			rtn += `</td></tr>`;
 		}
 		for (let i in full_question_tbl) {
 			if (parseInt(i)+1 > your_point_tbl.choice.length) {
-				rtn += `<tr><td class="empty-answer">- Q${parseInt(i)+1} -</td><td class="empty-answer">-</td></tr>`;
+				rtn += `<tr><td class="empty-answer">- Q${parseInt(i)+1} -</td>
+					<td class="empty-answer">-</td>
+					<td class="empty-answer">-</td></tr>`;
 			}
 		}
 		rtn += '</table>';
@@ -128,6 +150,19 @@ $(()=>{
 				your_point_html += `<td>${your_point_tbl["type"+i]}</td>`;
 			}
 			rtn += '</tr><tr><th>傾向度</th>'+your_point_html+'</tr></table>';
+			// 一番数字の大きなタイプを判定(複数あったらそれを返す)
+			// タイプに合わせた解説文
+			let max_type_value = 0;
+			for (let i=1; i <= 9; i++) {
+				if (max_type_value < your_point_tbl["type"+i]) max_type_value = your_point_tbl["type"+i];
+			}
+			rtn += '<h5>性格特性</h5><p id="explain-type">';
+			for (let i=1; i <= 9; i++) {
+				if (max_type_value -1 <= your_point_tbl["type"+i]) rtn += explain_type_sentence["type"+i] + '<br>';
+			}
+			rtn += '</p>';
+			//やり直すボタンを作る（svgで作成）
+			rtn += '<button id="retake-button"><span>やり直す</span><img src="retake.svg" alt="やり直す"></button>';
 		}
 		$('#result-output').html(rtn);
 	};
@@ -147,6 +182,13 @@ $(()=>{
 			}
 		}
 		display_question(++question_number);
+		display_result();
+	});
+
+	$('#result-output').on('click', '#retake-button', ()=>{
+		question_number = 0;
+		your_point_tbl = {choice:[], type1:0, type2:0, type3:0, type4:0, type5:0, type6:0, type7:0, type8:0, type9:0};
+		display_question(question_number);
 		display_result();
 	});
 });

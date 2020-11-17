@@ -310,7 +310,7 @@ public function mkatcls(){
 					"エニアグラムによる性格診断を助ける質問を考えて作成しました。<br>"
 					."最初の難関が自分のタイプを知ることだと思います。<br>"
 					."下のリンク先で自分のタイプの推測をしてみましょう。<br>"
-					."<a href=\"http://revertra.webcrow.jp/nutrient/\">簡易性格診断</a><br>"
+					."<a href=\"http://revertra.webcrow.jp/temperament/\">簡易性格診断</a><br>"
 					."他のサイトでそのタイプの解説を見てみましょう。価値があるかないかご自身で判断してください。"
 				]
 			]
