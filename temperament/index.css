@@ -1,21 +1,22 @@
 @charset "UTF-8";
 
 body {
-	background-color: #EEEEEE
+	background-color: #EEEEEE;
+	margin: 0.5rem;
 }
 header, main, footer{
-	width: 785px;
+	/* width: 100vw; */
 	margin: 0 auto;
 }
 h1{
 	background-color: #277;
 	color: white;
-	border: ridge 6px #277;
-	padding: 3px;
+	border: ridge 0.4rem #277;
+	padding: 0.25rem;
 	text-align: center;
-	font-size: 36px;
-	text-shadow: 2px 2px 2px #aaa;
-	margin: 10px;
+	font-size: 2rem;
+	text-shadow: 0.1rem 0.1rem 0.1rem #aaa;
+	margin: 0.5rem;
 }
 h1 > a{
 	text-decoration: none;
@@ -23,16 +24,16 @@ h1 > a{
 }
 header p{
 	text-align: center;
-	font-size: 15px;
-	margin: 15px 0 11px;
+	font-size: 0.8rem;
+	margin: 1rem 0 0.8rem;
 }
 #question-output{
 	display: block;
 }
 #question-output h4{
-	margin: 10px 10px 20px;
-	font-size: 18px;
-	padding: 0 0 0 10px;
+	margin: 0.5rem 0.5rem 1rem;
+	font-size: 1.2rem;
+	padding: 0 0 0 0.8rem;
 }
 #question-output h4::after{
 	content: '';
@@ -47,39 +48,39 @@ header p{
 	height: 200px;
 }
 #question-output p > button{
-	border-radius: 10px;
-	padding: 10px;
-	margin: 10px;
-	width: 238px;
-	font-size: 18px;
-	box-shadow: 2px 2px 2px #333;
+	border-radius: 0.8rem;
+	padding: 0.8rem;
+	margin: 0.8rem;
+	width: 13rem;
+	font-size: 1rem;
+	box-shadow: 0.1rem 0.1rem 0.1rem #333;
 	cursor: pointer;
 }
 #question-output p > button:nth-child(2n){
 	background-color: #5d9;
-	border: solid 3px #287;
+	border: solid 0.2rem #287;
 }
 #question-output p > button:nth-child(2n+1){
 	background-color: #e6f;
-	border: solid 3px #749;
+	border: solid 0.2rem #749;
 }
 #question-output p > button:last-child{
 	background-color: #bb6;
-	border: solid 3px #880;
+	border: solid 0.2rem #880;
 }
 #question-output p > button:first-child{
 	background-color: #fb3;
-	border: solid 3px #b93;
+	border: solid 0.2rem #b93;
 }
 .result-output{
 	display: block;
 }
 .question-result-table, .type-result-table{
-	margin: 10px auto;
-	border: solid 2px black;
+	margin: 0.5rem auto;
+	border: solid 0.1rem black;
 	background-color: white;
-	font-size: 16px;
-	width: 100%;
+	font-size: 1rem;
+	width: calc(100vw - 2rem);
 }
 .question-result-table th, .type-result-table{
 	text-align: center;
@@ -90,8 +91,8 @@ header p{
 .question-result-table td{
 	/*background-color: #eef;*/
 	color: #444;
-	font-size: 15px;
-	padding: 2px 5px;
+	font-size: 1rem;
+	padding: 0.1rem 0.3rem;
 }
 .question-result-table tr:nth-child(2n){
 	background-color: #ccd;
@@ -104,7 +105,7 @@ header p{
 }
 .question-result-table td span:nth-child(2n+1){
 	color: #411;
-	margin: 0 2px;
+	margin: 0 0.1rem;
 }
 .empty-answer{
 	text-align: center;
@@ -112,7 +113,7 @@ header p{
 	color: #222;
 }
 .type-result-table th{
-	padding: 1px 4px;
+	padding: 1px 0.2rem;
 	font-weight: normal;
 }
 .type-result-table td{
@@ -121,43 +122,43 @@ header p{
 	color: black;
 }
 #result-output h5{
-	margin: 10px 0 0;
+	margin: 0.5rem 0 0;
 	text-align: center;
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: normal;
 	background-color: black;
 	color: wheat;
 }
 #explain-type{
 	background-color: #edd;
-	margin: 0 0 20px;
-	padding: 5px;
-	font-size: 16px;
+	margin: 0 0 1.5rem;
+	padding: 0.3rem;
+	font-size: 1rem;
 	color: #300;
-	border: solid 4px black;
+	border: solid 0.25rem black;
 	border-top: none;
 }
 #retake-button{
 	background-color: #bdb;
 	border: solid 2px #250;
-	border-radius: 28px;
+	border-radius: 1.8rem;
 	display: block;
-	margin: 10px auto;
-	padding: 0 25px;
+	margin: 0.8rem auto;
+	padding: 0 1.4rem;
 	cursor: pointer;
 }
 #retake-button span{
 	color: #250;
 	font-weight: 700;
-	font-size: 25px;
+	font-size: 1.5rem;
 }
 #retake-button img{
-	width: 36px;
-	height: 25px;
-	margin: 5px 0 0 8px;
+	width: 2.2rem;
+	height: 1.5rem;
+	margin: 0.3rem 0 0 0.5rem;
 }
 footer{
-	font-size: 12px;
+	font-size: 0.6rem;
 	text-align: center;
-	margin: 30px auto;
+	margin: 2rem auto;
 }

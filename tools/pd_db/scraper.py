@@ -136,7 +136,7 @@ class PdScraper:
 				rtn["skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
 				hs = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(2) > strong').text()
 				rtn["skill_turn"] = int(hs[hs.find("：")+1 : hs.find("（")])
-				rtn["skill_max_turn"] = int(hs[hs.find("（")+1 : hs.find("）")])
+				rtn["skill_max_turn"] = int(hs[hs.find("（")+1 : hs.find("）")]) if hs[hs.find("（")+1 : hs.find("）")].isdecimal() else 0
 			elif "リーダースキル" == title:
 				rtn["leader_skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
 			elif '覚醒スキル' == title:
