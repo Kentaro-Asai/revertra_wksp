@@ -5,7 +5,7 @@
 	<meta name="description" content="あなたの栄養のメモを支援します。その日のカロリーと栄養分を見えるようにします。">
 	<meta name="keywords" content="カロリー,栄養管理">
 	<script src="../jq.js"></script>
-	<link rel="stylesheet" href="index.css" type="text/css">
+	<link rel="stylesheet" href="index2.css" type="text/css">
 	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
 	<title>栄養管理メモ</title>
 </head>
@@ -13,21 +13,24 @@
 	<header>
 		<h1>栄養管理メモ</h1>
 		<p>あなたのその日の摂取栄養素を数値で視覚化します。<br>データはあなたのWebブラウザに保存します(webStorage)。</p>
-		<h5>使い方</h5>
-		<ol>
-			<li><span style="color:#422">あなたの目標栄養素算出のためのパラメータ</span>を入力（選択）します。</li>
-			<li><span style="color:#060">素材（料理の材料）編集</span>で素材を登録後、<span style="color:#660">メニュー編集</span>でメニューを作成します。</li>
-			<li>その日のメニューを<span style="color:#333">あなたの朝食</span>、<span style="color:#333">あなたの昼食</span>、<span style="color:#333">あなたの夕食</span>を選択します。</li>
-			<li>本日の摂取量に表示されますので、栄養素の過不足を確認することができます。</li>
-		</ol>
-		<h4>説明： 素材とメニューについて</h4>
-		<p class="explain-this-site">
-			メニューを選択して本日の栄養を加算していきます。メニューは素材を内包します。<br>
-			<img src="menu_explain.svg" width="170" height="135" />
-			<img src="menu_explain2.svg" width="170" height="135" /><br>
-			例えば、お茶漬けのメニューを作る場合、素材にお米・緑茶・お茶漬けの素の3種を登録することで実現します。<br>
-			（素材の数は1つ以上幾らでも選択できます。ごはんならお米180gでメニューに追加します。）
-		</p>
+		<article class="explain-toggle-close">
+			<h5><span>▼</span>使い方</h5>
+			<div>
+				<ol>
+					<li><span style="color:#422">あなたの目標栄養素算出のためのパラメータ</span>を入力（選択）します。</li>
+					<li><span style="color:#060">素材（料理の材料）編集</span>で素材を登録後、<span style="color:#660">メニュー編集</span>でメニューを作成します。</li>
+					<li>その日のメニューを<span style="color:#333">あなたの朝食</span>、<span style="color:#333">あなたの昼食</span>、<span style="color:#333">あなたの夕食</span>を選択します。</li>
+					<li>本日の摂取量に表示されますので、栄養素の過不足を確認することができます。</li>
+				</ol>
+				<p class="explain-this-site">
+					メニューを選択して本日の栄養を加算していきます。メニューは素材を内包します。<br>
+					<img src="menu_explain.svg" width="170" height="135" />
+					<img src="menu_explain2.svg" width="170" height="135" /><br>
+					例えば、お茶漬けのメニューを作る場合、素材にお米・緑茶・お茶漬けの素の3種を登録することで実現します。<br>
+					（素材の数は1つ以上幾らでも選択できます。ごはんならお米180gでメニューに追加します。）
+				</p>
+			</div>
+		</article>
 	</header>
 	<main>
 		<section id="your-nutrient">
@@ -88,49 +91,51 @@
 				</fieldset>
 				<button id="your-input-area-button">入力エリアを隠す</button>
 			</div>
-			<h5>本日の摂取量 / 推奨摂取量<small>Harris-Benedict式</small></h5>
-			<dl>
-				<dt>カロリー</dt><dd><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</dd>
-				<dt>タンパク質</dt><dd><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</dd>
-				<dt>脂質</dt><dd><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</dd>
-				<dt>食物繊維</dt><dd><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g以上</dd>
-				<dt>ビタミンA</dt><dd><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</dd>
-				<dt>ビタミンB1</dt><dd><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</dd>
-				<dt>ビタミンB2</dt><dd><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</dd>
-				<dt>ナイアシン</dt><dd><span id="intake-niacin">0</span> / <span id="need-niacin">0</span> mgNE</dd>
-				<dt>ビタミンB6</dt><dd><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</dd>
-				<dt>ビタミンB12</dt><dd><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</dd>
-				<dt>葉酸</dt><dd><span id="intake-folic_acid">0</span> / <span id="need-folic_acid">0</span> μg</dd>
-				<dt>パントテン酸</dt><dd><span id="intake-pantothenic_acid">0</span> / <span id="need-pantothenic_acid">0</span> mg</dd>
-				<dt>ビオチン</dt><dd><span id="intake-biotin">0</span> / <span id="need-biotin">0</span> μg</dd>
-				<dt>ビタミンC</dt><dd><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</dd>
-				<dt>ビタミンD</dt><dd><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</dd>
-				<dt>ビタミンE</dt><dd><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</dd>
-				<dt>ビタミンK</dt><dd><span id="intake-vitaminK">0</span> / <span id="need-vitaminK">0</span> μg</dd>
-				<dt>食塩相当量</dt><dd><span id="intake-Na">0</span> / <span id="need-Na">0</span> g</dd>
-				<dt>カリウム</dt><dd><span id="intake-K">0</span> / <span id="need-K">0</span> mg</dd>
-				<dt>カルシウム</dt><dd><span id="intake-Ca">0</span> / <span id="need-Ca">0</span> mg</dd>
-				<dt>マグネシウム</dt><dd><span id="intake-Mg">0</span> / <span id="need-Mg">0</span> mg</dd>
-				<dt>リン</dt><dd><span id="intake-P">0</span> / <span id="need-P">0</span> mg</dd>
-				<dt>鉄</dt><dd><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</dd>
-				<dt>亜鉛</dt><dd><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</dd>
-				<dt>銅</dt><dd><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</dd>
-				<dt>モリブデン</dt><dd><span id="intake-Mo">0</span> / <span id="need-Mo">0</span> μg</dd>
-				<dt>マンガン</dt><dd><span id="intake-Mn">0</span> / <span id="need-Mn">0</span> mg</dd>
-				<dt>セレン</dt><dd><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</dd>
-				<dt>ヨウ素</dt><dd><span id="intake-I">0</span> / <span id="need-I">0</span> μg</dd>
-				<dt>クロム</dt><dd><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</dd>
-				<!-- 必須アミノ酸 -->
-				<dt>トリプトファン</dt><dd><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</dd>
-				<dt>リジン</dt><dd><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</dd>
-				<dt>メチオニン</dt><dd><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</dd>
-				<dt>フェニルアラニン</dt><dd><span id="intake-Phe">0</span> / <span id="need-Phe">0</span> mg</dd>
-				<dt>スレオニン</dt><dd><span id="intake-Thr">0</span> / <span id="need-Thr">0</span> mg</dd>
-				<dt>バリン</dt><dd><span id="intake-Val">0</span> / <span id="need-Val">0</span> mg</dd>
-				<dt>ロイシン</dt><dd><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</dd>
-				<dt>イソロイシン</dt><dd><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</dd>
-				<dt>ヒスチジン</dt><dd><span id="intake-His">0</span> / <span id="need-His">0</span> mg</dd>
-			</dl>
+			<div class="nutrient-table">
+				<h5>本日の摂取量 / 推奨摂取量<small>Harris-Benedict式</small></h5>
+				<dl>
+					<dt>カロリー</dt><dd><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</dd>
+					<dt>タンパク質</dt><dd><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</dd>
+					<dt>脂質</dt><dd><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</dd>
+					<dt>食物繊維</dt><dd><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g以上</dd>
+					<dt>ビタミンA</dt><dd><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</dd>
+					<dt>ビタミンB1</dt><dd><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</dd>
+					<dt>ビタミンB2</dt><dd><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</dd>
+					<dt>ナイアシン</dt><dd><span id="intake-niacin">0</span> / <span id="need-niacin">0</span> mgNE</dd>
+					<dt>ビタミンB6</dt><dd><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</dd>
+					<dt>ビタミンB12</dt><dd><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</dd>
+					<dt>葉酸</dt><dd><span id="intake-folic_acid">0</span> / <span id="need-folic_acid">0</span> μg</dd>
+					<dt>パントテン酸</dt><dd><span id="intake-pantothenic_acid">0</span> / <span id="need-pantothenic_acid">0</span> mg</dd>
+					<dt>ビオチン</dt><dd><span id="intake-biotin">0</span> / <span id="need-biotin">0</span> μg</dd>
+					<dt>ビタミンC</dt><dd><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</dd>
+					<dt>ビタミンD</dt><dd><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</dd>
+					<dt>ビタミンE</dt><dd><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</dd>
+					<dt>ビタミンK</dt><dd><span id="intake-vitaminK">0</span> / <span id="need-vitaminK">0</span> μg</dd>
+					<dt>食塩相当量</dt><dd><span id="intake-Na">0</span> / <span id="need-Na">0</span> g</dd>
+					<dt>カリウム</dt><dd><span id="intake-K">0</span> / <span id="need-K">0</span> mg</dd>
+					<dt>カルシウム</dt><dd><span id="intake-Ca">0</span> / <span id="need-Ca">0</span> mg</dd>
+					<dt>マグネシウム</dt><dd><span id="intake-Mg">0</span> / <span id="need-Mg">0</span> mg</dd>
+					<dt>リン</dt><dd><span id="intake-P">0</span> / <span id="need-P">0</span> mg</dd>
+					<dt>鉄</dt><dd><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</dd>
+					<dt>亜鉛</dt><dd><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</dd>
+					<dt>銅</dt><dd><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</dd>
+					<dt>モリブデン</dt><dd><span id="intake-Mo">0</span> / <span id="need-Mo">0</span> μg</dd>
+					<dt>マンガン</dt><dd><span id="intake-Mn">0</span> / <span id="need-Mn">0</span> mg</dd>
+					<dt>セレン</dt><dd><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</dd>
+					<dt>ヨウ素</dt><dd><span id="intake-I">0</span> / <span id="need-I">0</span> μg</dd>
+					<dt>クロム</dt><dd><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</dd>
+					<!-- 必須アミノ酸 -->
+					<dt>トリプトファン</dt><dd><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</dd>
+					<dt>リジン</dt><dd><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</dd>
+					<dt>メチオニン</dt><dd><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</dd>
+					<dt>フェニルアラニン</dt><dd><span id="intake-Phe">0</span> / <span id="need-Phe">0</span> mg</dd>
+					<dt>スレオニン</dt><dd><span id="intake-Thr">0</span> / <span id="need-Thr">0</span> mg</dd>
+					<dt>バリン</dt><dd><span id="intake-Val">0</span> / <span id="need-Val">0</span> mg</dd>
+					<dt>ロイシン</dt><dd><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</dd>
+					<dt>イソロイシン</dt><dd><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</dd>
+					<dt>ヒスチジン</dt><dd><span id="intake-His">0</span> / <span id="need-His">0</span> mg</dd>
+				</dl>
+			</div>
 			<div id="select-menu">
 				<p>メニューを選択することで本日の摂取量の項目に栄養分が加算されます。</p>
 				<h4>あなたの朝食</h4>
@@ -196,7 +201,7 @@
 		<p>
 			ビタミンA: レチノール活性当量(μgRAE)に変換してください。
 			β-カロテン(μg): 1/12、α-カロテン(μg): 1/24、β-クリプトキサンチン(μg): 1/24、その他のプロビタミンAカロテノイド(μg): 1/24を乗算の後、加算してください。<br>
-			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、40/23倍してください。
+			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、58.5/23倍してください。
 		</p>
 </footer>
 	<script src="index.js"></script>

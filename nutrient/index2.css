@@ -1,0 +1,455 @@
+body {
+  background-color: #EEEEEE;
+  margin: 0.5rem;
+}
+
+header, main, footer {
+  width: 100vw;
+}
+
+header h1 {
+  background-color: #277;
+  color: white;
+  border: ridge 0.4rem #277;
+  padding: 0.25rem;
+  text-align: center;
+  font-size: 2rem;
+  text-shadow: 0.1rem 0.1rem 0.1rem #aaa;
+  margin: 0.5rem;
+}
+header h1 > a {
+  text-decoration: none;
+  color: white;
+}
+header p {
+  text-align: center;
+  font-size: 0.8rem;
+  margin: 1rem 0 0.8rem;
+}
+header .explain-toggle-close > * {
+  display: none;
+}
+header .explain-toggle-close h5 {
+  display: block;
+}
+header .explain-toggle-close h5 > span {
+  transform: rotate(28deg);
+}
+header .explain-toggle-open > * {
+  display: block;
+}
+header .explain-toggle-open h5 > span {
+  transform: rotate(0deg);
+}
+header article {
+  margin: 0px 4.8rem 1rem;
+}
+header article h5 {
+  font-size: 1rem;
+  color: #aaa;
+  text-shadow: 1px 1px 1px #444;
+  margin: 1rem 0 0;
+  padding: 0 0 0 1.5rem;
+  background: linear-gradient(130deg, #e0e0e0, #bbb);
+  cursor: pointer;
+  position: relative;
+  border-radius: 0 1em 0 0;
+}
+header article h5 span {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.3rem;
+  text-shadow: none;
+  color: #999;
+}
+header article div {
+  padding: 0.2rem 3rem;
+  border: solid 1px #ccc;
+  border-top: dotted 1px #eee;
+  background-color: #e0e0e0;
+}
+header article div ol {
+  border: solid 1px black;
+  background-color: white;
+  font-size: 1rem;
+  width: 40rem;
+  padding: 0.5rem 0 0.5rem 2.1rem;
+  margin: 0px auto 1rem;
+}
+header article div ol span {
+  text-shadow: 1px 1px 1px black;
+}
+header article div .explain-this-site {
+  text-align: center;
+  font-size: 0.8rem;
+}
+header article div .explain-this-site img {
+  display: inline-block;
+  width: 11rem;
+  height: 8rem;
+  margin: 0.2rem 0.3rem;
+}
+
+#your-nutrient {
+  width: 94vw;
+  margin: 0 auto;
+  border-radius: 0.6rem;
+  background-color: black;
+  border: solid 0.1rem gray;
+}
+#your-nutrient .nutrient-table {
+  border-radius: 0.3rem;
+  background-color: #222;
+  width: 56.6rem;
+  margin: 0.2rem auto 0.6rem;
+}
+#your-nutrient .nutrient-table > h5 {
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  margin: 0;
+  padding: 0.6rem 1.2rem 0;
+  font-weight: 400;
+  width: 54rem;
+}
+#your-nutrient .nutrient-table > h5 > small {
+  display: inline-block;
+  padding: 0 0 0 0.6rem;
+}
+#your-nutrient .nutrient-table > dl {
+  margin: 0;
+  padding: 0.6rem;
+  overflow: hidden;
+  width: 55.3rem;
+  font-size: 0.8rem;
+}
+#your-nutrient .nutrient-table > dl dt {
+  border-radius: 0.3rem 0 0 0.3rem;
+  margin: 0.1rem 0 0.1rem 0.1rem;
+  padding: 0.3rem 0 0px 0.3rem;
+  background-color: #444;
+  color: #ddf;
+  float: left;
+  text-align: left;
+  width: 7rem;
+  height: 1.5rem;
+}
+#your-nutrient .nutrient-table > dl dd {
+  border-radius: 0 0.3rem 0.3rem 0;
+  margin: 0.1rem 0.1rem 0.1rem 0;
+  padding: 0.3rem 0.3rem 0px 0px;
+  background-color: #444;
+  color: #bbf;
+  float: left;
+  text-align: right;
+  width: 10.6rem;
+  height: 1.5rem;
+}
+#your-nutrient #your-abstract {
+  cursor: pointer;
+  background-color: #422;
+  color: ivory;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 1rem;
+  padding: 0.3rem 1rem;
+  box-shadow: 0.1rem 0.1rem #866;
+}
+#your-nutrient #your-input-area {
+  background-color: #422;
+  color: ivory;
+  border: solid 0.2rem silver;
+  padding: 0.7rem 0 0 1.7rem;
+  width: 51.3rem;
+  height: 20.7rem;
+  margin: 2rem auto;
+  position: relative;
+  overflow: visible;
+}
+#your-nutrient #your-input-area > h4 {
+  position: absolute;
+  top: -1rem;
+  left: -1.2rem;
+  margin: 0;
+  padding: 0.1rem 0.3rem;
+  font-size: 1rem;
+  border: solid 0.2rem silver;
+  background: #422;
+  z-index: 2;
+}
+#your-nutrient #your-input-area > .fundamental {
+  display: block;
+  float: left;
+  margin: 1rem 0.2rem 0.2rem;
+  width: 4.8rem;
+  height: 2.5rem;
+  z-index: 2;
+}
+#your-nutrient #your-input-area > .fundamental > input[type=number] {
+  background: #200;
+  border: solid 1px #999;
+  border-top: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+  width: 2.8rem;
+  color: white;
+  text-align: right;
+}
+#your-nutrient #your-input-area > .fundamental#only-female-fieldset {
+  width: 18.5rem;
+}
+#your-nutrient #your-input-area > fieldset {
+  display: block;
+  float: left;
+  font-size: 0.8rem;
+  margin: 0.6rem 0.2rem 0.2rem;
+  width: 47rem;
+  z-index: 2;
+}
+#your-nutrient #your-input-area > button {
+  font-size: 1rem;
+  position: absolute;
+  bottom: -1rem;
+  right: -1.2rem;
+  background: #644;
+  width: 12.5rem;
+  color: silver;
+  text-shadow: 1px 1px 1px #422;
+  cursor: pointer;
+  z-index: 3;
+}
+#your-nutrient #select-menu {
+  background-color: #333;
+  color: wheat;
+  padding: 0.3rem;
+  margin: 0.6rem;
+  border-radius: 0.2rem;
+}
+#your-nutrient #select-menu > p {
+  margin: 0.2rem 0 0 0.6rem;
+  font-size: 1rem;
+}
+#your-nutrient #select-menu h4 {
+  margin: 1.2rem 0.2rem 0;
+}
+#your-nutrient #select-menu ul {
+  margin: 0.3rem;
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+}
+#your-nutrient #select-menu ul li {
+  float: left;
+  margin: 0.2rem 0.4rem;
+}
+
+#button-section {
+  border: solid 2px gray;
+  border-radius: 10px;
+  margin: 12px;
+  padding: 10px;
+  text-align: center;
+  background-color: black;
+}
+#button-section button {
+  background-color: white;
+  width: 180px;
+  margin: 6px 10px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px #aaa;
+  cursor: pointer;
+}
+#button-section button:active {
+  background-color: #eee;
+  box-shadow: -1px -1px 1px #aaa;
+}
+#button-section #create-menu-button {
+  border: solid 2px #aa6;
+  color: #884;
+}
+#button-section #create-material-button {
+  border-color: #3c3;
+  color: #595;
+}
+
+#section-selecter {
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+#section-selecter #hide-button {
+  padding: 5px;
+  margin: 0 0 0 calc(50% + (920px - 40px)/2);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+#section-selecter #hide-button2 {
+  display: block;
+  background-color: white;
+  border: solid 2px gray;
+  border-radius: 20px;
+  color: gray;
+  font-size: 16px;
+  margin: 8px auto 0;
+  padding: 5px 30px;
+  cursor: pointer;
+}
+#section-selecter #menu-creator {
+  background-color: #bb4;
+  color: #bb2;
+}
+#section-selecter #menu-creator > h5 {
+  background: linear-gradient(180deg, #882, #660);
+}
+#section-selecter #menu-creator #menu-serving {
+  border-radius: 5px;
+  width: 32px;
+  border: none;
+}
+#section-selecter #menu-creator ul {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+#section-selecter #menu-creator ul li {
+  list-style: none;
+  border-radius: 5px;
+  margin: 5px 12px;
+  padding: 8px;
+  background-color: #6b3;
+  float: left;
+}
+#section-selecter #menu-creator > ul select {
+  width: 250px;
+  border-radius: 2px;
+}
+#section-selecter #menu-creator > ul input {
+  width: 70px;
+  border: none;
+  border-radius: 2px;
+  margin: 0 0 0 10px;
+  height: 16px;
+  text-align: right;
+}
+#section-selecter #menu-creator #menu-suggestion {
+  background-color: #aa4;
+  color: #ed0;
+  margin: 8px auto 0px;
+  width: 880px;
+  padding: 8px 0 0 10px;
+  border-radius: 5px 5px 0 0;
+  font-weight: normal;
+}
+#section-selecter #menu-creator > dl {
+  background-color: #aa4;
+}
+#section-selecter #menu-creator > dl dt, #section-selecter #menu-creator > dl dd {
+  background-color: #885;
+  color: #eee;
+}
+#section-selecter #menu-creator button {
+  border: solid 2px #cc8;
+  color: #995;
+}
+#section-selecter #menu-creator, #section-selecter #material-creator {
+  text-shadow: 1px 1px 1px black;
+  width: 920px;
+  margin: 5px auto 0;
+  padding: 5px;
+  border-radius: 10px;
+}
+#section-selecter #menu-creator > h5, #section-selecter #material-creator > h5 {
+  width: 260px;
+  margin: 1px 2px 5px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+#section-selecter #menu-creator button, #section-selecter #material-creator button {
+  background-color: white;
+  margin: 6px 10px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px #aa6;
+}
+#section-selecter #menu-creator button:disabled, #section-selecter #material-creator button:disabled {
+  filter: grayscale(50);
+  box-shadow: none;
+}
+#section-selecter #menu-creator dl, #section-selecter #material-creator dl {
+  margin: 0 auto;
+  padding: 5px;
+  overflow: auto;
+  width: 880px;
+  border-radius: 0 0 5px 5px;
+}
+#section-selecter #menu-creator > dl dt, #section-selecter #menu-creator > dl dd, #section-selecter #material-creator > dl dt, #section-selecter #material-creator > dl dd {
+  text-shadow: none;
+}
+#section-selecter #menu-creator > dl dt, #section-selecter #material-creator dt {
+  border-radius: 5px 0 0 5px;
+  margin: 2px 0 2px 2px;
+  padding: 5px 0 0px 5px;
+  background-color: #ddd;
+  font-size: 12px;
+  color: #224;
+  float: left;
+  text-align: left;
+  width: 130px;
+  height: 25px;
+}
+#section-selecter #menu-creator > dl dd, #section-selecter #material-creator dd {
+  border-radius: 0 5px 5px 0;
+  margin: 2px 2px 2px 0;
+  padding: 5px 5px 0px 0px;
+  background-color: #ddd;
+  color: #448;
+  float: left;
+  text-align: right;
+  width: 76px;
+  height: 25px;
+}
+#section-selecter #material-creator {
+  background-color: #8d8;
+  color: #3c3;
+}
+#section-selecter #material-creator > h5 {
+  background: linear-gradient(180deg, #282, #060);
+}
+#section-selecter #material-creator button {
+  border-color: #3c3;
+  color: #595;
+}
+#section-selecter #material-creator input[type=number] {
+  border-radius: 5px;
+  width: 60px;
+  border: none;
+}
+#section-selecter #material-creator #material-suggestion {
+  margin: 8px auto 0px;
+  width: 880px;
+  background-color: #666;
+  padding: 8px 0 0 10px;
+  border-radius: 5px 5px 0 0;
+  font-weight: normal;
+  color: #8d8;
+}
+#section-selecter #material-creator dl {
+  background-color: #666;
+  color: #060;
+  margin: 0 auto;
+  overflow: auto;
+  text-shadow: none;
+}
+
+footer p {
+  margin: 0.5rem;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=index2.css.map */

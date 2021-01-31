@@ -143,10 +143,10 @@ $(()=>{
 		rtn += '</table>';
 		// 最後まで答えたら、どのタイプっぽいか教えてあげる
 		if (your_point_tbl.choice.length == full_question_tbl.length) {
-			rtn += '<table class="type-result-table"><tr><th></th>';
+			rtn += '<table class="type-result-table"><tr><th>タイプ</th>';
 			let your_point_html = '';
 		 	for (let i=1; i <= 9; i++) {
-				rtn += `<th>type${i}</th>`;
+				rtn += `<th>${i}</th>`;
 				your_point_html += `<td>${your_point_tbl["type"+i]}</td>`;
 			}
 			rtn += '</tr><tr><th>傾向度</th>'+your_point_html+'</tr></table>';

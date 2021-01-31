@@ -49,9 +49,9 @@ header p{
 }
 #question-output p > button{
 	border-radius: 0.8rem;
-	padding: 0.8rem;
-	margin: 0.8rem;
-	width: 13rem;
+	padding: 1rem 0;
+	margin: 1rem 0.5vw;
+	width: 46vw;
 	font-size: 1rem;
 	box-shadow: 0.1rem 0.1rem 0.1rem #333;
 	cursor: pointer;
@@ -113,13 +113,14 @@ header p{
 	color: #222;
 }
 .type-result-table th{
-	padding: 1px 0.2rem;
+	padding: 1px 0.1rem;
 	font-weight: normal;
 }
 .type-result-table td{
 	text-align: center;
 	background-color: ivory;
 	color: black;
+	min-width: 8vw;
 }
 #result-output h5{
 	margin: 0.5rem 0 0;

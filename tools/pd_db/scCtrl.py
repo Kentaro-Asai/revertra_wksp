@@ -12,10 +12,10 @@ import connectSql2 as connectSql
 #	python scCtrl.py
 # input ary to get monster data
 ps = scraper.PdScraper()
-#rtn = ps.request(6197, 6223)
-mns_num_list = list(range(6802, 6813 +1))
+#rtn = ps.request(6832, 6888)
+#mns_num_list = list(range(6832, 6888 +1))
 #mns_num_list = list(range(3539, 3549, 2))
-#mns_num_list = [1782, 2510, 2511, 2512, 2513, 3374, 3375, 3376, 3377, 3378, 3379]
+mns_num_list = [6892, 6893, 6894, 6895, 6896, 6897, 6898, 6899, 6900, 5639, 5641, 5647, 6889, 5654, 6890, 5653, 6891, 5640, 5644, 5645, 5648, 5652, 5655, 5658, 5661, 5664, 5665, 5643, 5650, 5651, 5657, 5646, 5649, 5659, 5660, 5662, 5663, 5666, 5667, 5669]
 print(mns_num_list)
 rtn = ps.request(mns_num_list, 0)
 #rtn = ps.request(6345, 6349)
