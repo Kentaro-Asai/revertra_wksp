@@ -1,5 +1,5 @@
 $(function(){
-	const unselect_option = '- 選択してください -';
+	const unselect_option = '- 選択 -';
 	const standard_nutrient = {
 		calory: {unit:'kcal', label:'カロリー'},
 		carbo: {unit:'g', label:'糖質'},
@@ -201,6 +201,8 @@ $(function(){
 			Ile:{dose:20,unit:'mg',label: "イソロイシン"}, His:{dose:10,unit:'mg',label: "ヒスチジン"}, Lys:{dose:45,unit:'mg',label: "リジン"}
 		}
 	};
+	//一食分(1/3日分)の必要量を一時保存
+	let need_nutrients = {};
 
 	//data in localStorage
 	// body_parameter = {gender: "", height:160, ...}
@@ -236,6 +238,7 @@ $(function(){
 		localStorage.setItem('body_parameter', JSON.stringify(body_parameter));
 	});
 
+	// need_nutrient変数の値も作成
 	const bodyParameterView = (body_parameter)=>{
 		const gender = body_parameter.gender.substr(body_parameter.gender.indexOf('-') + 1);
 		let wanted_energy = 0;
@@ -254,6 +257,7 @@ $(function(){
 			else if ('lactating' == body_parameter.pregnantStage) wanted_energy += 350;
 		}
 		$('#need-calory').html(Math.round(wanted_energy));
+		need_nutrients.colory = wanted_energy / 3;
 		//タンパク質必要量
 		let need_protein = 10 * parseFloat($('#your-nutrient input[name="accelerate-protein"]:checked').val()) * body_parameter.weight / 10;
 		if ('gender-female' == body_parameter.gender) {
@@ -263,9 +267,11 @@ $(function(){
 			else if ('lactating' == body_parameter.pregnantStage) need_protein += 20;
 		}
 		$('#need-protein').html(need_protein);
+		need_nutrients.protein = need_protein / 3;
 		//脂質必要量
 		const need_oil = Math.round(wanted_energy * 25 / 90) / 10;
 		$('#need-oil').html((need_oil <= 2.5 * body_parameter.weight) ? need_oil : (2.5 * body_parameter.weight));
+		need_nutrients.oil = parseFloat($('#need-oil').html()) / 3;
 		//食物繊維必要量
 		const dietaly_fiber_table = {
 			male: {7:11, 9:12, 11:13, 14:17, 17:19, 29:20, 49:20, 69:20, 70:19},
@@ -276,7 +282,8 @@ $(function(){
 			need_fiber = dietaly_fiber_table[gender][i];
 			if (body_parameter.age <= i) break;
 		}
-		$('#need-fiber').html(need_fiber);
+		$('#need-fiber').html(need_fiber + '～');
+		need_nutrients.fiber = need_fiber / 3;
 		//ビタミン
 		//https://www.fukushihoken.metro.tokyo.lg.jp/kensui/ei_syo/katsuyou/ichinichi_eiyo/vitamin.html
 		//https://www.tyojyu.or.jp/net/kenkou-tyoju/eiyouso/vitamin-b6.html
@@ -287,6 +294,7 @@ $(function(){
 				if (body_parameter.age <= i) break;
 			}
 			$('#need-' + genre).html(age_nutrient[0] + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
+			need_nutrients[genre] = age_nutrient[0] / 3;
 		}
 		//ミネラル
 		// https://jp.glico.com/navi/e07-3.html
@@ -297,12 +305,14 @@ $(function(){
 				if (body_parameter.age <= i) break;
 			}
 			$('#need-' + genre).html((0 == age_nutrient[0] ? '' : age_nutrient[0]) + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
+			need_nutrients[genre] = age_nutrient[0] / 3;
 		}
 		//必須アミノ酸
 		// https://www.orthomolecular.jp/nutrition/amino/
 		let amino_acid_ary = nutrient_table.amino_acid;
 		for (let a in amino_acid_ary) {
 			$('#need-' + a).html(amino_acid_ary[a].dose);
+			need_nutrients[a] = amino_acid_ary[a].dose / 3;
 		}
 	}; 
 	
@@ -357,27 +367,27 @@ $(function(){
 		const menu_str = localStorage.getItem('menu');
 		if (!!menu_str) {
 			const menu_ary = JSON.parse(menu_str);
-			//選択されているメニューを取得する
+			//選択されている料理を取得する
 			for (let selected_menu of $('#select-menu select')) {
 				let select_option = '<option>'+unselect_option+'</option>';
 				for (const a_menu of menu_ary) {
-					select_option += `<option ${a_menu.name == selected_menu.value ? 'selected': ''}>${a_menu.name}</option>`;
+					select_option += `<option ${a_menu.name == selected_menu.value ? 'selected':''}>${a_menu.name}</option>`;
 				}
 				selected_menu.innerHTML = select_option;
 			}
 			const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
-			$('#menu-creator-select').html('<option>新規メニュー</option>' + sel_menu_str);
+			$('#menu-creator-select').html(sel_menu_str);
 		} else {
-			$('#select-menu select').html('<option>- メニューが登録されていません -</option>');
-			$('#menu-creator-select').html('<option>新規メニュー</option>');
-			$('#menu-change-button').attr('disabled', 'disabled');
-			$('#menu-delete-button').attr('disabled', 'disabled');
+			$('#select-menu select').html('<option>- 料理が登録されていません -</option>');
+			//$('#menu-creator-select').html('<option>新規料理</option>');
+			$('#menu-change-button').css('display', 'none');
+			$('#menu-delete-button').css('display', 'none');
 		}
 	};
 
 	//引数と現在の状況に合わせて中身を作り変える。引数にパラメータがあればそれを反映、無ければ今ある値を取得してそれを追加
 	const setMaterialsInMenu = (request_material_ary)=>{
-		let mim_select_option = '';
+		let mim_select_option = `<option>${unselect_option}</option>`;
 		const material_str = localStorage.getItem('materials');
 		if (!!material_str) {
 			const materials_ary = JSON.parse(material_str);
@@ -389,13 +399,13 @@ $(function(){
 						for (let a_material of materials_ary) {
 							select_view += `<option ${a_material.name == v.name ? 'selected' : ''}>${a_material.name}</option>`;
 						}
-						select_view += '</select><input type="number" class="mim-weight" value="'+v.weight+'" placeholder="グラム数を入力" /> g</li>';
+						select_view += `</select><input type="number" class="mim-weight" value="${v.weight}" placeholder="グラム数を入力" /> g</li>`;
 					}
 				}
 				$('#materials-in-menu').html(select_view);
-				mim_select_option = materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
+				mim_select_option += materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
 				$('#materials-in-menu').append( '<li>'
-				+ '<select class="mim-select"><option>'+unselect_option+'</option>' + mim_select_option + '</select>'
+				+ '<select class="mim-select">' + mim_select_option + '</select>'
 				+ '<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g' + '</li>'
 				);
 				return request_material_ary;
@@ -413,18 +423,18 @@ $(function(){
 				});
 				if (0 < request_ary.length && request_ary.length == $('#materials-in-menu li').length) {
 					//追加途中なのでemptyを追加
-					mim_select_option = materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
+					mim_select_option += materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
 					$('#materials-in-menu').append( '<li>'
-					+ '<select class="mim-select"><option>'+unselect_option+'</option>' + mim_select_option + '</select>'
+					+ '<select class="mim-select">' + mim_select_option + '</select>'
 					+ '<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g' + '</li>'
 					);
 				} else if (0 < request_ary.length) {
 					//入力がハンパなので何もしない
 				} else {
 					// this is empty
-					mim_select_option = materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
+					mim_select_option += materials_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
 					$('#materials-in-menu').html( '<li>'
-					+ '<select class="mim-select"><option>'+unselect_option+'</option>' + mim_select_option + '</select>'
+					+ '<select class="mim-select">' + mim_select_option + '</select>'
 					+ '<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g' + '</li>'
 					);
 				}
@@ -436,35 +446,56 @@ $(function(){
 	(function setMenu(){
 		setYourMenu();
 		setMaterialsInMenu([]);
-		$('#menu-change-button').attr('disabled', 'disabled');
-		$('#menu-delete-button').attr('disabled', 'disabled');
-		$('#menu-suggestion').html('');
+		$('#menu-creator-select').css('display', 'none');
+		$('#menu-change-button').css('display', 'none');
+		$('#menu-delete-button').css('display', 'none');
 	})();
 
+	//mimの中を空にするボタンがいるかも
+
 	$('#menu-creator-select').on('change', (e)=>{
-		if ('新規メニュー' == e.target.value) {
-			$('#menu-name').removeAttr('disabled').attr('placeholder', '新規素材名');
-			$('#menu-regist-button').removeAttr('disabled');
-			$('#menu-change-button').attr('disabled', 'disabled');
-			$('#menu-delete-button').attr('disabled', 'disabled');
-			let material_ary = setMaterialsInMenu('');
-			$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
-			setMenuNutrients(material_ary);
-		} else {
-			$('#menu-name').attr('disabled', 'disabled').attr('placeholder', '');
-			$('#menu-suggestion').html('' == e.target.value ? '' : (e.target.value + 'の栄養素（1人前分）'));
+		//let material_ary = setMaterialsInMenu('');
+		//setMenuNutrients(material_ary);
+		setMenuParameter($('#menu-creator-select').val());
+	});
+
+	$('#menu-register, #menu-change').on('click', ()=>{
+		const menu_form_ary = {
+			'menu-register': ['#menu-name', '#menu-regist-button'],
+			'menu-change': ['#menu-creator-select', '#menu-change-button', '#menu-delete-button']
+		};
+		const target_id = $('input[name="menu-crud"]:checked').attr('id');
+		for (const key in menu_form_ary) {
+			for (const v of menu_form_ary[key]) {
+				$(v).css('display', (key == target_id ? 'inline-block' : 'none'));
+			}
+		}
+		if ('menu-change' == target_id) {
 			setMenuParameter($('#menu-creator-select').val());
-			$('#menu-name').val('');
-			$('#menu-regist-button').attr('disabled', 'disabled');
-			$('#menu-change-button').removeAttr('disabled');
-			$('#menu-delete-button').removeAttr('disabled');
+		}
+	});
+
+	$('#material-register, #material-change').on('click', ()=>{
+		const material_form_ary = {
+			'material-register': ['#material-name', '#material-regist-button'],
+			'material-change': ['#material-select', '#material-change-button', '#material-delete-button']
+		};
+		const target_id = $('input[name="material-crud"]:checked').attr('id');
+		for (const key in material_form_ary) {
+			for (const v of material_form_ary[key]) {
+				$(v).css('display', (key == target_id ? 'inline-block' : 'none'));
+			}
+		}
+		$('#material-suggestion').html(`${'material-register' == target_id ? '新規素材' : $('#material-select').val()} ${$('#material-weight').val()}グラム当たりの素材の栄養素`);
+		if ('material-change' == target_id) {
+			setMaterialParameter($('#material-select').val());
 		}
 	});
 
 	$('#menu-name, #menu-serving').on('change, input', ()=>{
 		let material_ary = setMaterialsInMenu([]);
 		if (0 < material_ary.length) {
-			$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
+			//$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
 			setMenuNutrients(material_ary);
 		}
 	});
@@ -480,16 +511,16 @@ $(function(){
 		}
 		//どちらか入力できていない場合は呼ばない
 		let material_ary = setMaterialsInMenu([]);
-		$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
+		//$('#menu-suggestion').html( (material_ary.length && !!$('#menu-name').val()) ? ($('#menu-name').val() + 'の栄養素（1人前分）') : '');
 		setMenuNutrients(material_ary);
 	});
 
 	const getMaterialsInMenu = ()=>{
 		let rtn = {
 			name: $('#menu-name').val(),
+			serving: parseFloat($('#menu-serving').val()),
 			materials: []
 		};
-		const serving = parseFloat($('#menu-serving').val());
 		const menu_ary = JSON.parse(localStorage.getItem('menu'));
 		const materials_str = localStorage.getItem('materials');
 		if (!!materials_str) {
@@ -504,15 +535,15 @@ $(function(){
 					if ($(v).children('select').val() == a_material.name) {
 						new_material = {
 							name: a_material.name,
-							weight: new_material_weight / serving,
+							weight: new_material_weight,
 							nutrients: {}
 						};
 						for (const nutrient_category in a_material.nutrients) {
-							new_material.nutrients[nutrient_category] = maxNumberDisplay(a_material.nutrients[nutrient_category] * new_material_weight / a_material.weight / serving, 6);
+							new_material.nutrients[nutrient_category] = maxNumberDisplay(a_material.nutrients[nutrient_category] * new_material_weight / a_material.weight / rtn.serving, 6);
 						}
 					}
 				}
-				//昔登録した素材（今は存在していない）の値を既存メニューから取得
+				//昔登録した素材（今は存在していない）の値を既存料理から取得
 				if (!new_material.name) {
 					const selected_menu_name = $('#menu-creator-select').val();
 					for (let a_menu of menu_ary) {
@@ -526,7 +557,7 @@ $(function(){
 						}
 					}
 				}
-				if (0 != new_material_weight || unselect_option == $(v).children('select').val()) rtn.materials.push(new_material);
+				if (0 != new_material_weight && unselect_option != $(v).children('select').val()) rtn.materials.push(new_material);
 			});
 		}
 		return rtn;
@@ -540,105 +571,101 @@ $(function(){
 		//栄養分を集計
 		let nutrient_add_up = {};
 		if (!!registed_materials) {
-			for (let a_registed_material of registed_materials) {
-				for (let a_material of material_ary) {
+			for (let a_material of material_ary) {
+				let exist_flg = false;
+				for (let a_registed_material of registed_materials) {
 					if (a_material.name == a_registed_material.name) {
+						exist_flg = true;
 						for (let key in a_registed_material.nutrients) {
 							if (!nutrient_add_up[key]) nutrient_add_up[key] = 0;  
 							nutrient_add_up[key] += parseFloat(a_registed_material.nutrients[key]) * parseFloat(a_material.weight) / parseFloat(a_registed_material.weight);
 						}
 					}
 				}
+				if (!exist_flg) {
+					for (let key in a_material.nutrients) {
+						if (!nutrient_add_up[key]) nutrient_add_up[key] = 0;  
+						nutrient_add_up[key] += parseFloat(a_material.nutrients[key]) * parseFloat(a_material.weight) / parseFloat(a_material.weight);
+					}
+				}
 			}
 		}
 		//栄養分を表示
 		for (let category in standard_nutrient) {
+			const a_nutrient_value = maxNumberDisplay(nutrient_add_up[category] / serving, 6);
+			const a_nutrient_rate = !!need_nutrients[category] ? maxNumberDisplay(100 * a_nutrient_value / need_nutrients[category], 2) : '-';
 			rtn += `<dt>${standard_nutrient[category].label}(${standard_nutrient[category].unit})</dt>`
-			+`<dd class="${category}">${maxNumberDisplay(nutrient_add_up[category] / serving, 6)}</dd>`;
+			+`<dd class="${category}">${a_nutrient_value} (${a_nutrient_rate}%)</dd>`;
 		}
 		for (let genre in nutrient_table) {
-			for (let i in nutrient_table[genre]) {
-				rtn += `<dt>${nutrient_table[genre][i].label} (${nutrient_table[genre][i].unit})</dt>`
-				+`<dd class="${i}">${maxNumberDisplay(nutrient_add_up[i] / serving, 6)}</dd>`;
+			for (let nutrient_name in nutrient_table[genre]) {
+				const a_nutrient_value = maxNumberDisplay(nutrient_add_up[nutrient_name] / serving, 6);
+				const a_nutrient_rate = !!need_nutrients[nutrient_name] ? maxNumberDisplay(100 * a_nutrient_value / need_nutrients[nutrient_name], 2) : '-';
+				rtn += `<dt>${nutrient_table[genre][nutrient_name].label} (${nutrient_table[genre][nutrient_name].unit})</dt>`
+				+`<dd class="${nutrient_name}">${a_nutrient_value} (${a_nutrient_rate}%)</dd>`;
 			}
 		}
-		$('#menu-creator > dl').html(rtn);
+		$('#menu-creator > div > dl').html(rtn);
 	};
 
 	$('#menu-regist-button').on('click', ()=>{
 		let registed_menu = getMaterialsInMenu();
-		if ('' == registed_menu.name) return alert('メニュー名がありません。');
+		if ('' == registed_menu.name) return alert('料理名がありません。');
 		if (0 == registed_menu.materials) return alert('素材がありません。');
 		const menu_str = localStorage.getItem('menu');
 		if (!!menu_str) {
 			let menu_ary = JSON.parse(menu_str);
 			//重複があるか確認すべきだろうか？
 			for (a_menu of menu_ary) {
-				if (a_menu.name == registed_menu.name) return alert('メニュー名が重複しています。');
+				if (a_menu.name == registed_menu.name) return alert('料理名が重複しています。');
 			}
 			menu_ary.push(registed_menu);
 			localStorage.setItem('menu', JSON.stringify(menu_ary));
 		} else {
 			localStorage.setItem('menu', JSON.stringify([registed_menu]));
 		}
-		alert('メニューを登録しました。');
-		//登録したらメニューのセレクトに登録
+		alert('料理を登録しました。');
+		//登録したら料理のセレクトに登録
 		setYourMenu();
 		//表示初期化
 		$('#menu-name').val('');
-		$('#menu-suggestion').html('');
 		setMaterialsInMenu(null);
-		$('#menu-creator dl dd').html('0');
+		$('#menu-creator dl dd').html('0(-%)');
 	});
 
-	//引数のメニュー名の栄養素を表示
+	//引数の料理名の栄養素を表示
 	const setMenuParameter = (menu_name)=>{
 		const menu_str = localStorage.getItem('menu');
 		if (!menu_str) return;
 		const menu_ary = JSON.parse(menu_str);
-		const serving = parseFloat($('#menu-serving').val());
-		let added_nutrient = '';
 		for (let a_menu of menu_ary) {
 			if (menu_name == a_menu.name) {
+				$('#menu-serving').val(a_menu.serving || "1");
 				//materials-in-menuの中身を無くして、新しく追加
 				setMaterialsInMenu(a_menu.materials);
-				//栄養分を集計
-				let nutrient_add_up = {};
-				for (let a_material of a_menu.materials) {
-					for (let key in a_material.nutrients) {
-						if (!nutrient_add_up[key]) nutrient_add_up[key] = 0;  
-						nutrient_add_up[key] += parseFloat(a_material.nutrients[key]);
-					}
-				}
-				//栄養分を表示
-				for (let category in standard_nutrient) {
-					added_nutrient += `<dt>${standard_nutrient[category].label}(${standard_nutrient[category].unit})</dt>`
-					+`<dd class="${category}">${maxNumberDisplay(nutrient_add_up[category] / serving, 6)}</dd>`;
-				}
-				for (let genre in nutrient_table) {
-					for (let a_nutrient_name in nutrient_table[genre]) {
-						added_nutrient += `<dt>${nutrient_table[genre][a_nutrient_name].label} (${nutrient_table[genre][a_nutrient_name].unit})</dt>`
-						+`<dd class="${a_nutrient_name}">${maxNumberDisplay(nutrient_add_up[a_nutrient_name] / serving, 6)}</dd>`;
-					}
-				}
+				//栄養素の表示
+				setMenuNutrients(a_menu.materials);
 				break;
 			}
 		}
-		$('#menu-creator > dl').html(added_nutrient);
 	};
 
 	const setMaterialSelect = ()=>{
-		let material_select_option = '<option>新規素材</option>';
+		let material_select_option = ''; //'<option>新規素材</option>';
 		const materials_str = localStorage.getItem('materials');
 		if (!!materials_str) {
 			const materials_ary = JSON.parse(materials_str);
 			for (let v of materials_ary) {
 				material_select_option += `<option>${v.name}</option>`;
 			}
+			$('#material-change').removeAttr('disabled');
+		} else {
+			//素材が無い
+			$('#material-change').attr('disabled', 'disabled');
 		}
 		$('#material-select').html(material_select_option);
-		$('#material-change-button').attr('disabled', 'disabled');
-		$('#material-delete-button').attr('disabled', 'disabled');
+		$('#material-change-button').css('display', 'none');
+		$('#material-delete-button').css('display', 'none');
 	};
 
 	const setMaterialParameter = (selected_material)=>{
@@ -686,8 +713,8 @@ $(function(){
 	$('#select-menu').on('change', 'ul select', (e)=>{
 		const menu_str = localStorage.getItem('menu');
 		if (!menu_str) return;
-		const menu_ary = JSON.parse(menu_str);
-		//メニュー表示
+		let menu_ary = JSON.parse(menu_str);
+		//料理表示
 		let selected_menu = [];
 		for (let v of $('#select-menu ul select')) {
 			if (unselect_option == v.value) continue;
@@ -705,16 +732,17 @@ $(function(){
 		//栄養を加算しまくる
 		for (let v of selected_menu) {
 			for (let a_menu of menu_ary) {
+				if (!menu_ary.serving) menu_ary.serving = 1; //互換性確保
 				if (v == a_menu.name) {
 					for (let i=0; i < a_menu.materials.length; i++) {
 						for (let k in standard_nutrient) {
-							const additional_value = isNaN(a_menu.materials[i].nutrients[k]) ? 0 : a_menu.materials[i].nutrients[k];
+							const additional_value = isNaN(a_menu.materials[i].nutrients[k]) ? 0 : (a_menu.materials[i].nutrients[k] / menu_ary.serving);
 							const added_value = isNaN($('#intake-' + k).html()) ? 0 : $('#intake-' + k).html();
 							$('#intake-' + k).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
 						}
 						for (let genre in nutrient_table) {
 							for (let nutrient_name in nutrient_table[genre]) {
-								const additional_value = isNaN(a_menu.materials[i].nutrients[nutrient_name]) ? 0 : a_menu.materials[i].nutrients[nutrient_name];
+								const additional_value = isNaN(a_menu.materials[i].nutrients[nutrient_name]) ? 0 : (a_menu.materials[i].nutrients[nutrient_name] / menu_ary.serving);
 								const added_value = isNaN($('#intake-' + nutrient_name).html()) ? 0 : $('#intake-' + nutrient_name).html();
 								$('#intake-'+nutrient_name).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
 							}
@@ -724,7 +752,7 @@ $(function(){
 			}
 		}
 		//色を変更
-		for (let v of $('#your-nutrient dd')) {
+		for (let v of $('#your-nutrient li > p')) {
 			const need_param = $(v).children('span')[1].innerHTML;
 			const range_param = {
 				quota: -1 != need_param.indexOf('～') ? parseFloat(need_param.substr(0, need_param.indexOf('～'))) : parseFloat(need_param),
@@ -746,7 +774,7 @@ $(function(){
 				$('#' + intake_id).css('color', range_param.quota <= your_intake_param ? '#6b6' : 'red');
 			}
 		}
-		//もしunselectが無ければ、メニューを追加
+		//もしunselectが無ければ、料理を追加
 		let exist_unselect = false;
 		for (let v of $('.' + e.target.className)) {
 			if (unselect_option == v.value) exist_unselect = true;
@@ -762,7 +790,7 @@ $(function(){
 		$(this).select();
 	});
 
-	//メニュー変更、メニュー消去ボタン
+	//料理変更、料理消去ボタン
 	$('#menu-change-button, #menu-delete-button').on('click', (e)=>{
 		const button_id = e.target.id;
 		const menu = localStorage.getItem('menu');
@@ -782,28 +810,18 @@ $(function(){
 			}
 		}
 		localStorage.setItem('menu', JSON.stringify(changed_menu_ary));
-		alert(registed_menu.name + '\n' + ("menu-change-button" == button_id ? 'メニューを変更しました。' : 'メニューを消去しました。'));
+		alert(registed_menu.name + '\n' + ("menu-change-button" == button_id ? '料理を変更しました。' : '料理を消去しました。'));
 		setYourMenu();
 		//表示初期化
-		$('#menu-name').val('');
-		$('#menu-suggestion').html('');
+		$('#menu-name').val('').css('display', 'inline-block');
+		$('#menu-creator-select').css('display', 'none');
 		setMaterialsInMenu(null);
 		$('#menu-creator dl dd').html('0');
+		document.getElementById('menu-register').checked  = true;
 	});
 
 	$('#material-select').on('change',(e)=>{
-		if ('新規素材' == e.target.value) {
-			$('#material-name').removeAttr('disabled').attr('placeholder', '新規素材名');
-			$('#material-regist-button').removeAttr('disabled');
-			$('#material-change-button').attr('disabled', 'disabled');
-			$('#material-delete-button').attr('disabled', 'disabled');
-		} else {
-			$('#material-name').attr('disabled', 'disabled').attr('placeholder', '');
-			setMaterialParameter($('#material-select').val());
-			$('#material-regist-button').attr('disabled', 'disabled');
-			$('#material-change-button').removeAttr('disabled');
-			$('#material-delete-button').removeAttr('disabled');
-		}
+		setMaterialParameter($('#material-select').val());
 	});
 
 	//素材登録ボタン
@@ -830,7 +848,7 @@ $(function(){
 		} else {
 			localStorage.setItem('materials', JSON.stringify([new_material]));
 		}
-		//登録したら　#material-selectに追加、メニュー周りにも追加
+		//登録したら　#material-selectに追加、料理周りにも追加
 		setMaterialSelect();
 		setMaterialsInMenu([]);
 		$('#material-name').val('');
@@ -882,40 +900,50 @@ $(function(){
 		}
 	});
 
-	$('#create-menu-button').on('click',(e)=>{
+	$('#create-menu-button').on('click', (e)=>{
 		const materials = JSON.parse(localStorage.getItem('materials'));
-		if (null === materials || 0 == materials.length) return alert('素材（料理の材料）が登録されていません。\n素材を登録しないとメニューを作成できません。');
-		e.target.style.backgroundColor = '#cc8';
-		e.target.style.color = '#995';
-		e.target.style.boxShadow = 'none';
-		$('#create-material-button').css('background-color', 'white').css('color', '#595').css('box-shadow', '1px 1px 1px #aaa');
+		if (null === materials || 0 == materials.length) return alert('素材（料理の材料）が登録されていません。\n素材を登録しないと料理を作成できません。');
+		$('#your-nutrient').css('display', 'none');
 		$('#menu-creator').css('display', 'block');
-		$('#material-creator').css('display', 'none');
-		$('#section-selecter').css('display', 'block');
-		setMenuNutrients(setMaterialsInMenu(''));
+		if ('none' == $('#menu-creator-select').css('display') && $('#materials-in-menu').children().length) {
+			//初期化
+			setMenuNutrients(setMaterialsInMenu(''));
+		}
 	});
 
 	$('#create-material-button').on('click', (e)=>{
-		e.target.style.backgroundColor = '#3c3';
-		e.target.style.color = '#373';
-		e.target.style.boxShadow = 'none';
-		$('#create-menu-button').css('background-color', 'white').css('color', '#995').css('box-shadow', '1px 1px 1px #aaa');
-		$('#menu-creator').css('display', 'none');
+		$('#your-nutrient').css('display', 'none');
 		$('#material-creator').css('display', 'block');
-		$('#section-selecter').css('display', 'block').css('top', window.scrollY + 'px');
 	});
 
-	$('#hide-button, #hide-button2').on('click',()=>{
+	$('.back-buttons > button').on('click', ()=>{
 		$('#create-menu-button').css('background-color', 'white').css('color', '#995').css('box-shadow', '1px 1px 1px #aaa');
 		$('#create-material-button').css('background-color', 'white').css('color', '#595').css('box-shadow', '1px 1px 1px #aaa');
 		$('#menu-creator').css('display', 'none');
 		$('#material-creator').css('display', 'none');
 		$('#section-selecter').css('display', 'none');
+		$('#your-nutrient').css('display', 'block');
 	});
 
-	window.addEventListener('scroll', (e)=>{
-		$('#section-selecter').css('top', e.target.scrollingElement.scrollTop+'px');
-	});
+	//横3個か4個か、responsive web design
+	const fitWindowSize = ()=>{
+		const html_width_ary = [
+			{tag_name: ".nutrient-table > ul", tight: 55.3, wide: 73.6},
+			{tag_name: "#material-creator dl", tight: 42.8, wide: 57},
+			{tag_name: "#menu-creator dl", tight: 53.2, wide: 71},
+			//{tag_name: "#menu-creator dl, #material-creator dl", tight: 41.3, wide: 55},
+			{tag_name: "#material-creator div", tight: 43.8, wide: 58},
+			{tag_name: "#menu-creator div", tight: 54, wide: 71.8}
+		];
+		const root_em = parseFloat(getComputedStyle(document.documentElement).fontSize);
+		const html_width = (79 * root_em <= window.innerWidth) ? 'wide' : 'tight';
+		for (const v of html_width_ary) {
+			//css関数は px じゃないと受け付けない (remじゃダメ)
+			$(v.tag_name).css('width', v[html_width] * root_em);
+		}
+	};
+	fitWindowSize();
+	window.addEventListener('resize', fitWindowSize); //即時関数だと引数に使えない
 
 	const maxNumberDisplay = (num, characters)=>{
 		if (isNaN(num)) return 0;

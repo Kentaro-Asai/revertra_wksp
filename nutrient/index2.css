@@ -1,10 +1,10 @@
+:root {
+  --main-bg-color: brown;
+}
+
 body {
   background-color: #EEEEEE;
   margin: 0.5rem;
-}
-
-header, main, footer {
-  width: 100vw;
 }
 
 header h1 {
@@ -15,7 +15,7 @@ header h1 {
   text-align: center;
   font-size: 2rem;
   text-shadow: 0.1rem 0.1rem 0.1rem #aaa;
-  margin: 0.5rem;
+  margin: 0 1vw;
 }
 header h1 > a {
   text-decoration: none;
@@ -61,6 +61,7 @@ header article h5 span {
   left: 0.3rem;
   text-shadow: none;
   color: #999;
+  font-size: 1rem;
 }
 header article div {
   padding: 0.2rem 3rem;
@@ -76,8 +77,8 @@ header article div ol {
   padding: 0.5rem 0 0.5rem 2.1rem;
   margin: 0px auto 1rem;
 }
-header article div ol span {
-  text-shadow: 1px 1px 1px black;
+header article div ol li {
+  font-size: 1rem;
 }
 header article div .explain-this-site {
   text-align: center;
@@ -90,9 +91,17 @@ header article div .explain-this-site img {
   margin: 0.2rem 0.3rem;
 }
 
+main {
+  overflow: auto;
+}
+main #your-nutrient {
+  display: block;
+}
+main #menu-creator, main #material-creator {
+  display: none;
+}
+
 #your-nutrient {
-  width: 94vw;
-  margin: 0 auto;
   border-radius: 0.6rem;
   background-color: black;
   border: solid 0.1rem gray;
@@ -100,8 +109,7 @@ header article div .explain-this-site img {
 #your-nutrient .nutrient-table {
   border-radius: 0.3rem;
   background-color: #222;
-  width: 56.6rem;
-  margin: 0.2rem auto 0.6rem;
+  margin: 0.2rem 1rem 0.6rem;
 }
 #your-nutrient .nutrient-table > h5 {
   color: white;
@@ -109,37 +117,37 @@ header article div .explain-this-site img {
   margin: 0;
   padding: 0.6rem 1.2rem 0;
   font-weight: 400;
-  width: 54rem;
 }
-#your-nutrient .nutrient-table > h5 > small {
-  display: inline-block;
-  padding: 0 0 0 0.6rem;
-}
-#your-nutrient .nutrient-table > dl {
-  margin: 0;
+#your-nutrient .nutrient-table > ul {
+  margin: 0 auto;
   padding: 0.6rem;
   overflow: hidden;
-  width: 55.3rem;
-  font-size: 0.8rem;
+  list-style: none;
+  /*width: 55.3rem;*/
 }
-#your-nutrient .nutrient-table > dl dt {
-  border-radius: 0.3rem 0 0 0.3rem;
-  margin: 0.1rem 0 0.1rem 0.1rem;
-  padding: 0.3rem 0 0px 0.3rem;
+#your-nutrient .nutrient-table > ul li {
+  border-radius: 0.3rem;
+  margin: 0.1rem;
+  padding: 0.3rem 0.3rem 0;
   background-color: #444;
+  float: left;
+  width: 17.6rem;
+  height: 1.5rem;
+}
+#your-nutrient .nutrient-table > ul li h6 {
+  margin: 0;
+  font-weight: normal;
+  font-size: 0.8rem;
   color: #ddf;
   float: left;
   text-align: left;
-  width: 7rem;
   height: 1.5rem;
 }
-#your-nutrient .nutrient-table > dl dd {
-  border-radius: 0 0.3rem 0.3rem 0;
-  margin: 0.1rem 0.1rem 0.1rem 0;
-  padding: 0.3rem 0.3rem 0px 0px;
-  background-color: #444;
+#your-nutrient .nutrient-table > ul li p {
+  margin: 0;
+  font-size: 0.8rem;
   color: #bbf;
-  float: left;
+  float: right;
   text-align: right;
   width: 10.6rem;
   height: 1.5rem;
@@ -180,7 +188,7 @@ header article div .explain-this-site img {
   display: block;
   float: left;
   margin: 1rem 0.2rem 0.2rem;
-  width: 4.8rem;
+  width: 5.2rem;
   height: 2.5rem;
   z-index: 2;
 }
@@ -223,12 +231,43 @@ header article div .explain-this-site img {
   margin: 0.6rem;
   border-radius: 0.2rem;
 }
-#your-nutrient #select-menu > p {
+#your-nutrient #select-menu > p.button-section {
   margin: 0.2rem 0 0 0.6rem;
   font-size: 1rem;
+  overflow: auto;
+}
+#your-nutrient #select-menu > p.button-section span {
+  display: inline-block;
+  font-size: 0.8rem;
+  margin: 1rem 0 0;
+}
+#your-nutrient #select-menu > p.button-section button {
+  background-color: white;
+  width: 180px;
+  margin: 6px 10px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 1px #aaa;
+  cursor: pointer;
+  float: right;
+}
+#your-nutrient #select-menu > p.button-section button:active {
+  background-color: #eee;
+  box-shadow: -1px -1px 1px #aaa;
+}
+#your-nutrient #select-menu > p.button-section #create-menu-button {
+  border: solid 2px #aa6;
+  color: #884;
+}
+#your-nutrient #select-menu > p.button-section #create-material-button {
+  border-color: #3c3;
+  color: #595;
 }
 #your-nutrient #select-menu h4 {
   margin: 1.2rem 0.2rem 0;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1rem;
 }
 #your-nutrient #select-menu ul {
   margin: 0.3rem;
@@ -241,212 +280,243 @@ header article div .explain-this-site img {
   margin: 0.2rem 0.4rem;
 }
 
-#button-section {
-  border: solid 2px gray;
-  border-radius: 10px;
-  margin: 12px;
-  padding: 10px;
-  text-align: center;
-  background-color: black;
+#menu-creator {
+  background-color: #ddc;
+  border-radius: 1rem;
 }
-#button-section button {
-  background-color: white;
-  width: 180px;
-  margin: 6px 10px;
-  padding: 6px 12px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 1px #aaa;
-  cursor: pointer;
-}
-#button-section button:active {
-  background-color: #eee;
-  box-shadow: -1px -1px 1px #aaa;
-}
-#button-section #create-menu-button {
-  border: solid 2px #aa6;
-  color: #884;
-}
-#button-section #create-material-button {
-  border-color: #3c3;
-  color: #595;
-}
-
-#section-selecter {
-  background: rgba(0, 0, 0, 0.6);
-  width: 100%;
-  height: 100%;
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-#section-selecter #hide-button {
-  padding: 5px;
-  margin: 0 0 0 calc(50% + (920px - 40px)/2);
-  background: none;
-  border: none;
-  color: white;
-  font-size: 40px;
-  cursor: pointer;
-}
-#section-selecter #hide-button2 {
-  display: block;
-  background-color: white;
-  border: solid 2px gray;
-  border-radius: 20px;
-  color: gray;
-  font-size: 16px;
-  margin: 8px auto 0;
-  padding: 5px 30px;
-  cursor: pointer;
-}
-#section-selecter #menu-creator {
-  background-color: #bb4;
-  color: #bb2;
-}
-#section-selecter #menu-creator > h5 {
-  background: linear-gradient(180deg, #882, #660);
-}
-#section-selecter #menu-creator #menu-serving {
-  border-radius: 5px;
-  width: 32px;
-  border: none;
-}
-#section-selecter #menu-creator ul {
+#menu-creator .back-buttons {
   margin: 0;
   padding: 0;
   overflow: auto;
 }
-#section-selecter #menu-creator ul li {
-  list-style: none;
-  border-radius: 5px;
-  margin: 5px 12px;
-  padding: 8px;
-  background-color: #6b3;
+#menu-creator .back-buttons button {
+  padding: 0.5rem;
+  line-height: 1;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+#menu-creator .back-buttons button:first-child {
   float: left;
 }
-#section-selecter #menu-creator > ul select {
-  width: 250px;
-  border-radius: 2px;
+#menu-creator .back-buttons button:last-child {
+  float: right;
 }
-#section-selecter #menu-creator > ul input {
-  width: 70px;
+#menu-creator .back-buttons img {
+  width: 2rem;
+  height: 2rem;
+}
+#menu-creator h5 {
+  margin: 0 0 1rem 3rem;
+  font-weight: normal;
+  font-size: 1.5rem;
+  color: #885;
+}
+#menu-creator #menu-name {
+  font-size: 1rem;
+}
+#menu-creator #menu-serving {
+  border-radius: 0.4rem;
+  width: 2rem;
   border: none;
-  border-radius: 2px;
-  margin: 0 0 0 10px;
-  height: 16px;
+  font-size: 1rem;
+}
+#menu-creator p {
+  margin: 1rem;
+  font-size: 1rem;
+}
+#menu-creator ul {
+  margin: 0;
+  padding: 0.2rem 0;
+  overflow: auto;
+  background: radial-gradient(#aca, transparent);
+}
+#menu-creator ul li {
+  list-style: none;
+  margin: 0.3rem 0 0.3rem 0.6rem;
+  padding: 0.2rem;
+  float: left;
+}
+#menu-creator ul li select {
+  width: 15rem;
+  border-radius: 0.2rem;
+}
+#menu-creator ul li input {
+  width: 3.2rem;
+  border: none;
+  border-radius: 0.2rem;
+  margin: 0 0 0 0.5rem;
+  height: 1rem;
   text-align: right;
 }
-#section-selecter #menu-creator #menu-suggestion {
-  background-color: #aa4;
-  color: #ed0;
-  margin: 8px auto 0px;
-  width: 880px;
-  padding: 8px 0 0 10px;
-  border-radius: 5px 5px 0 0;
+#menu-creator > div {
+  background-color: #cca;
+  border-radius: 1rem;
+  margin: 1rem auto;
+}
+#menu-creator > div h6 {
+  margin: 0 0.2rem;
+  padding: 0.5rem 1rem 0;
+  font-size: 0.8rem;
   font-weight: normal;
+  color: #441;
 }
-#section-selecter #menu-creator > dl {
-  background-color: #aa4;
-}
-#section-selecter #menu-creator > dl dt, #section-selecter #menu-creator > dl dd {
-  background-color: #885;
-  color: #eee;
-}
-#section-selecter #menu-creator button {
-  border: solid 2px #cc8;
-  color: #995;
-}
-#section-selecter #menu-creator, #section-selecter #material-creator {
-  text-shadow: 1px 1px 1px black;
-  width: 920px;
-  margin: 5px auto 0;
-  padding: 5px;
-  border-radius: 10px;
-}
-#section-selecter #menu-creator > h5, #section-selecter #material-creator > h5 {
-  width: 260px;
-  margin: 1px 2px 5px;
-  padding: 2px 10px;
-  border-radius: 5px;
-  text-align: center;
-}
-#section-selecter #menu-creator button, #section-selecter #material-creator button {
-  background-color: white;
-  margin: 6px 10px;
-  padding: 6px 12px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 1px #aa6;
-}
-#section-selecter #menu-creator button:disabled, #section-selecter #material-creator button:disabled {
-  filter: grayscale(50);
-  box-shadow: none;
-}
-#section-selecter #menu-creator dl, #section-selecter #material-creator dl {
+#menu-creator > div dl {
   margin: 0 auto;
-  padding: 5px;
+  padding: 0.1rem 0.5rem 0.5rem;
   overflow: auto;
-  width: 880px;
-  border-radius: 0 0 5px 5px;
+  width: 912px;
+  border-radius: 0.5rem;
 }
-#section-selecter #menu-creator > dl dt, #section-selecter #menu-creator > dl dd, #section-selecter #material-creator > dl dt, #section-selecter #material-creator > dl dd {
-  text-shadow: none;
-}
-#section-selecter #menu-creator > dl dt, #section-selecter #material-creator dt {
-  border-radius: 5px 0 0 5px;
-  margin: 2px 0 2px 2px;
-  padding: 5px 0 0px 5px;
+#menu-creator > div dl dt {
+  border-radius: 0.4rem 0 0 0.4rem;
+  margin: 0.2rem 0 0.2rem 0.2rem;
+  padding: 0.4rem 0 0px 0.4rem;
   background-color: #ddd;
-  font-size: 12px;
+  font-size: 0.8rem;
   color: #224;
   float: left;
   text-align: left;
-  width: 130px;
-  height: 25px;
+  width: 8.5rem;
+  height: 1.5rem;
 }
-#section-selecter #menu-creator > dl dd, #section-selecter #material-creator dd {
-  border-radius: 0 5px 5px 0;
-  margin: 2px 2px 2px 0;
-  padding: 5px 5px 0px 0px;
+#menu-creator > div dl dd {
+  border-radius: 0 0.4rem 0.4rem 0;
+  margin: 0.2rem 0.2rem 0.2rem 0;
+  padding: 0.4rem 0.4rem 0px 0px;
+  background-color: #ddd;
+  color: #886;
+  float: left;
+  text-align: right;
+  width: 8rem;
+  height: 1.5rem;
+}
+#menu-creator .menu-button-box {
+  text-align: center;
+  padding: 0 0 1rem;
+}
+#menu-creator .menu-button-box > button {
+  font-size: 1.2rem;
+  border-radius: 1.2rem;
+  margin: 0 1rem;
+  width: 9rem;
+  height: 2.5rem;
+  color: #441;
+  border: solid 2px #995;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+#material-creator {
+  background-color: #ded;
+  border-radius: 1rem;
+}
+#material-creator .back-buttons {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+#material-creator .back-buttons button {
+  padding: 0.5rem;
+  line-height: 1;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+#material-creator .back-buttons button:first-child {
+  float: left;
+}
+#material-creator .back-buttons button:last-child {
+  float: right;
+}
+#material-creator .back-buttons img {
+  width: 2rem;
+  height: 2rem;
+}
+#material-creator h5 {
+  margin: 0 0 1rem 3rem;
+  font-weight: normal;
+  font-size: 1.5rem;
+  color: #585;
+}
+#material-creator > p {
+  margin: 1rem;
+  font-size: 1rem;
+}
+#material-creator > p #material-select {
+  font-size: 1rem;
+  display: none;
+}
+#material-creator > p #material-name {
+  font-size: 1rem;
+}
+#material-creator > p input[type=number] {
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  width: 4rem;
+  border: none;
+}
+#material-creator div {
+  background-color: #666;
+  border-radius: 1rem;
+  margin: 0.5rem auto 0;
+}
+#material-creator div #material-suggestion {
+  margin: 0;
+  padding: 0.5rem 0 0 1rem;
+  border-radius: 0.3rem 0.3rem 0 0;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #cec;
+}
+#material-creator div dl {
+  margin: 0 auto;
+  padding: 0.1rem 0 0.8rem 0.3rem;
+  overflow: auto;
+  text-shadow: none;
+}
+#material-creator div dl dt {
+  border-radius: 0.3rem 0 0 0.3rem;
+  margin: 0.2rem 0 0.2rem 0.2rem;
+  padding: 0.3rem 0 0 0.3rem;
+  background-color: #ddd;
+  font-size: 0.8rem;
+  color: #224;
+  float: left;
+  text-align: left;
+  width: 8.3rem;
+  height: 1.5rem;
+}
+#material-creator div dl dd {
+  border-radius: 0 0.3rem 0.3rem 0;
+  margin: 0.2rem 0.2rem 0.2rem 0;
+  padding: 0.3rem 0.3rem 0 0;
   background-color: #ddd;
   color: #448;
   float: left;
   text-align: right;
-  width: 76px;
-  height: 25px;
+  width: 4.8rem;
+  height: 1.5rem;
 }
-#section-selecter #material-creator {
-  background-color: #8d8;
-  color: #3c3;
-}
-#section-selecter #material-creator > h5 {
-  background: linear-gradient(180deg, #282, #060);
-}
-#section-selecter #material-creator button {
-  border-color: #3c3;
-  color: #595;
-}
-#section-selecter #material-creator input[type=number] {
-  border-radius: 5px;
-  width: 60px;
+#material-creator div dl dd input[type=number] {
+  border-radius: 0.3rem;
+  width: 3.8rem;
   border: none;
 }
-#section-selecter #material-creator #material-suggestion {
-  margin: 8px auto 0px;
-  width: 880px;
-  background-color: #666;
-  padding: 8px 0 0 10px;
-  border-radius: 5px 5px 0 0;
-  font-weight: normal;
-  color: #8d8;
+#material-creator .menu-button-box {
+  text-align: center;
+  padding: 0 0 1rem;
 }
-#section-selecter #material-creator dl {
-  background-color: #666;
-  color: #060;
-  margin: 0 auto;
-  overflow: auto;
-  text-shadow: none;
+#material-creator .menu-button-box > button {
+  font-size: 1.2rem;
+  border-radius: 1.2rem;
+  margin: 0 1rem;
+  width: 9rem;
+  height: 2.5rem;
+  color: #141;
+  border: solid 2px #595;
+  background-color: #eee;
+  cursor: pointer;
 }
 
 footer p {

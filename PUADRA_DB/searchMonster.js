@@ -20,6 +20,10 @@ $(()=>{
 	];
 	const jsExplode = (concatenateAry, separate_word) => {
 		let rtn = "";
+		if (undefined == concatenateAry) {
+			console.log(concatenateAry, "Not contain type on the monster !");
+			concatenateAry = [];
+		}
 		for (let v of concatenateAry) {
 			rtn += "" != rtn ? (separate_word + v) : v;
 		}

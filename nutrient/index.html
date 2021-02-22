@@ -12,22 +12,22 @@
 <body>
 	<header>
 		<h1>栄養管理メモ</h1>
-		<p>あなたのその日の摂取栄養素を数値で視覚化します。<br>データはあなたのWebブラウザに保存します(webStorage)。</p>
+		<p>その日の摂取栄養素を可視化します。</p>
 		<article class="explain-toggle-close">
 			<h5><span>▼</span>使い方</h5>
 			<div>
 				<ol>
 					<li><span style="color:#422">あなたの目標栄養素算出のためのパラメータ</span>を入力（選択）します。</li>
-					<li><span style="color:#060">素材（料理の材料）編集</span>で素材を登録後、<span style="color:#660">メニュー編集</span>でメニューを作成します。</li>
-					<li>その日のメニューを<span style="color:#333">あなたの朝食</span>、<span style="color:#333">あなたの昼食</span>、<span style="color:#333">あなたの夕食</span>を選択します。</li>
+					<li><span style="color:#060">素材（料理の材料）ボタン</span>で素材を登録後、<span style="color:#660">料理ボタン</span>で料理を作成します。</li>
+					<li>その日の料理を<span style="color:#333">あなたの朝食</span>、<span style="color:#333">あなたの昼食</span>、<span style="color:#333">あなたの夕食</span>で選択します。</li>
 					<li>本日の摂取量に表示されますので、栄養素の過不足を確認することができます。</li>
 				</ol>
 				<p class="explain-this-site">
-					メニューを選択して本日の栄養を加算していきます。メニューは素材を内包します。<br>
+					料理を選択して本日の摂取量を加算していきます。料理は素材を内包します。<br>
 					<img src="menu_explain.svg" width="170" height="135" />
 					<img src="menu_explain2.svg" width="170" height="135" /><br>
-					例えば、お茶漬けのメニューを作る場合、素材にお米・緑茶・お茶漬けの素の3種を登録することで実現します。<br>
-					（素材の数は1つ以上幾らでも選択できます。ごはんならお米180gでメニューに追加します。）
+					例えば、お茶漬けという料理を作る場合、素材にお米・緑茶・お茶漬けの素の3種を登録することで実現します。<br>
+					（素材の数は1つ以上幾らでも選択できます。ごはんならお米180gで料理に追加します。）
 				</p>
 			</div>
 		</article>
@@ -92,118 +92,135 @@
 				<button id="your-input-area-button">入力エリアを隠す</button>
 			</div>
 			<div class="nutrient-table">
-				<h5>本日の摂取量 / 推奨摂取量<small>Harris-Benedict式</small></h5>
-				<dl>
-					<dt>カロリー</dt><dd><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</dd>
-					<dt>タンパク質</dt><dd><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</dd>
-					<dt>脂質</dt><dd><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</dd>
-					<dt>食物繊維</dt><dd><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g以上</dd>
-					<dt>ビタミンA</dt><dd><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</dd>
-					<dt>ビタミンB1</dt><dd><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</dd>
-					<dt>ビタミンB2</dt><dd><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</dd>
-					<dt>ナイアシン</dt><dd><span id="intake-niacin">0</span> / <span id="need-niacin">0</span> mgNE</dd>
-					<dt>ビタミンB6</dt><dd><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</dd>
-					<dt>ビタミンB12</dt><dd><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</dd>
-					<dt>葉酸</dt><dd><span id="intake-folic_acid">0</span> / <span id="need-folic_acid">0</span> μg</dd>
-					<dt>パントテン酸</dt><dd><span id="intake-pantothenic_acid">0</span> / <span id="need-pantothenic_acid">0</span> mg</dd>
-					<dt>ビオチン</dt><dd><span id="intake-biotin">0</span> / <span id="need-biotin">0</span> μg</dd>
-					<dt>ビタミンC</dt><dd><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</dd>
-					<dt>ビタミンD</dt><dd><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</dd>
-					<dt>ビタミンE</dt><dd><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</dd>
-					<dt>ビタミンK</dt><dd><span id="intake-vitaminK">0</span> / <span id="need-vitaminK">0</span> μg</dd>
-					<dt>食塩相当量</dt><dd><span id="intake-Na">0</span> / <span id="need-Na">0</span> g</dd>
-					<dt>カリウム</dt><dd><span id="intake-K">0</span> / <span id="need-K">0</span> mg</dd>
-					<dt>カルシウム</dt><dd><span id="intake-Ca">0</span> / <span id="need-Ca">0</span> mg</dd>
-					<dt>マグネシウム</dt><dd><span id="intake-Mg">0</span> / <span id="need-Mg">0</span> mg</dd>
-					<dt>リン</dt><dd><span id="intake-P">0</span> / <span id="need-P">0</span> mg</dd>
-					<dt>鉄</dt><dd><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</dd>
-					<dt>亜鉛</dt><dd><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</dd>
-					<dt>銅</dt><dd><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</dd>
-					<dt>モリブデン</dt><dd><span id="intake-Mo">0</span> / <span id="need-Mo">0</span> μg</dd>
-					<dt>マンガン</dt><dd><span id="intake-Mn">0</span> / <span id="need-Mn">0</span> mg</dd>
-					<dt>セレン</dt><dd><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</dd>
-					<dt>ヨウ素</dt><dd><span id="intake-I">0</span> / <span id="need-I">0</span> μg</dd>
-					<dt>クロム</dt><dd><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</dd>
+				<h5>栄養加算表 (あなたの摂取量 / 推奨 ～ 上限)</h5>
+				<ul>
+					<li><h6>カロリー</h6><p><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</p></li>
+					<li><h6>タンパク質</h6><p><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</p></li>
+					<li><h6>脂質</h6><p><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</p></li>
+					<li><h6>食物繊維</h6><p><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g</p></li>
+					<li><h6>ビタミンA</h6><p><span id="intake-vitaminA">0</span> / <span id="need-vitaminA">0</span> μgRAE</p></li>
+					<li><h6>ビタミンB1</h6><p><span id="intake-vitaminB1">0</span> / <span id="need-vitaminB1">0</span> mg</p></li>
+					<li><h6>ビタミンB2</h6><p><span id="intake-vitaminB2">0</span> / <span id="need-vitaminB2">0</span> mg</p></li>
+					<li><h6>ナイアシン</h6><p><span id="intake-niacin">0</span> / <span id="need-niacin">0</span> mgNE</p></li>
+					<li><h6>ビタミンB6</h6><p><span id="intake-vitaminB6">0</span> / <span id="need-vitaminB6">0</span> mg</p></li>
+					<li><h6>ビタミンB12</h6><p><span id="intake-vitaminB12">0</span> / <span id="need-vitaminB12">0</span> μg</p></li>
+					<li><h6>葉酸</h6><p><span id="intake-folic_acid">0</span> / <span id="need-folic_acid">0</span> μg</p></li>
+					<li><h6>パントテン酸</h6><p><span id="intake-pantothenic_acid">0</span> / <span id="need-pantothenic_acid">0</span> mg</p></li>
+					<li><h6>ビオチン</h6><p><span id="intake-biotin">0</span> / <span id="need-biotin">0</span> μg</p></li>
+					<li><h6>ビタミンC</h6><p><span id="intake-vitaminC">0</span> / <span id="need-vitaminC">0</span> mg</p></li>
+					<li><h6>ビタミンD</h6><p><span id="intake-vitaminD">0</span> / <span id="need-vitaminD">0</span> μg</p></li>
+					<li><h6>ビタミンE</h6><p><span id="intake-vitaminE">0</span> / <span id="need-vitaminE">0</span> mg</p></li>
+					<li><h6>ビタミンK</h6><p><span id="intake-vitaminK">0</span> / <span id="need-vitaminK">0</span> μg</p></li>
+					<li><h6>食塩相当量</h6><p><span id="intake-Na">0</span> / <span id="need-Na">0</span> g</p></li>
+					<li><h6>カリウム</h6><p><span id="intake-K">0</span> / <span id="need-K">0</span> mg</p></li>
+					<li><h6>カルシウム</h6><p><span id="intake-Ca">0</span> / <span id="need-Ca">0</span> mg</p></li>
+					<li><h6>マグネシウム</h6><p><span id="intake-Mg">0</span> / <span id="need-Mg">0</span> mg</p></li>
+					<li><h6>リン</h6><p><span id="intake-P">0</span> / <span id="need-P">0</span> mg</p></li>
+					<li><h6>鉄</h6><p><span id="intake-Fe">0</span> / <span id="need-Fe">0</span> mg</p></li>
+					<li><h6>亜鉛</h6><p><span id="intake-Zn">0</span> / <span id="need-Zn">0</span> mg</p></li>
+					<li><h6>銅</h6><p><span id="intake-Cu">0</span> / <span id="need-Cu">0</span> mg</p></li>
+					<li><h6>モリブデン</h6><p><span id="intake-Mo">0</span> / <span id="need-Mo">0</span> μg</p></li>
+					<li><h6>マンガン</h6><p><span id="intake-Mn">0</span> / <span id="need-Mn">0</span> mg</p></li>
+					<li><h6>セレン</h6><p><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</p></li>
+					<li><h6>ヨウ素</h6><p><span id="intake-I">0</span> / <span id="need-I">0</span> μg</p></li>
+					<li><h6>クロム</h6><p><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</p></li>
 					<!-- 必須アミノ酸 -->
-					<dt>トリプトファン</dt><dd><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</dd>
-					<dt>リジン</dt><dd><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</dd>
-					<dt>メチオニン</dt><dd><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</dd>
-					<dt>フェニルアラニン</dt><dd><span id="intake-Phe">0</span> / <span id="need-Phe">0</span> mg</dd>
-					<dt>スレオニン</dt><dd><span id="intake-Thr">0</span> / <span id="need-Thr">0</span> mg</dd>
-					<dt>バリン</dt><dd><span id="intake-Val">0</span> / <span id="need-Val">0</span> mg</dd>
-					<dt>ロイシン</dt><dd><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</dd>
-					<dt>イソロイシン</dt><dd><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</dd>
-					<dt>ヒスチジン</dt><dd><span id="intake-His">0</span> / <span id="need-His">0</span> mg</dd>
-				</dl>
+					<li><h6>トリプトファン</h6><p><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</p></li>
+					<li><h6>リジン</h6><p><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</p></li>
+					<li><h6>メチオニン</h6><p><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</p></li>
+					<li><h6>フェニルアラニン</h6><p><span id="intake-Phe">0</span> / <span id="need-Phe">0</span> mg</p></li>
+					<li><h6>スレオニン</h6><p><span id="intake-Thr">0</span> / <span id="need-Thr">0</span> mg</p></li>
+					<li><h6>バリン</h6><p><span id="intake-Val">0</span> / <span id="need-Val">0</span> mg</p></li>
+					<li><h6>ロイシン</h6><p><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</p></li>
+					<li><h6>イソロイシン</h6><p><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</p></li>
+					<li><h6>ヒスチジン</h6><p><span id="intake-His">0</span> / <span id="need-His">0</span> mg</p></li>
+				</ul>
 			</div>
 			<div id="select-menu">
-				<p>メニューを選択することで本日の摂取量の項目に栄養分が加算されます。</p>
+				<p class="button-section">
+					<span>素材ボタン → 料理ボタン → （朝食・昼食・夕食）の選択</span>
+					<button id="create-menu-button">料理</button>
+					<button id="create-material-button">素材</button>
+				</p>
 				<h4>あなたの朝食</h4>
 				<ul id="morning-list">
-					<li><select class="morning-menu"><option>- メニューが登録されていません -</option></select></li>
+					<li><select class="morning-menu"><option>- 料理が登録されていません -</option></select></li>
 				</ul>
 				<h4>あなたの昼食</h4>
 				<ul id="runch-list">
-					<li><select class="runch-menu"><option>- メニューが登録されていません -</option></select></li>
+					<li><select class="runch-menu"><option>- 料理が登録されていません -</option></select></li>
 				</ul>
 				<h4>あなたの夕食</h4>
 				<ul id="dinner-list">
-					<li><select class="dinner-menu"><option>- メニューが登録されていません -</option></select></li>
+					<li><select class="dinner-menu"><option>- 料理が登録されていません -</option></select></li>
 				</ul>
 			</div>
 		</section>
-		<section id="button-section">
-			<button id="create-menu-button">メニュー編集</button>
-			<button id="create-material-button">素材（料理の材料）編集</button>
-		</section>
-		<div id="section-selecter">
-			<button id="hide-button">×</button>
-			<section id="menu-creator">
-				<h5>メニューの登録・変更・削除</h5>
-				<p>
-					<select id="menu-creator-select"></select>
-					<input type="text" id="menu-name" value="" placeholder="新規メニュー名を入力" />
-					<input type="number" id="menu-serving" value="1" /> 人前
-				</p>
-				<ul id="materials-in-menu">
-					<li>
-						<select class="mim-select"></select>
-						<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g
-					</li>
-				</ul>
-				<h6 id="menu-suggestion">の栄養素</h6>
+		<section id="menu-creator">
+			<p class="back-buttons">
+				<button><img src="chevron-left.svg" alt="＜" /></button>
+				<button><img src="x.svg" alt="×" /></button>
+			</p>
+			<h5>料理の登録・変更・削除</h5>
+			<p>
+				<label><input type="radio" name="menu-crud" id="menu-register" checked />新規登録</label>
+				<label><input type="radio" name="menu-crud" id="menu-change" />変更・削除</label>
+			</p>
+			<p>
+				<select id="menu-creator-select"></select>
+				<input type="text" id="menu-name" placeholder="新規料理名を入力" />
+				<input type="number" id="menu-serving" value="1" /> 人前
+			</p>
+			<ul id="materials-in-menu">
+				<li>
+					<select class="mim-select"></select>
+					<input type="number" class="mim-weight" value="0" placeholder="グラム数を入力" /> g
+				</li>
+			</ul>
+			<div>
+				<h6>一人前の栄養素 (一食分(％))</h6>
 				<dl></dl>
-				<p>
-					<button id="menu-regist-button">メニューの登録</button>
-					<button id="menu-change-button">メニューの変更</button>
-					<button id="menu-delete-button">メニューの削除</button>
-				</p>
-			</section>
-			<section id="material-creator">
-				<h5>素材（料理の材料）の登録・変更・削除</h5>
-				<p>
-					<select id="material-select"></select>
-					<input type="text" id="material-name" value="" placeholder="新規素材名を入力" />
-					<input type="number" id="material-weight" value="0" placeholder="グラム数を入力" /> g
-				</p>
+			</div>
+			<p class="menu-button-box">
+				<button id="menu-regist-button">料理の登録</button>
+				<button id="menu-change-button">料理の変更</button>
+				<button id="menu-delete-button">料理の削除</button>
+			</p>
+		</section>
+		<section id="material-creator">
+			<p class="back-buttons">
+				<button><img src="chevron-left.svg" alt="＜" /></button>
+				<button><img src="x.svg" alt="×" /></button>
+			</p>
+			<h5>素材（料理の材料）の登録・変更・削除</h5>
+			<p>
+				<label><input type="radio" name="material-crud" id="material-register" checked />新規登録</label>
+				<label><input type="radio" name="material-crud" id="material-change" />変更・削除</label>
+			</p>
+			<p>
+				<select id="material-select"></select>
+				<input type="text" id="material-name" value="" placeholder="新規素材名を入力" />
+				<input type="number" id="material-weight" value="0" placeholder="グラム数を入力" /> g
+			</p>
+			<div>
 				<h6 id="material-suggestion">0グラム当たりの素材の栄養素</h6>
 				<dl></dl>
-				<p>
-					<button id="material-regist-button">素材の登録</button>
-					<button id="material-change-button">素材の変更</button>
-					<button id="material-delete-button">素材の削除</button>
-				</p>
-			</section>
-			<button id="hide-button2">閉じる</button>
-		</div>
+			</div>
+			<p class="menu-button-box">
+				<button id="material-regist-button">素材の登録</button>
+				<button id="material-change-button">素材の変更</button>
+				<button id="material-delete-button">素材の削除</button>
+			</p>
+		</section>
 	</main>
 	<footer>
 		<p>
 			ビタミンA: レチノール活性当量(μgRAE)に変換してください。
 			β-カロテン(μg): 1/12、α-カロテン(μg): 1/24、β-クリプトキサンチン(μg): 1/24、その他のプロビタミンAカロテノイド(μg): 1/24を乗算の後、加算してください。<br>
 			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、58.5/23倍してください。
+			<br>データはあなたのWebブラウザに保存します(webStorage)。
 		</p>
 </footer>
-	<script src="index.js"></script>
+	<script src="nutrient.js"></script>
 </body>
 </html>
