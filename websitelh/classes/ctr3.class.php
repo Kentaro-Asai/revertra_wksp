@@ -6,7 +6,7 @@ const PAGE = [
 	["get" => 0, "label" => "ホーム", "side" => ["開発するソフト", "ソフト開発の勧め", "自作PCの勧め", "開発者略歴"]],
 	["get" => 1, "label" => "Androidアプリ", "side" => ["ダメージ計算機"]],
 	["get" => 4, "label" => "ゲーム攻略", "side" => ["MH3G スキル調整","討鬼伝 スキル調整","MH4 スキル調整","MH4G スキル調整", "パズドラ ダメージ計算機","パズドラ ガチャシミュレータ"]],
-	["get" => 2, "label" => "雑記", "side" => [/*"LAMP開発環境の構築",*/ "3Dプリンタでの出力"]],
+	["get" => 2, "label" => "雑記", "side" => ["3Dプリンタでの出力"]],
 	["get" => 3, "label" => "DNA解析", "side" => ["逆相補鎖に変換","プライマー設計"]],
 	["get" => 5, "label" => "お仕事", "side" => ["勤務時間管理","栄養管理","性格診断"]]
 ];
@@ -104,68 +104,7 @@ public function mkatcls(){
 			],
 		],
 		2 => [ //雑記
-			0/* => [
-				"li" => 'LAMP開発環境の構築',
-				"ttl" => [
-					'開発環境の構築(全て無料のソフトです)',
-					'CentOSをダウンロード',
-					'VirtualBoxをダウンロード(OSがWindowsならfor Windows hostsを選びましょう)',
-					'VirtualBoxからCentOSを起動します',
-					'NetBeansのダウンロード（参考：<a href=\"http://junichi11.com/?p=1349\" rel=\"nofollow\">junichi11の日記〜つらつらなるままに〜</a>）'
-				],
-				"cts" => [
-					"ここではCentOS, appach, PHP, MySQLの開発環境の構築を紹介します。",
-					"<ol>"."<li>まずはCentOSをダウンロードします。<a href=\"http://www.centos.org/\" rel=\"nofollow\" target=\"_blank\">The Community ENTerprize Operating System</a>にアクセス</li>"."<li>グローバルナビゲーションの「Downloads」下のMirrorsにアクセス</li>"
-					."<li>Mirror Listをクリック</li>"."<li><span id=\"underline\">South American, Asian, Oceania, Middle Eastern, African and Other Regional</span> Mirrorsをクリック</li>"
-					."<li>Asia Japan Internet Initiative Japan Inc. All All Yes HTTP FTP RSYNのHTTPをクリック</li>"
-					."<li>6.4/(最新版2013.5.14現在)をクリック（ここはこの時の私に合わせる事無く最新版を選んでください）</li>"
-					."<li>isos/ をクリック</li>"
-					."<li>i386/(32bit版) をクリック</li>"
-					."<li>CentOS-6.4-i386-bin-DVD1.isoをダウンロード</li>"."</ol>",
-					"<ol>"."<li>VirtualBoxをダウンロードしたら起動し、新規ボタンを押します</li>"
-					."<li>名前は何でも良いです。タイプはLinux、バージョンはRed Hatです（CentOSがRed Hat系のLinux）。次へを押す</li>"
-					."<li>メモリーサイズは、CentOS 6.4の最小が1GBだと思います。私は少し余裕をとって2048MBにしました。</li>"
-					."<li>ハードドライブは、CentOS 6.4の最小が8GBだと思います。私は少し余裕をとって20GBにしました。</li>"
-					."<li>設定ボタンをクリックし、システムをクリックし、起動順序をCD/DVD-ROM、ハードディスク...とします</li>"
-					."<li>設定ボタンをクリックし、ストレージをクリックし、コントローラー:IDEをクリックし、「CD/DVDドライブの追加」を押します</li>"
-					."<li>そこで、先ほどダウンロードした「CentOS-6.4-i386-bin-DVD1.iso」を選んでください</li>"."</ol>",
-					"CUIも軽くて良いのですが、せっかくなのでGUIにします。</p>"
-					."<ol>"
-						."<li>立ち上がるウインドウがCentOSです。デフォルトを選びます（最後だけMinimum desktop）。</li>"
-					."<li>カーソルがとられて戻れない時は、ctrl+Alt+Deleteキーを押すことで帰ってこれます</li>"
-					."<li>インストールされたのはGUIのCentOSですが、従来のCUIのように扱うには、アプリケーション->システムツール->端末を使えばできます。</li>"
-					."<li>そこで以下のコマンドを流します。意味は本等(LINUX コマンド)を参考にしてください。^^;</li>"
-					."<ol>"
-					."<li><code>su -</code> （rootにかわります。コマンドを流すとパスワードを聞かれますので、答えます）</li>"
-					."<li><code>yum update</code> （たぶん古いバージョンのCentOSをインストールすると、この後バグる）</li>"
-					."<li><code>yum install httpd httpd-devil</code></li>"
-					."<li><code>chkconfig httpd on</code></li>"
-					."<li><code>service httpd start</code></li>"
-					."<li><code>yum install php php-ci php-pdo php-mysql php-mbstring php-devel</code></li>"
-					."<li><code>service httpd start</code></li>"
-					."<li><code>yum install mysql mysql-server</code></li>"
-					."<li><code>chkconfig mysqld on</code></li>"."<li><code>service mysqld start</code></li>"
-					."<li><code>chmod 664 /var/log/httpd/error_log</code>(デバッグ用にエラーログへのアクセス権限を変更します。)</li>"
-					."</ol>"
-					."<li>実はすでに、WinSCPやputtyjpでアクセスできるようになっていますが、Webブラウザでは、表示できません。そこで、CentOSのFirewallを無効化します（仮想化して開発環境を構築したい時だけこの作業をします）。</li>"
-					."<ol>"
-					."<li><code>/etc/init.d/iptables stop</code></li>"
-					."<li><code>chkconfig iptables off</code></li>"
-					."<li><code>setenforce 0</code></li>"
-					."</ol>"
-					."<li>ここまでできたら、WinSCPで/var/www/html辺りでindex.phpを作成して表示してみましょう。</li>"
-					."</ol><p>PHPの中身は<code>phpinfo()</code>が良いですね。",
-					"<ol>"
-					."<li>NetBeans(<a href=\"https://netbeans.org/downloads/?pagelang=ja\" rel=\"nofollow\" target=\"_blank\">NetBeansダウンロードサイト</a>)で開発するには、これを用います。</li>"
-					."<li>ファイル->プロジェクトを選択[リモート・サーバーからのPHPアプリケーション]を選んで次へ</li>"
-					."<li>ソース・フォルダは、展開される場所を示します。次へボタンを押します</li>"
-					."<li>管理ボタンを押し、ポート22、ホスト名(000.000.00.0)のようなのを入れて、アクセスするユーザー名、パスワードを入力します。秘密鍵ファイルはそのままでOK。既知のホスト・ファイルは、WinSCPのところで.sshという名のフォルダを作成し、その中にknown_hostという名の空のファイルを作成します。それをWindows上に移動させ、そこを参照すればOKです。</li>"
-					."<li>初期ディレクトリ以下がNetBeansにコピーされます。あとは、次へ、終了を押すことで完成です。</li>"
-					."</ol>"
-					
-				]
-			],
-			1*/ => [
+			0 => [
 				"li" => '3Dプリンタでの出力',
 				"ttl" => ['2D CADでのメモ書き','3D CADでの設計','3Dプリンタでの出力'],
 				"cts" => [
@@ -296,11 +235,11 @@ public function mkatcls(){
 				"li" => '栄養管理',
 				"ttl" => ['栄養管理メモ'],
 				"cts" => [
-					"あなたの不足しがちな栄養素は何でしょうか。<br>"
+					"あなたの不足しがちな栄養素は何でしょうか。このWebアプリケーションを使えば、可視化できるでしょう。<br>"
 					."DBではなく、webストレージに保存されますので、デバイス（Webブラウザ）に応じたデータストックになります。<br>"
 					."<a href=\"http://revertra.webcrow.jp/nutrient/\">栄養管理メモ</a><br>"
-					."作ってみて思ったのが、だいたい不足しがちなのはタンパク質、ビタミン類だと思います。"
-					."プロテインを少量飲むのも手かもしれませんが、鶏肉(皮無し)やサラダを意識して食べるのが良いかもしれません。"
+					."作ってみて思ったのが、完全栄養食の献立を作ることが非常に難しいということです。"
+					."そもそも緑黄色野菜なしでは、栄養不足になりがちな食生活になるだろうことが分かりました。"
 				],
 			],
 			2 => [

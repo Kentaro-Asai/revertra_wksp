@@ -375,11 +375,10 @@ $(function(){
 				}
 				selected_menu.innerHTML = select_option;
 			}
-			const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
-			$('#menu-creator-select').html(sel_menu_str);
+			const sel_menu_ary = menu_ary.map(v => '<option>'+v.name+'</option>');
+			$('#menu-creator-select').html(1 < sel_menu_ary.length ? sel_menu_ary.reduce((w, x) => w+x) : sel_menu_ary[0]);
 		} else {
 			$('#select-menu select').html('<option>- 料理が登録されていません -</option>');
-			//$('#menu-creator-select').html('<option>新規料理</option>');
 			$('#menu-change-button').css('display', 'none');
 			$('#menu-delete-button').css('display', 'none');
 		}
