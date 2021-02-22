@@ -546,12 +546,14 @@ $(function(){
 				//昔登録した素材（今は存在していない）の値を既存料理から取得
 				if (!new_material.name) {
 					const selected_menu_name = $('#menu-creator-select').val();
-					for (let a_menu of menu_ary) {
-						if (selected_menu_name == a_menu.name) {
-							for (let a_material of a_menu.materials) {
-								if (a_material.name == $(v).children('select').val()) {
-									new_material = Object.assign(a_material, {});
-									break;
+					if (!!menu_ary && 0 < menu_ary.length) {
+						for (let a_menu of menu_ary) {
+							if (selected_menu_name == a_menu.name) {
+								for (let a_material of a_menu.materials) {
+									if (a_material.name == $(v).children('select').val()) {
+										new_material = Object.assign(a_material, {});
+										break;
+									}
 								}
 							}
 						}
