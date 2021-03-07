@@ -194,15 +194,17 @@ $(function(){
 				label: "クロム"
 			},
 		},
-		amino_acid: {
+		/*amino_acid: {
 			Trp:{dose:4,unit:'mg',label: "トリプトファン"}, Met:{dose:15,unit:'mg',label: "メチオニン"},
 			Phe:{dose:25,unit:'mg',label: "フェニルアラニン"}, Thr:{dose:15,unit:'mg',label: "スレオニン"},
 			Val:{dose:26,unit:'mg',label: "バリン"}, Leu:{dose:39,unit:'mg',label: "ロイシン"},
 			Ile:{dose:20,unit:'mg',label: "イソロイシン"}, His:{dose:10,unit:'mg',label: "ヒスチジン"}, Lys:{dose:45,unit:'mg',label: "リジン"}
-		}
+		}*/
 	};
-	//一食分(1/3日分)の必要量を一時保存
+	//一食分(1日分)の必要量を保存
 	let need_nutrients = {};
+	//一食分(1日分)の上限量を保存
+	let limit_nutrients = {};
 
 	//data in localStorage
 	// body_parameter = {gender: "", height:160, ...}
@@ -257,7 +259,7 @@ $(function(){
 			else if ('lactating' == body_parameter.pregnantStage) wanted_energy += 350;
 		}
 		$('#need-calory').html(Math.round(wanted_energy));
-		need_nutrients.colory = wanted_energy / 3;
+		need_nutrients.calory = Math.round(wanted_energy);
 		//タンパク質必要量
 		let need_protein = 10 * parseFloat($('#your-nutrient input[name="accelerate-protein"]:checked').val()) * body_parameter.weight / 10;
 		if ('gender-female' == body_parameter.gender) {
@@ -266,12 +268,12 @@ $(function(){
 			else if ('pregnant-last' == body_parameter.pregnantStage) need_protein += 25;
 			else if ('lactating' == body_parameter.pregnantStage) need_protein += 20;
 		}
-		$('#need-protein').html(need_protein);
-		need_nutrients.protein = need_protein / 3;
+		$('#need-protein').html(need_protein + '～');
+		need_nutrients.protein = need_protein;
 		//脂質必要量
 		const need_oil = Math.round(wanted_energy * 25 / 90) / 10;
-		$('#need-oil').html((need_oil <= 2.5 * body_parameter.weight) ? need_oil : (2.5 * body_parameter.weight));
-		need_nutrients.oil = parseFloat($('#need-oil').html()) / 3;
+		$('#need-oil').html(((need_oil <= 2.5 * body_parameter.weight) ? need_oil : (2.5 * body_parameter.weight)) + '～');
+		need_nutrients.oil = parseFloat($('#need-oil').html());
 		//食物繊維必要量
 		const dietaly_fiber_table = {
 			male: {7:11, 9:12, 11:13, 14:17, 17:19, 29:20, 49:20, 69:20, 70:19},
@@ -283,7 +285,7 @@ $(function(){
 			if (body_parameter.age <= i) break;
 		}
 		$('#need-fiber').html(need_fiber + '～');
-		need_nutrients.fiber = need_fiber / 3;
+		need_nutrients.fiber = need_fiber;
 		//ビタミン
 		//https://www.fukushihoken.metro.tokyo.lg.jp/kensui/ei_syo/katsuyou/ichinichi_eiyo/vitamin.html
 		//https://www.tyojyu.or.jp/net/kenkou-tyoju/eiyouso/vitamin-b6.html
@@ -294,7 +296,8 @@ $(function(){
 				if (body_parameter.age <= i) break;
 			}
 			$('#need-' + genre).html(age_nutrient[0] + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
-			need_nutrients[genre] = age_nutrient[0] / 3;
+			need_nutrients[genre] = age_nutrient[0];
+			limit_nutrients[genre] = age_nutrient[1];
 		}
 		//ミネラル
 		// https://jp.glico.com/navi/e07-3.html
@@ -305,15 +308,16 @@ $(function(){
 				if (body_parameter.age <= i) break;
 			}
 			$('#need-' + genre).html((0 == age_nutrient[0] ? '' : age_nutrient[0]) + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
-			need_nutrients[genre] = age_nutrient[0] / 3;
+			need_nutrients[genre] = age_nutrient[0];
+			limit_nutrients[genre] = age_nutrient[1];
 		}
 		//必須アミノ酸
 		// https://www.orthomolecular.jp/nutrition/amino/
-		let amino_acid_ary = nutrient_table.amino_acid;
+		/*let amino_acid_ary = nutrient_table.amino_acid;
 		for (let a in amino_acid_ary) {
-			$('#need-' + a).html(amino_acid_ary[a].dose);
+			$('#need-' + a).html(amino_acid_ary[a].dose + "～");
 			need_nutrients[a] = amino_acid_ary[a].dose / 3;
-		}
+		}*/
 	}; 
 	
 	// get body_parameter => view
@@ -923,6 +927,7 @@ $(function(){
 		$('#menu-creator').css('display', 'none');
 		$('#material-creator').css('display', 'none');
 		$('#section-selecter').css('display', 'none');
+		$('#explore-perfect').css('display', 'none');
 		$('#your-nutrient').css('display', 'block');
 	});
 
@@ -934,7 +939,9 @@ $(function(){
 			{tag_name: "#menu-creator dl", tight: 53.2, wide: 71},
 			//{tag_name: "#menu-creator dl, #material-creator dl", tight: 41.3, wide: 55},
 			{tag_name: "#material-creator div", tight: 43.8, wide: 58},
-			{tag_name: "#menu-creator div", tight: 54, wide: 71.8}
+			{tag_name: "#menu-creator div", tight: 54, wide: 71.8},
+			{tag_name: ".perfect-menu-list", tight: 55.6, wide: 74},
+			{tag_name: ".perfect-menu-nutrients-table", tight: 54.2, wide: 72.6}
 		];
 		const root_em = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		const html_width = (79 * root_em <= window.innerWidth) ? 'wide' : 'tight';
@@ -966,5 +973,258 @@ $(function(){
 	$('header h5').on('click', (e)=>{
 		const is_toggle_opening_flg = 'explain-toggle-close' == e.target.parentElement.className;
 		e.target.parentElement.className = is_toggle_opening_flg ? 'explain-toggle-open' : 'explain-toggle-close';
+	});
+
+	//
+	// explore
+	//
+
+	const getMenuInExplore = ()=>{
+		const menu_ary = JSON.parse(localStorage.getItem('menu'));
+		if (!menu_ary || 0 == menu_ary.length) return alert('メニューがありません。');
+		let rtn = '<select><option>' + unselect_option + '</option>';
+		//1　== ary.length だとバグるからfor使う。menu_list_html += menu_ary.map(v => `<option>${v}</option>`).reduce((w, x)=> w + x);
+		for (let v of menu_ary) {
+			rtn += `<option>${v.name}</option>`;
+		}
+		rtn += '</select>';
+		return rtn;
+	};
+
+	$('#explore-perfect-button-box > button').on('click', ()=>{
+		const menu_ary = JSON.parse(localStorage.getItem('menu'));
+		if (!menu_ary || 0 == menu_ary.length) return alert('メニューがありません。');
+		const menu_list_html = getMenuInExplore();
+		$('#contain-menu-list').html(menu_list_html);
+		$('#not-contain-menu-list').html(menu_list_html);
+		$('#your-nutrient').css('display', 'none');
+		$('#explore-perfect').css('display', 'block');
+		$('#output-perfect').html('');
+	});
+
+	$('#contain-menu-list, #not-contain-menu-list').on('click', (e)=>{
+		if (unselect_option != e.target.value) {
+			const menu_list_html = getMenuInExplore();
+			$('#'+e.target.parentElement.id).append(menu_list_html);
+		}
+	});
+
+	// 栄養素が足りているかチェック
+	const getLackNutrients = (menus_ary)=>{
+		let enough_flg = true;
+		let survey_nutrients_ary = [];
+		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
+		// 現在含まれる栄養素を取得して100％に満たないものを返す
+		for (const a_nutrient_name in need_nutrients) {
+			if ('calory' == a_nutrient_name) continue;
+			if ('Na' == a_nutrient_name) continue;
+			let added_value = 0;
+			for (const a_menu of menus_ary) {
+				for (const a_material of a_menu.materials) {
+					added_value += parseFloat(100 * (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) / (need_nutrients[a_nutrient_name] * for_serving_rate));
+				}
+			}
+			survey_nutrients_ary.push({value: added_value, name: a_nutrient_name});
+			if (added_value < 100) {
+				//lack_nutrients.push({value: added_value, name: a_nutrient_name});
+				enough_flg = false;
+			}
+		}
+		// ソート
+		if (0 < survey_nutrients_ary.length) {
+			survey_nutrients_ary.sort((a,b)=>{
+				if (a.value < b.value) return -1;
+				if (a.value < b.value) return 1;
+				return 0;
+			});
+		}
+		//return enough_flg ? false : survey_nutrients_ary;
+		return {enough_flg: enough_flg, survey_nutrients_ary: survey_nutrients_ary};
+	};
+
+	// 優秀な料理を見つける（カロリー↓とビタミンミネラル↑）
+	const getRichNutrientsMenu = (menu_ary, survey_nutrients_ary)=>{
+		let evaluation = {value: 0, best: 0, best_menu: {}};
+		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
+		if (0 < menu_ary.length) {
+			for (const a_menu of menu_ary) {
+				let limit_over_flg = false;
+				for (const a_material of a_menu.materials) {
+					if (limit_over_flg) break;
+					for (const v of survey_nutrients_ary) {
+						if (0 == need_nutrients[v.name]) continue;
+						if (100 <= v.value) {
+							// 過剰摂取になる場合、候補に入れないようにする
+							if (0 != limit_nutrients[v.name] && parseFloat(100 * limit_nutrients[v.name] * for_serving_rate) < (v.value * need_nutrients[v.name] * for_serving_rate)) {
+								limit_over_flg = true;
+							}
+						} else {
+							evaluation.value += parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (need_nutrients[v.name]*for_serving_rate));
+						}
+					}
+				}
+				if (evaluation.best < evaluation.value && !limit_over_flg) {
+					evaluation = {value: 0, best: evaluation.value, best_menu: a_menu};
+				} else {
+					evaluation.value = 0;
+				}
+			}
+		}
+		return evaluation.best_menu;
+	};
+
+	// return {unit: "ugRAE", label: "vitaminA"}
+	const getNutrientView = (a_nutrient_name)=>{
+		if (standard_nutrient[a_nutrient_name]) {
+			return standard_nutrient[a_nutrient_name];
+		}
+		for (const category in nutrient_table) {
+			if (nutrient_table[category][a_nutrient_name]) {
+				return nutrient_table[category][a_nutrient_name];
+			}
+		}
+	};
+
+	const countAryDisplay = (ary)=>{
+		let inputted = [];
+		let rtn = '';
+		for (const v of ary) {
+			if (-1 == inputted.indexOf(v)) {
+				inputted.push(v);
+				//rtn.push({name: v, count: ary.filter(w => v == w).length});
+				const a_menu_count = ary.filter(w => v == w).length;
+				rtn += 1 == a_menu_count ? `<li><h6 class="one-length">${v}</h6></li>` : `<li><h6>${v}</h6><span>×${a_menu_count}</span></li>`;
+			}
+		}
+		return rtn;
+	};
+
+	const displayPerfectMenus = (perfect_menus_ary)=>{
+		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
+		let rtn = '';
+		for (const i in perfect_menus_ary) {
+			let menus_count_ary = []; // name
+			let perfect_nutrients_ary = {};
+			rtn += `<article><h4>パターン${parseInt(i) + 1}</h4><ul class="perfect-menu-list">`;
+			for (const a_menu of perfect_menus_ary[i]) {
+				menus_count_ary.push(a_menu.name);
+				//rtn += `<li>${a_menu.name}</li>`;
+				for (const a_nutrient_name in need_nutrients) {
+					if (!perfect_nutrients_ary[a_nutrient_name]) {
+						perfect_nutrients_ary[a_nutrient_name] = {value: 0, need: need_nutrients[a_nutrient_name] * for_serving_rate};
+					}
+					for (const a_material of a_menu.materials) {
+						perfect_nutrients_ary[a_nutrient_name].value += parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
+					}
+				}
+			}
+			rtn += countAryDisplay(menus_count_ary);
+			rtn += '</ul><ul class="perfect-menu-nutrients-table">';
+			for (const a_nutrient_name in perfect_nutrients_ary) {
+				const percentage = (0 == perfect_nutrients_ary[a_nutrient_name].need) ? ' - ' : maxNumberDisplay(100 * perfect_nutrients_ary[a_nutrient_name].value / perfect_nutrients_ary[a_nutrient_name].need, 2);
+				const nutrient_obj = getNutrientView(a_nutrient_name);
+				let color_class_name = ``;
+				if (percentage < 100) {
+					color_class_name = `poor-color`;
+				}	else if ((0 == limit_nutrients[a_nutrient_name] * for_serving_rate) && 100 < percentage) {
+					//color_class_name = `safe-color`;
+				} else if ((0.8 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients_ary[a_nutrient_name].value && (perfect_nutrients_ary[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
+					color_class_name = `danger-color`;
+				} else if ((0.5 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients_ary[a_nutrient_name].value && (perfect_nutrients_ary[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
+					color_class_name = `caution-color`;
+				}
+				rtn += `<li><h5>${nutrient_obj.label}</h5><p class="${color_class_name}">${maxNumberDisplay(perfect_nutrients_ary[a_nutrient_name].value, 2)} ${nutrient_obj.unit} (${percentage}%)</p></li>`;
+			}
+			rtn += '</ul></article>';
+		}
+		return rtn;
+	};
+
+	$('#explore-button').on('click', ()=>{
+		let perfect_menus_ary = [];
+		let unperfect_menus_ary = [];
+		let menu_ary = JSON.parse(localStorage.getItem('menu'));
+		const can_duplicate_menu_flg = $('#can-duplicate-menu-flg').prop('checked');
+		// make candidate menu course
+		let candidate_menu_ary = [];
+		if (0 < $('#contain-menu-list select').length) {
+			for (let v of $('#contain-menu-list select')) {
+				for (let i in menu_ary) {
+					if (v.value == menu_ary[i].name) {
+						candidate_menu_ary.push(menu_ary[i]);
+						break;
+					}
+				}
+			}
+		}
+		if (0 < $('#not-contain-menu-list select').length) {
+			for (let v of $('#not-contain-menu-list select')) {
+				for (let i in menu_ary) {
+					if (v.value == menu_ary[i].name) {
+						menu_ary.splice(i, 1);
+						break;
+					}
+				}
+			}
+		}
+		// 全料理をチェック
+		for (const a_menu of menu_ary) {
+			let check_menu_ary = candidate_menu_ary.concat([]); //concatしないと同一になってしまう
+			// 重複しないようにする時、採用する料理に入っているものを選ばない
+			if (!can_duplicate_menu_flg && 0 < check_menu_ary.length) {
+				can_continue_flg = false;
+				for (let v of check_menu_ary) {
+					if (a_menu.name == v.name) {
+						can_continue_flg = true;
+						break;
+					}
+				}
+				if (can_continue_flg) continue;
+			}
+			check_menu_ary.push(a_menu);
+			// 選択可能な料理の配列を用意
+			let selectable_menu_ary = [];
+			if (can_duplicate_menu_flg) {
+				selectable_menu_ary = menu_ary.concat([]);
+			} else {
+				for (let v of menu_ary) {
+					let is_exist_flg = false;
+					if (0 < check_menu_ary.length) {
+						for (let w of check_menu_ary) {
+							if (w.name == v.name) is_exist_flg = true;
+						}
+					}
+					if (!is_exist_flg) selectable_menu_ary.push(v);
+				}
+			}
+			// これまでの加算した栄養素の欠点を埋める料理を見つける
+			for (let i=0; i < 100; i++) {
+				const ret = getLackNutrients(check_menu_ary);
+				if (!ret.enough_flg) {
+					const selected_menu = getRichNutrientsMenu(selectable_menu_ary, ret.survey_nutrients_ary);
+					if (0 == Object.keys(selected_menu).length) {
+						unperfect_menus_ary.push(check_menu_ary);
+						break;
+					} else {
+						check_menu_ary.push(selected_menu);
+						if (!can_duplicate_menu_flg) {
+							// selected_menuを弾く
+							for (let i in selectable_menu_ary) {
+								if (selected_menu.name == selectable_menu_ary[i].name) {
+									selectable_menu_ary.splice(i, 1);
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					perfect_menus_ary.push(check_menu_ary);
+					break;
+				}
+			}
+		}
+		// display nutrients
+		$('#output-perfect').html(0 < perfect_menus_ary.length ? displayPerfectMenus(perfect_menus_ary) : ('<p>検索しましたが、1つも発見できませんでした。</p>'+displayPerfectMenus(unperfect_menus_ary)) );
+		fitWindowSize();
 	});
 });

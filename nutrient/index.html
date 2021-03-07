@@ -124,7 +124,7 @@
 					<li><h6>セレン</h6><p><span id="intake-Se">0</span> / <span id="need-Se">0</span> μg</p></li>
 					<li><h6>ヨウ素</h6><p><span id="intake-I">0</span> / <span id="need-I">0</span> μg</p></li>
 					<li><h6>クロム</h6><p><span id="intake-Cr">0</span> / <span id="need-Cr">0</span> μg</p></li>
-					<!-- 必須アミノ酸 -->
+					<!-- 必須アミノ酸
 					<li><h6>トリプトファン</h6><p><span id="intake-Trp">0</span> / <span id="need-Trp">0</span> mg</p></li>
 					<li><h6>リジン</h6><p><span id="intake-Lys">0</span> / <span id="need-Lys">0</span> mg</p></li>
 					<li><h6>メチオニン</h6><p><span id="intake-Met">0</span> / <span id="need-Met">0</span> mg</p></li>
@@ -134,6 +134,7 @@
 					<li><h6>ロイシン</h6><p><span id="intake-Leu">0</span> / <span id="need-Leu">0</span> mg</p></li>
 					<li><h6>イソロイシン</h6><p><span id="intake-Ile">0</span> / <span id="need-Ile">0</span> mg</p></li>
 					<li><h6>ヒスチジン</h6><p><span id="intake-His">0</span> / <span id="need-His">0</span> mg</p></li>
+					-->
 				</ul>
 			</div>
 			<div id="select-menu">
@@ -154,6 +155,9 @@
 				<ul id="dinner-list">
 					<li><select class="dinner-menu"><option>- 料理が登録されていません -</option></select></li>
 				</ul>
+			</div>
+			<div id="explore-perfect-button-box">
+				<button>完全食になる組み合わせ</button>
 			</div>
 		</section>
 		<section id="menu-creator">
@@ -212,15 +216,35 @@
 				<button id="material-delete-button">素材の削除</button>
 			</p>
 		</section>
+		<section id="explore-perfect">
+			<p class="back-buttons">
+				<button><img src="chevron-left.svg" alt="＜" /></button>
+				<button><img src="x.svg" alt="×" /></button>
+			</p>
+			<div class="explore-terminal">
+				<p>
+					<label><input type="radio" name="for-serving" id="oneday-serving" checked />一日分</label>
+					<label><input type="radio" name="for-serving" id="one-serving" />一食分</label>
+				</p>
+				<h6>採用する料理 (<label><input type="checkbox" id="can-duplicate-menu-flg" />被り有り</label>)</h6>
+				<p id="contain-menu-list"></p>
+				<h6>採用しない料理</h6>
+				<p id="not-contain-menu-list"></p>
+				<button id="explore-button">実行</button>
+			</div>
+			<div id="output-perfect"></div>
+		</section>
 	</main>
 	<footer>
 		<p>
 			ビタミンA: レチノール活性当量(μgRAE)に変換してください。
 			β-カロテン(μg): 1/12、α-カロテン(μg): 1/24、β-クリプトキサンチン(μg): 1/24、その他のプロビタミンAカロテノイド(μg): 1/24を乗算の後、加算してください。<br>
-			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、58.5/23倍してください。
+			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、58.5/23倍してください。<br>
+			乳酸菌・ω3脂肪酸も摂ってください。<br>
+			プリン体は摂らないようにしましょう。<br>
 			<br>データはあなたのWebブラウザに保存します(webStorage)。
 		</p>
 </footer>
-	<script src="nutrient.js"></script>
+	<script src="nutrient.js?v=1"></script>
 </body>
 </html>

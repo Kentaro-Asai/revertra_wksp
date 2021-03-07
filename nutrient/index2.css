@@ -280,6 +280,25 @@ main #menu-creator, main #material-creator {
   margin: 0.2rem 0.4rem;
 }
 
+#explore-perfect-button-box {
+  background-color: #333;
+  border-radius: 0.2rem;
+  margin: 0.5rem;
+  padding: 1rem;
+}
+#explore-perfect-button-box button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+  width: 15rem;
+  border: solid 2px #448;
+  border-radius: 2rem;
+  color: #448;
+  background-color: white;
+  box-shadow: 1px 1px 1px #ddd;
+  cursor: pointer;
+}
+
 #menu-creator {
   background-color: #ddc;
   border-radius: 1rem;
@@ -314,6 +333,7 @@ main #menu-creator, main #material-creator {
 }
 #menu-creator #menu-name {
   font-size: 1rem;
+  width: 15rem;
 }
 #menu-creator #menu-serving {
   border-radius: 0.4rem;
@@ -339,6 +359,8 @@ main #menu-creator, main #material-creator {
 }
 #menu-creator ul li select {
   width: 15rem;
+  height: 1.5rem;
+  font-size: 1rem;
   border-radius: 0.2rem;
 }
 #menu-creator ul li input {
@@ -346,7 +368,8 @@ main #menu-creator, main #material-creator {
   border: none;
   border-radius: 0.2rem;
   margin: 0 0 0 0.5rem;
-  height: 1rem;
+  height: 1.2rem;
+  font-size: 1rem;
   text-align: right;
 }
 #menu-creator > div {
@@ -445,15 +468,19 @@ main #menu-creator, main #material-creator {
 }
 #material-creator > p #material-select {
   font-size: 1rem;
+  height: 1.2rem;
   display: none;
 }
 #material-creator > p #material-name {
   font-size: 1rem;
+  width: 18rem;
+  height: 1.2rem;
 }
 #material-creator > p input[type=number] {
   font-size: 1rem;
   border-radius: 0.3rem;
   width: 4rem;
+  height: 1.2rem;
   border: none;
 }
 #material-creator div {
@@ -515,6 +542,179 @@ main #menu-creator, main #material-creator {
   height: 2.5rem;
   color: #141;
   border: solid 2px #595;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+#explore-perfect {
+  display: none;
+  background-color: #dde;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+#explore-perfect .back-buttons {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+#explore-perfect .back-buttons button {
+  padding: 0.5rem;
+  line-height: 1;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+#explore-perfect .back-buttons button:first-child {
+  float: left;
+}
+#explore-perfect .back-buttons button:last-child {
+  float: right;
+}
+#explore-perfect .back-buttons img {
+  width: 2rem;
+  height: 2rem;
+}
+#explore-perfect .explore-terminal {
+  padding: 0 0 1rem;
+}
+#explore-perfect .explore-terminal > p:first-child {
+  margin: 0.5rem 1rem 1.5rem;
+}
+#explore-perfect .explore-terminal > p:first-child label {
+  margin: 0 2rem 0 0;
+  padding: 0.5rem;
+}
+#explore-perfect .explore-terminal h6 {
+  margin: 1rem 2rem 0;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #822;
+}
+#explore-perfect .explore-terminal h6:first-child {
+  color: #228;
+}
+#explore-perfect .explore-terminal #contain-menu-list {
+  margin: 0.5rem;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  background: radial-gradient(#336, #669);
+}
+#explore-perfect .explore-terminal #contain-menu-list select {
+  display: inline-block;
+  margin: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+#explore-perfect .explore-terminal #not-contain-menu-list {
+  margin: 0.5rem;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  background: radial-gradient(#522, #855);
+}
+#explore-perfect .explore-terminal #not-contain-menu-list select {
+  display: inline-block;
+  margin: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+#explore-perfect #output-perfect article {
+  background-color: #334;
+  border-radius: 1rem;
+  margin: 0.8rem 0;
+  padding: 1rem;
+}
+#explore-perfect #output-perfect article h4 {
+  margin: 0.5rem 2rem;
+  padding: 0rem;
+  font-size: 1rem;
+  color: #cce;
+  font-weight: normal;
+}
+#explore-perfect #output-perfect article .perfect-menu-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  overflow: auto;
+}
+#explore-perfect #output-perfect article .perfect-menu-list li {
+  float: left;
+  margin: 0.5rem 0.3rem;
+  padding: 0.5rem 0.7rem;
+  color: #cce;
+  width: 16.5rem;
+  background-color: #113;
+  border-radius: 0.5rem;
+}
+#explore-perfect #output-perfect article .perfect-menu-list li h6 {
+  display: inline-block;
+  margin: 0;
+  width: 14.5rem;
+  line-height: 1rem;
+  font-weight: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+}
+#explore-perfect #output-perfect article .perfect-menu-list li h6.one-length {
+  width: 16.5rem;
+}
+#explore-perfect #output-perfect article .perfect-menu-list li span {
+  display: inline-block;
+  width: 2rem;
+  line-height: 1rem;
+  text-align: right;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table {
+  list-style: none;
+  background: #111;
+  width: 73.6rem;
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  overflow: auto;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li {
+  float: left;
+  margin: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  background-color: #222;
+  color: #bbc;
+  width: 16rem;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li h5 {
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin: 0;
+  width: 5.5rem;
+  display: inline-block;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li p {
+  margin: 0;
+  width: 10.5rem;
+  text-align: right;
+  display: inline-block;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li .danger-color {
+  color: #c33;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li .caution-color {
+  color: #a81;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li .safe-color {
+  color: #080;
+}
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li .poor-color {
+  color: #28c;
+}
+#explore-perfect #explore-button {
+  display: block;
+  font-size: 1.2rem;
+  border-radius: 1.2rem;
+  margin: 1.5rem auto 0;
+  width: 9rem;
+  height: 2.5rem;
+  color: #114;
+  border: solid 2px #559;
   background-color: #eee;
   cursor: pointer;
 }
