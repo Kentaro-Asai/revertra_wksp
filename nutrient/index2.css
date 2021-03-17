@@ -581,7 +581,7 @@ main #menu-creator, main #material-creator {
   margin: 0.5rem 1rem 1.5rem;
 }
 #explore-perfect .explore-terminal > p:first-child label {
-  margin: 0 2rem 0 0;
+  margin: 0 0.5rem;
   padding: 0.5rem;
 }
 #explore-perfect .explore-terminal h6 {
@@ -614,6 +614,22 @@ main #menu-creator, main #material-creator {
   display: inline-block;
   margin: 0.5rem 1rem;
   border-radius: 0.5rem;
+}
+#explore-perfect .explore-terminal .explore-button-box {
+  margin: 0.5rem 0;
+  text-align: center;
+}
+#explore-perfect .explore-terminal .explore-button-box #explore-select-button, #explore-perfect .explore-terminal .explore-button-box #explore-all-button {
+  display: inline-block;
+  font-size: 1.2rem;
+  border-radius: 1.2rem;
+  margin: 1.5rem 1rem 0;
+  width: 12rem;
+  height: 2.5rem;
+  color: #114;
+  border: solid 2px #559;
+  background-color: #eee;
+  cursor: pointer;
 }
 #explore-perfect #output-perfect article {
   background-color: #334;
@@ -695,7 +711,7 @@ main #menu-creator, main #material-creator {
   display: inline-block;
 }
 #explore-perfect #output-perfect article .perfect-menu-nutrients-table li .danger-color {
-  color: #c33;
+  color: #cb4;
 }
 #explore-perfect #output-perfect article .perfect-menu-nutrients-table li .caution-color {
   color: #a81;
@@ -706,17 +722,8 @@ main #menu-creator, main #material-creator {
 #explore-perfect #output-perfect article .perfect-menu-nutrients-table li .poor-color {
   color: #28c;
 }
-#explore-perfect #explore-button {
-  display: block;
-  font-size: 1.2rem;
-  border-radius: 1.2rem;
-  margin: 1.5rem auto 0;
-  width: 9rem;
-  height: 2.5rem;
-  color: #114;
-  border: solid 2px #559;
-  background-color: #eee;
-  cursor: pointer;
+#explore-perfect #output-perfect article .perfect-menu-nutrients-table li .limit-over-color {
+  color: #c33;
 }
 
 footer p {

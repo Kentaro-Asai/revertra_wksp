@@ -194,7 +194,7 @@ $(function(){
 				label: "クロム"
 			},
 		},
-		/*amino_acid: {
+		/*amino_acid: { // アミノ酸は、通常欠損しない。（ヴィーガンはあり得る）
 			Trp:{dose:4,unit:'mg',label: "トリプトファン"}, Met:{dose:15,unit:'mg',label: "メチオニン"},
 			Phe:{dose:25,unit:'mg',label: "フェニルアラニン"}, Thr:{dose:15,unit:'mg',label: "スレオニン"},
 			Val:{dose:26,unit:'mg',label: "バリン"}, Leu:{dose:39,unit:'mg',label: "ロイシン"},
@@ -1003,7 +1003,7 @@ $(function(){
 	});
 
 	$('#contain-menu-list, #not-contain-menu-list').on('click', (e)=>{
-		if (unselect_option != e.target.value) {
+		if (unselect_option != e.target.value && `` != e.target.parentElement.id) {
 			const menu_list_html = getMenuInExplore();
 			$('#'+e.target.parentElement.id).append(menu_list_html);
 		}
@@ -1013,10 +1013,10 @@ $(function(){
 	const getLackNutrients = (menus_ary)=>{
 		let enough_flg = true;
 		let survey_nutrients_ary = [];
-		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
-		// 現在含まれる栄養素を取得して100％に満たないものを返す
+		const for_serving_rate = $(`#one-serving`).prop(`checked`) ? 1/3 : 1;
+		// 現在含まれる栄養素を取得して100％に満たないものがあるか判定して、栄養素を返す
 		for (const a_nutrient_name in need_nutrients) {
-			if ('calory' == a_nutrient_name) continue;
+			//if ('calory' == a_nutrient_name) continue;
 			if ('Na' == a_nutrient_name) continue;
 			let added_value = 0;
 			for (const a_menu of menus_ary) {
@@ -1025,10 +1025,7 @@ $(function(){
 				}
 			}
 			survey_nutrients_ary.push({value: added_value, name: a_nutrient_name});
-			if (added_value < 100) {
-				//lack_nutrients.push({value: added_value, name: a_nutrient_name});
-				enough_flg = false;
-			}
+			if (added_value < 100 && 'calory' != a_nutrient_name) enough_flg = false;
 		}
 		// ソート
 		if (0 < survey_nutrients_ary.length) {
@@ -1038,14 +1035,13 @@ $(function(){
 				return 0;
 			});
 		}
-		//return enough_flg ? false : survey_nutrients_ary;
 		return {enough_flg: enough_flg, survey_nutrients_ary: survey_nutrients_ary};
 	};
 
 	// 優秀な料理を見つける（カロリー↓とビタミンミネラル↑）
 	const getRichNutrientsMenu = (menu_ary, survey_nutrients_ary)=>{
 		let evaluation = {value: 0, best: 0, best_menu: {}};
-		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
+		const for_serving_rate = $(`#one-serving`).prop(`checked`) ? 1/3 : 1;
 		if (0 < menu_ary.length) {
 			for (const a_menu of menu_ary) {
 				let limit_over_flg = false;
@@ -1053,24 +1049,124 @@ $(function(){
 					if (limit_over_flg) break;
 					for (const v of survey_nutrients_ary) {
 						if (0 == need_nutrients[v.name]) continue;
-						if (100 <= v.value) {
+						const nutrient_rate = parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (need_nutrients[v.name]*for_serving_rate));
+						if (0 != limit_nutrients[v.name] && limit_nutrients[v.name] * 100 / need_nutrients[v.name] < v.value + nutrient_rate) {
 							// 過剰摂取になる場合、候補に入れないようにする
-							if (0 != limit_nutrients[v.name] && parseFloat(100 * limit_nutrients[v.name] * for_serving_rate) < (v.value * need_nutrients[v.name] * for_serving_rate)) {
-								limit_over_flg = true;
-							}
+							limit_over_flg = true;
+						} else if (`calory` == v.name && 1.2 * 100 <= v.value + nutrient_rate) {
+							limit_over_flg = true;
 						} else {
-							evaluation.value += parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (need_nutrients[v.name]*for_serving_rate));
+							// 不足している分だけを評価する
+							if (v.value < 100) evaluation.value += (100 < v.value + nutrient_rate) ? (100 - v.value) : nutrient_rate;
 						}
 					}
 				}
 				if (evaluation.best < evaluation.value && !limit_over_flg) {
-					evaluation = {value: 0, best: evaluation.value, best_menu: a_menu};
+					evaluation = {value: 0, best: evaluation.value + 0, best_menu: Object.assign(a_menu, {})};
 				} else {
 					evaluation.value = 0;
 				}
 			}
 		}
 		return evaluation.best_menu;
+	};
+
+	/**
+	 * 評価してすぐに次の検証するmenusを最新のパターンの位置に用意する。それを繰り返す
+	 * 料理がABCの3種存在していた時、配列要素を一つずつ追加していって、後ろから取り除いていって、全組み合わせを試す（AB -> ABC -> AC -> BC）
+	 */
+	const selectWholeMenu = (rtn, selectable_menus)=>{
+		// 現在の検索位置
+		const iterator = {pattern: rtn.iterator.pattern + 0, selectable_menu: rtn.iterator.selectable_menu + 0};
+		const comment = evaluateMenuNutrients(rtn);
+		if (`栄養アンバランス` == comment) { //失敗
+			//(一個前の料理を消して、)今のカーソル(iterator)位置の料理を入れる
+			//一番後ろを切るならsliceじゃなくてlength--
+			rtn.menus[iterator.pattern].length--;
+			rtn.iterator.selectable_menu++;
+			if (selectable_menus.length <= rtn.iterator.selectable_menu) {
+				const a_menu = rtn.menus[iterator.pattern][ rtn.menus[iterator.pattern].length - 1 ];
+				for (let i in selectable_menus) {
+					if (a_menu.name == selectable_menus[i].name) {
+						rtn.iterator.selectable_menu = parseInt(i) + 1;
+						break;
+					}
+				}
+			}
+			if (iterator.selectable_menu != rtn.iterator.selectable_menu) {
+				rtn.menus[iterator.pattern][ rtn.menus[iterator.pattern].length - 1 ] = selectable_menus[rtn.iterator.selectable_menu];
+			} else {
+				rtn.iterator.pattern++;
+				rtn.iterator.selectable_menu = rtn.menus.length + 0;
+				if (selectable_menus.length <= rtn.menus.length) return rtn;
+				rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
+				rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+			}
+		} else if (`栄養不足で料理追加` == comment) {
+			//新しい料理の組み合わせ（ひとつ前の登録されたmenu_aryの先頭をselectable_menusから取り除いて全通り）
+			rtn.iterator.selectable_menu++;
+			if (selectable_menus.length <= rtn.iterator.selectable_menu) {
+				// 用意されている料理が無くなったので、完成された料理を返す
+				if (selectable_menus.length <= iterator.pattern || selectable_menus.length <= rtn.menus.length) return rtn;
+				rtn.iterator.pattern++;
+				rtn.iterator.selectable_menu = rtn.menus.length + 0;
+				rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
+				rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+			} else {
+				rtn.menus[iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+			}
+		} else if (`メニュー完成` == comment) {
+			rtn.perfect_menus.push(rtn.menus[iterator.pettern]);
+			rtn.iterator.pattern++;
+			if (selectable_menus.length <= rtn.iterator.pattern || selectable_menus.length <= rtn.menus.length) return rtn;
+			rtn.iterator.selectable_menu = rtn.menus.length + 0;
+			rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
+			rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+		}
+		return selectWholeMenu(rtn, selectable_menus);
+	};
+
+	//料理群の評価 → 栄養アンバランス、栄養不足で料理追加、メニュー完成 を返す
+	const evaluateMenuNutrients = (rtn)=>{
+		const menus = rtn.menus[rtn.menus.length - 1];
+		const for_serving_rate = $(`#one-serving`).prop(`checked`) ? 1/3 : 1;
+		let comment = `メニュー完成`;
+		let nutrient_score = 0;
+		// 現在含まれる栄養素を取得して100％に満たないものがあるか判定して、栄養素を返す
+		for (const a_nutrient_name in need_nutrients) {
+			let added_value = 0;
+			for (const a_menu of menus) {
+				for (const a_material of a_menu.materials) {
+					added_value += parseFloat( (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) );
+				}
+			}
+			if ('Na' == a_nutrient_name) {
+				if (limit_nutrients[`Na`] * for_serving_rate < added_value) comment = `栄養アンバランス`;
+			} else if ('calory' == a_nutrient_name) {
+				if (need_nutrients[`calory`] * for_serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
+			}	else if (0 != limit_nutrients[a_nutrient_name] && limit_nutrients[a_nutrient_name] * for_serving_rate <= added_value) {
+				comment = `栄養アンバランス`;
+			} else if (added_value <= need_nutrients[a_nutrient_name] * for_serving_rate) {
+				if (`栄養アンバランス` != comment) {
+					comment = `栄養不足で料理追加`;
+					const score_point = parseFloat(100 * added_value / (need_nutrients[a_nutrient_name] * for_serving_rate));
+					// scoreにはナトリウムとカロリーは入れない
+					nutrient_score += 100 < score_point ? 100 : score_point;
+				}
+			}
+		}
+		if (`栄養不足で料理追加` == comment) {
+			for (let i in rtn.incompletes.score) {
+				if (rtn.incompletes.score[i] < nutrient_score) {
+					rtn.incompletes.menus.splice(i, 0, menus);
+					rtn.incompletes.menus.length--;
+					rtn.incompletes.score.splice(i, 0, nutrient_score);
+					rtn.incompletes.score.length--;
+					break;
+				}
+			}
+		}
+		return comment;
 	};
 
 	// return {unit: "ugRAE", label: "vitaminA"}
@@ -1091,7 +1187,6 @@ $(function(){
 		for (const v of ary) {
 			if (-1 == inputted.indexOf(v)) {
 				inputted.push(v);
-				//rtn.push({name: v, count: ary.filter(w => v == w).length});
 				const a_menu_count = ary.filter(w => v == w).length;
 				rtn += 1 == a_menu_count ? `<li><h6 class="one-length">${v}</h6></li>` : `<li><h6>${v}</h6><span>×${a_menu_count}</span></li>`;
 			}
@@ -1099,48 +1194,51 @@ $(function(){
 		return rtn;
 	};
 
-	const displayPerfectMenus = (perfect_menus_ary)=>{
-		const for_serving_rate = `one-serving` == $('input[name="for-serving"]:checked').attr('id') ? 1/3 : 1;
-		let rtn = '';
-		for (const i in perfect_menus_ary) {
+	const displayPerfectMenus = (perfect_menus)=>{
+		const for_serving_rate = $(`#one-serving`).prop(`checked`) ? 1/3 : 1;
+		let html_str = '';
+		for (const i in perfect_menus) {
 			let menus_count_ary = []; // name
-			let perfect_nutrients_ary = {};
-			rtn += `<article><h4>パターン${parseInt(i) + 1}</h4><ul class="perfect-menu-list">`;
-			for (const a_menu of perfect_menus_ary[i]) {
+			let perfect_nutrients = {};
+			html_str += `<article><h4>パターン${parseInt(i) + 1}</h4><ul class="perfect-menu-list">`;
+			for (const a_menu of perfect_menus[i]) {
 				menus_count_ary.push(a_menu.name);
-				//rtn += `<li>${a_menu.name}</li>`;
 				for (const a_nutrient_name in need_nutrients) {
-					if (!perfect_nutrients_ary[a_nutrient_name]) {
-						perfect_nutrients_ary[a_nutrient_name] = {value: 0, need: need_nutrients[a_nutrient_name] * for_serving_rate};
+					if (!perfect_nutrients[a_nutrient_name]) {
+						perfect_nutrients[a_nutrient_name] = {value: 0, need: need_nutrients[a_nutrient_name] * for_serving_rate};
 					}
 					for (const a_material of a_menu.materials) {
-						perfect_nutrients_ary[a_nutrient_name].value += parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
+						perfect_nutrients[a_nutrient_name].value += parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
 					}
 				}
 			}
-			rtn += countAryDisplay(menus_count_ary);
-			rtn += '</ul><ul class="perfect-menu-nutrients-table">';
-			for (const a_nutrient_name in perfect_nutrients_ary) {
-				const percentage = (0 == perfect_nutrients_ary[a_nutrient_name].need) ? ' - ' : maxNumberDisplay(100 * perfect_nutrients_ary[a_nutrient_name].value / perfect_nutrients_ary[a_nutrient_name].need, 2);
+			html_str += countAryDisplay(menus_count_ary);
+			html_str += '</ul><ul class="perfect-menu-nutrients-table">';
+			for (const a_nutrient_name in perfect_nutrients) {
+				const percentage = (0 == perfect_nutrients[a_nutrient_name].need) ? ' - ' : maxNumberDisplay(100 * perfect_nutrients[a_nutrient_name].value / perfect_nutrients[a_nutrient_name].need, 2);
 				const nutrient_obj = getNutrientView(a_nutrient_name);
 				let color_class_name = ``;
-				if (percentage < 100) {
+				if (`calory` == a_nutrient_name) {
+					color_class_name = percentage < 100 ? `safe-color` : `caution-color`;
+				}	else if (percentage < 100) {
 					color_class_name = `poor-color`;
 				}	else if ((0 == limit_nutrients[a_nutrient_name] * for_serving_rate) && 100 < percentage) {
 					//color_class_name = `safe-color`;
-				} else if ((0.8 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients_ary[a_nutrient_name].value && (perfect_nutrients_ary[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
+				} else if ((0.8 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients[a_nutrient_name].value && (perfect_nutrients[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
 					color_class_name = `danger-color`;
-				} else if ((0.5 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients_ary[a_nutrient_name].value && (perfect_nutrients_ary[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
+				} else if ((0.5 * limit_nutrients[a_nutrient_name] * for_serving_rate) < perfect_nutrients[a_nutrient_name].value && (perfect_nutrients[a_nutrient_name].value < limit_nutrients[a_nutrient_name] * for_serving_rate)) {
 					color_class_name = `caution-color`;
+				} else if (limit_nutrients[a_nutrient_name] * for_serving_rate < perfect_nutrients[a_nutrient_name].value && 0 != limit_nutrients[a_nutrient_name]) {
+					color_class_name = `limit-over-color`;
 				}
-				rtn += `<li><h5>${nutrient_obj.label}</h5><p class="${color_class_name}">${maxNumberDisplay(perfect_nutrients_ary[a_nutrient_name].value, 2)} ${nutrient_obj.unit} (${percentage}%)</p></li>`;
+				html_str += `<li><h5>${nutrient_obj.label}</h5><p class="${color_class_name}">${maxNumberDisplay(perfect_nutrients[a_nutrient_name].value, 2)} ${nutrient_obj.unit} (${percentage}%)</p></li>`;
 			}
-			rtn += '</ul></article>';
+			html_str += '</ul></article>';
 		}
-		return rtn;
+		return html_str;
 	};
 
-	$('#explore-button').on('click', ()=>{
+	$('#explore-select-button, #explore-all-button').on('click', (e)=>{
 		let perfect_menus_ary = [];
 		let unperfect_menus_ary = [];
 		let menu_ary = JSON.parse(localStorage.getItem('menu'));
@@ -1167,64 +1265,76 @@ $(function(){
 				}
 			}
 		}
-		// 全料理をチェック
-		for (const a_menu of menu_ary) {
-			let check_menu_ary = candidate_menu_ary.concat([]); //concatしないと同一になってしまう
-			// 重複しないようにする時、採用する料理に入っているものを選ばない
-			if (!can_duplicate_menu_flg && 0 < check_menu_ary.length) {
-				can_continue_flg = false;
-				for (let v of check_menu_ary) {
-					if (a_menu.name == v.name) {
-						can_continue_flg = true;
-						break;
-					}
-				}
-				if (can_continue_flg) continue;
-			}
-			check_menu_ary.push(a_menu);
-			// 選択可能な料理の配列を用意
-			let selectable_menu_ary = [];
-			if (can_duplicate_menu_flg) {
-				selectable_menu_ary = menu_ary.concat([]);
-			} else {
-				for (let v of menu_ary) {
-					let is_exist_flg = false;
-					if (0 < check_menu_ary.length) {
-						for (let w of check_menu_ary) {
-							if (w.name == v.name) is_exist_flg = true;
+		if (`explore-all-button` == e.target.id) {
+			let rtn = {
+				menus: [candidate_menu_ary.concat([])],
+				perfect_menus: [],
+				incompletes: {menus: [{}, {}, {}], score: [0, 0, 0]},
+				iterator: {pattern: 0, selectable_menu: 0},
+				candidate_menus: candidate_menu_ary.concat([])
+			};
+			rtn = selectWholeMenu(rtn, menu_ary);
+			$('#output-perfect').html(0 < rtn.perfect_menus.length ? displayPerfectMenus(rtn.perfect_menus) : '<p>検索しましたが、1つも発見できませんでした。</p>' + displayPerfectMenus(rtn.incompletes.menus));
+		} else {
+			// 全料理をチェック
+			for (const a_menu of menu_ary) {
+				let check_menu_ary = candidate_menu_ary.concat([]); //concatしないと同一になってしまう
+				// 重複しないようにする時、採用する料理に入っているものを選ばない
+				if (!can_duplicate_menu_flg && 0 < check_menu_ary.length) {
+					can_continue_flg = false;
+					for (let v of check_menu_ary) {
+						if (a_menu.name == v.name) {
+							can_continue_flg = true;
+							break;
 						}
 					}
-					if (!is_exist_flg) selectable_menu_ary.push(v);
+					if (can_continue_flg) continue;
 				}
-			}
-			// これまでの加算した栄養素の欠点を埋める料理を見つける
-			for (let i=0; i < 100; i++) {
-				const ret = getLackNutrients(check_menu_ary);
-				if (!ret.enough_flg) {
-					const selected_menu = getRichNutrientsMenu(selectable_menu_ary, ret.survey_nutrients_ary);
-					if (0 == Object.keys(selected_menu).length) {
-						unperfect_menus_ary.push(check_menu_ary);
-						break;
-					} else {
-						check_menu_ary.push(selected_menu);
-						if (!can_duplicate_menu_flg) {
-							// selected_menuを弾く
-							for (let i in selectable_menu_ary) {
-								if (selected_menu.name == selectable_menu_ary[i].name) {
-									selectable_menu_ary.splice(i, 1);
-									break;
+				check_menu_ary.push(a_menu);
+				// 選択可能な料理の配列を用意
+				let selectable_menu_ary = [];
+				if (can_duplicate_menu_flg) {
+					selectable_menu_ary = menu_ary.concat([]);
+				} else {
+					for (let v of menu_ary) {
+						let is_exist_flg = false;
+						if (0 < check_menu_ary.length) {
+							for (let w of check_menu_ary) {
+								if (w.name == v.name) is_exist_flg = true;
+							}
+						}
+						if (!is_exist_flg) selectable_menu_ary.push(v);
+					}
+				}
+				// これまでの加算した栄養素の欠点を埋める料理を見つける
+				for (let i=0; i < 100; i++) {
+					const ret = getLackNutrients(check_menu_ary);
+					if (!ret.enough_flg) {
+						const selected_menu = getRichNutrientsMenu(selectable_menu_ary, ret.survey_nutrients_ary);
+						if (0 == Object.keys(selected_menu).length) {
+							unperfect_menus_ary.push(check_menu_ary);
+							break;
+						} else {
+							check_menu_ary.push(selected_menu);
+							if (!can_duplicate_menu_flg) {
+								// selected_menuを弾く
+								for (let i in selectable_menu_ary) {
+									if (selected_menu.name == selectable_menu_ary[i].name) {
+										selectable_menu_ary.splice(i, 1);
+										break;
+									}
 								}
 							}
 						}
+					} else {
+						perfect_menus_ary.push(check_menu_ary);
+						break;
 					}
-				} else {
-					perfect_menus_ary.push(check_menu_ary);
-					break;
 				}
 			}
+			// display nutrients
+			$('#output-perfect').html(0 < perfect_menus_ary.length ? displayPerfectMenus(perfect_menus_ary) : ('<p>検索しましたが、1つも発見できませんでした。</p>'+displayPerfectMenus(unperfect_menus_ary)) );
 		}
-		// display nutrients
-		$('#output-perfect').html(0 < perfect_menus_ary.length ? displayPerfectMenus(perfect_menus_ary) : ('<p>検索しましたが、1つも発見できませんでした。</p>'+displayPerfectMenus(unperfect_menus_ary)) );
 		fitWindowSize();
 	});
 });
