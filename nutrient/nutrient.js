@@ -1116,7 +1116,7 @@ $(function(){
 				rtn.menus[iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
 			}
 		} else if (`メニュー完成` == comment) {
-			rtn.perfect_menus.push(rtn.menus[iterator.pettern]);
+			rtn.perfect_menus.push(rtn.menus[iterator.pattern]);
 			rtn.iterator.pattern++;
 			if (selectable_menus.length <= rtn.iterator.pattern || selectable_menus.length <= rtn.menus.length) return rtn;
 			rtn.iterator.selectable_menu = rtn.menus.length + 0;
