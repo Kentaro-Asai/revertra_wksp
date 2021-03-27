@@ -1,5 +1,5 @@
 :root {
-  --main-bg-color: brown;
+  --main-font-color: #cce;
 }
 
 body {
@@ -9,7 +9,6 @@ body {
 header{
 	h1{
 		background-color: #277;
-		color: white;
 		border: ridge 0.4rem #277;
 		padding: 0.25rem;
 		text-align: center;
@@ -729,6 +728,75 @@ main{
 					}
 					.limit-over-color{
 						color: #c33;
+					}
+					span{
+						text-align: right;
+						display: block;
+						padding: 0 0.5rem 0 0;
+						border-radius: 0.3rem;
+					}
+				}
+			}
+		}
+		.material-nutrients{
+			margin: 1rem auto 0.5rem;
+			padding: 0.8rem;
+			background-color: #111;
+			border-radius: 1rem;
+			h6{
+				color: var(--main-font-color);
+				font-size: 1rem;
+				font-weight: normal;
+				margin: 0;
+				padding: 0 0 0 0.4rem;
+				cursor: pointer;
+				.triangle-close{
+					display: inline-block;
+					transform: rotate(28deg);
+					margin: 0 0.7rem 0 0;
+				}
+				.triangle-open{
+					display: inline-block;
+					transform: rotate(0deg);
+					margin: 0 0.7rem 0 0;
+				}
+				span:last-child{
+					font-size: 0.8rem;
+				}
+			}
+			ul{
+				display: none;
+				list-style: none;
+				margin: 1.5rem 0 1rem;
+				padding: 0;
+				overflow: auto;
+				li{
+					float: left;
+					width: 16rem;
+					margin: 0.3rem;
+					padding: 0.3rem 0.5rem;
+					border-radius: 0.5rem;
+					background-color: #444;
+					cursor: pointer;
+					span:first-child{
+						display: inline-block;
+						margin: 0;
+						font-size: 0.8rem;
+						font-weight: normal;
+						color: var(--main-font-color);
+						width: 12rem;
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+					}
+					span.material-weight{
+						display: inline-block;
+						margin: 0 0.5rem 0 0;
+						font-size: 0.8rem;
+						font-weight: normal;
+						color: var(--main-font-color);
+						text-align: right;
+						width: 3.5rem;
 					}
 				}
 			}

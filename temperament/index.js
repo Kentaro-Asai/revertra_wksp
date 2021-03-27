@@ -31,6 +31,7 @@ $(()=>{
 				{label: "自分の気持ち", point: {type1:0, type2:2, type3:0, type4:2, type5:0, type6:0, type7:1, type8:0, type9:0}},
 				{label: "周りの人の気持ち", point: {type1:0, type2:0, type3:1, type4:2, type5:1, type6:1, type7:0, type8:0, type9:2}},
 				{label: "論理", point: {type1:2, type2:0, type3:0, type4:1, type5:2, type6:1, type7:0, type8:1, type9:0}},
+				{label: "勘", point: {type1:0, type2:1, type3:0, type4:2, type5:0, type6:0, type7:0, type8:2, type9:0}},
 			]
 		},/*
 		{question: "負の感情の処理について",

@@ -941,7 +941,8 @@ $(function(){
 			{tag_name: "#material-creator div", tight: 43.8, wide: 58},
 			{tag_name: "#menu-creator div", tight: 54, wide: 71.8},
 			{tag_name: ".perfect-menu-list", tight: 55.6, wide: 74},
-			{tag_name: ".perfect-menu-nutrients-table", tight: 54.2, wide: 72.6}
+			{tag_name: ".perfect-menu-nutrients-table", tight: 54.2, wide: 72.6},
+			{tag_name: ".material-nutrients", tight: 54.2, wide: 72.6}
 		];
 		const root_em = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		const html_width = (79 * root_em <= window.innerWidth) ? 'wide' : 'tight';
@@ -971,8 +972,9 @@ $(function(){
 	};
 
 	$('header h5').on('click', (e)=>{
-		const is_toggle_opening_flg = 'explain-toggle-close' == e.target.parentElement.className;
-		e.target.parentElement.className = is_toggle_opening_flg ? 'explain-toggle-open' : 'explain-toggle-close';
+		if (`H5` != e.currentTarget.tagName) return;
+		const is_toggle_opening_flg = 'explain-toggle-close' == e.currentTarget.parentElement.className;
+		e.currentTarget.parentElement.className = is_toggle_opening_flg ? 'explain-toggle-open' : 'explain-toggle-close';
 	});
 
 	//
@@ -1200,6 +1202,7 @@ $(function(){
 		for (const i in perfect_menus) {
 			let menus_count_ary = []; // name
 			let perfect_nutrients = {};
+			let materials = [/* {name: ``, value: 0, nutrients: {...}}, */];
 			html_str += `<article><h4>パターン${parseInt(i) + 1}</h4><ul class="perfect-menu-list">`;
 			for (const a_menu of perfect_menus[i]) {
 				menus_count_ary.push(a_menu.name);
@@ -1209,6 +1212,30 @@ $(function(){
 					}
 					for (const a_material of a_menu.materials) {
 						perfect_nutrients[a_nutrient_name].value += parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
+					}
+				}
+				// materialsに入力
+				for (const a_material of a_menu.materials) {
+					let can_add_flg = true;
+					for (let k in materials) {
+						if (materials[k].name == a_material.name) {
+							can_add_flg = false;
+							materials[k].weight += parseFloat(a_material.weight / (a_menu.serving || 1));
+							for (const a_nutrient_name in a_material.nutrients) {
+								materials[k].nutrients[a_nutrient_name] += parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
+							}
+						}
+					}
+					if (can_add_flg && `` != a_material.name) {
+						let nutrients = {};
+						for (const a_nutrient_name in a_material.nutrients) {
+							nutrients[a_nutrient_name] = parseFloat(a_material.nutrients[a_nutrient_name] / (a_menu.serving || 1)) || 0;
+						}
+						materials.push({
+							name: a_material.name,
+							nutrients: nutrients,
+							weight: parseFloat(a_material.weight / (a_menu.serving || 1)),
+						});
 					}
 				}
 			}
@@ -1231,12 +1258,57 @@ $(function(){
 				} else if (limit_nutrients[a_nutrient_name] * for_serving_rate < perfect_nutrients[a_nutrient_name].value && 0 != limit_nutrients[a_nutrient_name]) {
 					color_class_name = `limit-over-color`;
 				}
-				html_str += `<li><h5>${nutrient_obj.label}</h5><p class="${color_class_name}">${maxNumberDisplay(perfect_nutrients[a_nutrient_name].value, 2)} ${nutrient_obj.unit} (${percentage}%)</p></li>`;
+				html_str += `<li><h5>${nutrient_obj.label}</h5><p class="${color_class_name}">${maxNumberDisplay(perfect_nutrients[a_nutrient_name].value, 2)} ${nutrient_obj.unit} (${percentage}%)</p><span class="pattern${parseInt(i)+1} ${a_nutrient_name}"></span></li>`;
 			}
-			html_str += '</ul></article>';
+			html_str += `</ul><div class="material-nutrients"><h6><span class="triangle-close">▼</span>素材<span>（栄養貢献度を閲覧するには、素材をクリック）</span></h6><ul data-pattern="pattern${parseInt(i)+1}">`;
+			for (const a_material of materials) {
+				if (`` == a_material.name) continue;
+				let dataset = `{`;
+				for (const a_nutrient_name in perfect_nutrients) {
+					const percentage = (0 == perfect_nutrients[a_nutrient_name].need) ? ` - ` : maxNumberDisplay(100 * a_material.nutrients[a_nutrient_name] / perfect_nutrients[a_nutrient_name].need, 2);
+					dataset += `"${a_nutrient_name}": "${percentage}",`;
+				}
+				dataset = dataset.substring(0, dataset.length - 1) + `}`;
+				html_str += `<li data-nutrients='${dataset}'><span>${a_material.name}</span><span class="material-weight">${maxNumberDisplay(a_material.weight, 2)} g</span></ll>`;
+			}
+			html_str += '</ul></div></article>';
 		}
 		return html_str;
 	};
+
+	$('#explore-perfect').on('click', '#output-perfect .material-nutrients h6', (e)=>{
+		if (`H6` != e.currentTarget.tagName) return;
+		if ('triangle-close' == e.currentTarget.children[0].className) {
+			e.currentTarget.children[0].className = 'triangle-open';
+			e.currentTarget.nextElementSibling.style.display = 'block';
+		} else {
+			e.currentTarget.children[0].className = 'triangle-close';
+			e.currentTarget.nextElementSibling.style.display = 'none';
+		}
+	});
+
+	//素材の色変え、素材の値を挿入
+	$('#explore-perfect').on('click', '.material-nutrients li', (e)=>{
+		const pattern = e.currentTarget.parentElement.dataset.pattern;
+		const dataset = JSON.parse(e.currentTarget.dataset.nutrients);
+		console.log(e.currentTarget.style.backgroundColor);
+		if (-1 != [`rgb(68, 68, 68)`, ``, `#444`, `#444444`].indexOf(e.currentTarget.style.backgroundColor)) {
+			for (let html_li of e.currentTarget.parentElement.children) {
+				html_li.style.backgroundColor = `#444`;
+			}
+			e.currentTarget.style.backgroundColor = `#373`;
+			for (const a_nutrient_name in dataset) {
+				const doc = document.getElementsByClassName(`${pattern} ${a_nutrient_name}`);
+				doc[0].innerHTML = dataset[a_nutrient_name] + `%`;
+				if (100 < dataset[a_nutrient_name]) doc[0].style.backgroundColor = `#c33`;
+				else if (33 < dataset[a_nutrient_name]) doc[0].style.backgroundColor = `#373`;
+				else doc[0].style.backgroundColor = ``;
+			}
+		} else {
+			$(`.${pattern}`).html(``);
+			e.currentTarget.style.backgroundColor = `#444`;
+		}
+	});
 
 	$('#explore-select-button, #explore-all-button').on('click', (e)=>{
 		let perfect_menus_ary = [];
