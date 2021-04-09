@@ -407,13 +407,11 @@ $(function(){
 			$('#body-weight').val(body_parameter.weight);
 			$('#body-height').val(body_parameter.height);
 			$('#body-age').val(body_parameter.age);
-			for (let v of $('input[name="AF"]')) {
-				if (v.value == body_parameter.AF) v.setAttribute('checked', 'checked');
-				else v.removeAttribute('checked');
-			}
-			for (let v of $('input[name="SF"]')) {
-				if (v.value == body_parameter.SF) v.setAttribute('checked', 'checked');
-				else v.removeAttribute('checked');
+			if (!!body_parameter.activation_level) {
+				$('#'+body_parameter.activation_level).attr(`checked`, `checked`);
+			} else {
+				//デフォルト値（互換性確保）
+				body_parameter.activation_level = `activation_level_2`;
 			}
 			bodyParameterView(body_parameter);
 			// hide this input area.
