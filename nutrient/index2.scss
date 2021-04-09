@@ -173,7 +173,7 @@ main{
 		border: solid 0.2rem silver;
 		padding: 0.7rem 0 0 1.7rem;
 		width: 51.3rem;
-		height: 20.7rem;
+		height: 10.9rem;
 		margin: 2rem auto;
 		position: relative;
 		overflow: visible;
@@ -216,6 +216,10 @@ main{
 			margin: 0.6rem 0.2rem 0.2rem;
 			width: 47rem;
 			z-index: 2;
+			> label.activation-level{
+				display: inline-block;
+				margin: 0.1rem 0.2rem;
+			}
 		}
 		> button{
 			font-size: 1rem;
@@ -582,11 +586,24 @@ main{
 	}
 	.explore-terminal{
 		padding: 0 0 1rem;
-		> p:first-child{
-			margin: 0.5rem 1rem 1.5rem;
-			label{
-				margin: 0 0.5rem;
-				padding: 0.5rem;
+		div{
+			p{
+				display: inline-block;
+				margin: 0.5rem 1rem 0.3rem;
+				width: 14rem;
+				background: radial-gradient(#eef, #dde);
+				border-radius: 0.5rem;
+				text-align: center;
+				span{
+					display: inline-block;
+					width: 14rem;
+					font-size: 1rem;
+					padding: 0 0 0.3rem;
+				}
+				label{
+					margin: 0 0.5rem;
+					padding: 0.5rem;
+				}
 			}
 		}
 		h6{

@@ -44,7 +44,7 @@
 				</fieldset>
 				<fieldset class="fundamental">
 					<legend>年齢</legend>
-					<input type="number" name="body-age" id="body-age" value="30"> 歳
+					<input type="number" name="body-age" id="body-age" value="30" min="5"> 歳
 				</fieldset>
 				<fieldset class="fundamental">
 					<legend>身長</legend>
@@ -56,12 +56,18 @@
 				</fieldset>
 				<fieldset class="fundamental" id="only-female-fieldset">
 					<legend>女性のみ</legend>
-					<label><input type="checkbox" name="pregnant-stage" id="pregnant-first" />妊娠初期</label>
-					<label><input type="checkbox" name="pregnant-stage" id="pregnant-middle" />妊娠中期</label>
-					<label><input type="checkbox" name="pregnant-stage" id="pregnant-last" />妊娠後期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="first" />妊娠初期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="middle" />妊娠中期</label>
+					<label><input type="checkbox" name="pregnant-stage" id="last" />妊娠後期</label>
 					<label><input type="checkbox" name="pregnant-stage" id="lactating" />授乳婦</label>
 				</fieldset>
 				<fieldset>
+					<legend>活動レベル</legend>
+					<label class="activation-level"><input type="radio" name="activation-level" value="activation_level_1" />1. 寝たきり ～ 家から出ない</label>
+					<label class="activation-level"><input type="radio" name="activation-level" value="activation_level_2" checked />2. 軽い運動 ～ やや軽い労働作業</label>
+					<label class="activation-level"><input type="radio" name="activation-level" value="activation_level_3" />3. 激しい運動 ～ 重労働作業</label>
+				</fieldset>
+				<!--<fieldset>
 					<legend>活動係数</legend>
 					<label><input type="radio" name="AF" value="1.0" />寝たきり</label>
 					<label><input type="radio" name="AF" value="1.2" />ベッド上安静</label>
@@ -81,20 +87,20 @@
 					<label><input type="radio" name="SF" value="1.6" />外傷(頭部損傷+ステロイド使用)</label>
 					<label><input type="radio" name="SF" value="1.2" />感染症(軽度)</label>
 					<label><input type="radio" name="SF" value="1.5" />感染症(中等度)</label>
-					<!-- <label><input type="radio" name="SF" value="1.2" />ガン</label> -->
 				</fieldset>
 				<fieldset>
 					<legend>蛋白異化亢進の程度</legend>
 					<label><input type="radio" name="accelerate-protein" value="0.8" checked />健常成人(日常生活)</label>
 					<label><input type="radio" name="accelerate-protein" value="1.1" />内科的疾患(発熱なし)</label>
 					<label><input type="radio" name="accelerate-protein" value="2.9" />異化亢進患者</label>
-				</fieldset>
+				</fieldset>-->
 				<button id="your-input-area-button">入力エリアを隠す</button>
 			</div>
 			<div class="nutrient-table">
 				<h5>栄養加算表 (あなたの摂取量 / 推奨 ～ 上限)</h5>
 				<ul>
 					<li><h6>カロリー</h6><p><span id="intake-calory">0</span> / <span id="need-calory">0</span> kcal</p></li>
+					<li><h6>糖質</h6><p><span id="intake-carbo">0</span> / <span id="need-carbo">0</span> g</p></li>
 					<li><h6>タンパク質</h6><p><span id="intake-protein">0</span> / <span id="need-protein">0</span> g</p></li>
 					<li><h6>脂質</h6><p><span id="intake-oil">0</span> / <span id="need-oil">0</span> g</p></li>
 					<li><h6>食物繊維</h6><p><span id="intake-fiber">0</span> / <span id="need-fiber">0</span> g</p></li>
@@ -222,10 +228,18 @@
 				<button><img src="x.svg" alt="×" /></button>
 			</p>
 			<div class="explore-terminal">
-				<p>
-					<label><input type="radio" name="for-serving" id="oneday-serving" data-serve="1" checked />一日分</label>
-					<label><input type="radio" name="for-serving" id="one-serving"  data-serve="1/3" />一食分</label>
-				</p>
+				<div>
+					<p>
+						<span>あなたの摂取量</span>
+						<label><input type="radio" name="for-serving" id="your-oneday-serving" data-serve="1" checked />一日分</label>
+						<label><input type="radio" name="for-serving" id="your-one-serving"  data-serve="1/3" />一食分</label>
+					</p>
+					<p>
+						<span>成人の摂取量</span>
+						<label><input type="radio" name="for-serving" id="everyone-oneday-serving" data-serve="1" />一日分</label>
+						<label><input type="radio" name="for-serving" id="everyone-one-serving"  data-serve="1/3" />一食分</label>
+					</p>
+				</div>
 				<h6>採用する料理 (<label><input type="checkbox" id="can-duplicate-menu-flg" />被り有り</label>)</h6>
 				<p id="contain-menu-list"></p>
 				<h6>採用しない料理</h6>
@@ -245,9 +259,10 @@
 			Na(ナトリウム): 食塩相当量に換算してください。ナトリウム分に、58.5/23倍してください。<br>
 			乳酸菌・ω3脂肪酸も摂ってください。<br>
 			プリン体は摂らないようにしましょう。<br>
-			<br>データはあなたのWebブラウザに保存します(webStorage)。
+			<br>データはあなたのWebブラウザに保存します(webStorage)。<br>
+			2020年版の基礎栄養学の値に変更しました(4/2)。
 		</p>
 </footer>
-	<script src="nutrient.js?v=4"></script>
+	<script src="nutrient.js?v=5"></script>
 </body>
 </html>

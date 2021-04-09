@@ -167,7 +167,7 @@ main #menu-creator, main #material-creator {
   border: solid 0.2rem silver;
   padding: 0.7rem 0 0 1.7rem;
   width: 51.3rem;
-  height: 20.7rem;
+  height: 10.9rem;
   margin: 2rem auto;
   position: relative;
   overflow: visible;
@@ -210,6 +210,10 @@ main #menu-creator, main #material-creator {
   margin: 0.6rem 0.2rem 0.2rem;
   width: 47rem;
   z-index: 2;
+}
+#your-nutrient #your-input-area > fieldset > label.activation-level {
+  display: inline-block;
+  margin: 0.1rem 0.2rem;
 }
 #your-nutrient #your-input-area > button {
   font-size: 1rem;
@@ -576,10 +580,21 @@ main #menu-creator, main #material-creator {
 #explore-perfect .explore-terminal {
   padding: 0 0 1rem;
 }
-#explore-perfect .explore-terminal > p:first-child {
-  margin: 0.5rem 1rem 1.5rem;
+#explore-perfect .explore-terminal div p {
+  display: inline-block;
+  margin: 0.5rem 1rem 0.3rem;
+  width: 14rem;
+  background: radial-gradient(#eef, #dde);
+  border-radius: 0.5rem;
+  text-align: center;
 }
-#explore-perfect .explore-terminal > p:first-child label {
+#explore-perfect .explore-terminal div p span {
+  display: inline-block;
+  width: 14rem;
+  font-size: 1rem;
+  padding: 0 0 0.3rem;
+}
+#explore-perfect .explore-terminal div p label {
   margin: 0 0.5rem;
   padding: 0.5rem;
 }

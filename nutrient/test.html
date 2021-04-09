@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="あなたの栄養のメモを支援します。その日のカロリーと栄養分を見えるようにします。">
+	<meta name="keywords" content="カロリー,栄養管理">
+	<script src="../jq.js"></script>
+	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
+	<title>栄養管理テスト</title>
+</head>
+<body>
+	<style>
+		#standard-nutrient{
+			background: #444;
+		}
+		#nutrient-table-vitamin{
+			color: #8bb;
+			background: #455;
+		}
+		#nutrient-table-mineral{
+			color: #b88;
+			background: #644;
+		}
+		table{
+			background-color: black;
+			border-collapse: collapse;
+			margin: 0.5rem;
+		}
+		th{
+			color: wheat;
+			padding: 0.3rem;
+		}
+		td{
+			color: lightgray;
+			border: solid 1px #494;
+			padding: 0.3rem;
+		}
+	</style>
+	<div id="standard-nutrient"></div>
+	<div id="nutrient-table-vitamin"></div>
+	<div id="nutrient-table-mineral"></div>
+	<div id="conclusion-nutrients"></div>
+	<script>
+	const standard_nutrient = {
+		calory: {unit:'kcal', label:'カロリー'},
+		carbo: {unit:'g', label:'糖質'},
+		fiber: {unit:'g', label:'食物繊維'},
+		protein: {unit:'g', label:'タンパク質'},
+		oil: {unit:'g', label:'脂質'}
+	};
+	//食物繊維必要量
+	const dietaly_fiber_table = {
+				male: {5:8, 7:10, 9:11, 11:13, 14:17, 17:19, 29:21, 49:21, 64:21, 74:20, 75:20},
+				female: {5:8, 7:10, 9:11, 11:13, 14:17, 17:18, 29:18, 49:18, 64:18, 74:17, 75:17}
+			};
+	const nutrient_table = {
+		vitamin: {
+			vitaminA: { //年齢:[目安or推奨, 上限]
+				male: 	{2:[400,600], 5:[450,700], 7:[400,950], 9:[500,1200], 11:[600,1500], 14:[800,2100], 17:[900,2500], 29:[850,2700], 49:[900,2700], 64:[850,2700], 74:[800,2700], 75:[800,2700]},
+				female: {2:[350,600], 5:[500,850], 7:[400,1200], 9:[500,1500], 11:[600,1900], 14:[700,2500], 17:[650,2800], 29:[650,2700], 49:[700,2700], 64:[700,2700], 74:[700,2700], 75:[650,2700]},
+				pregnant: {first: 0, middle: 0, last: 80, lactating: 450, option: '追加'},
+				unit: 'μgRAE',
+				label: "ビタミンA"
+			},
+			vitaminB1: {
+				male: {2:[0.5,0],5:[0.7,0],7:[0.8,0],9:[1.0,0],11:[1.2,0],14:[1.4,0],17:[1.5,0],29:[1.4,0],49:[1.4,0],64:[1.3,0],74:[1.3,0],75:[1.2,0]},
+				female: {2:[0.5,0],5:[0.7,0],7:[0.8,0],9:[0.9,0],11:[1.1,0],14:[1.3,0],17:[1.2,0],29:[1.1,0],49:[1.1,0],64:[1.1,0],74:[1.1,0],75:[0.9,0]},
+				pregnant: {first: 0.2, middle: 0.2, last: 0.2, lactating: 0.2, option: '追加'},
+				unit: 'mg',
+				label: "ビタミンB1"
+			},
+			vitaminB2: {
+				male: {2:[0.6,0],5:[0.8,0],7:[0.9,0],9:[1.1,0],11:[1.4,0],14:[1.6,0],17:[1.7,0],29:[1.6,0],49:[1.6,0],64:[1.5,0],74:[1.5,0],75:[1.3,0]},
+				female: {2:[0.5,0],5:[0.8,0],7:[0.9,0],9:[1.0,0],11:[1.3,0],14:[1.4,0],17:[1.4,0],29:[1.2,0],49:[1.2,0],64:[1.2,0],74:[1.2,0],75:[1.0,0]},
+				pregnant: {first: 0.3, middle: 0.3, last: 0.3, lactating: 0.6, option: '追加'},
+				unit: 'mg',
+				label: "ビタミンB2"
+			},
+			niacin: {
+				male:{2:[6,60],5:[8,80],7:[9,100],9:[11,150],11:[13,200],14:[15,250],17:[17,300],29:[15,300],49:[15,350],64:[14,350],74:[14,300],75:[13,300]},
+				female: {2:[5,60],5:[7,80],7:[8,100],9:[10,150],11:[10,150],14:[14,250],17:[13,250],29:[11,250],49:[11,250],64:[11,250],74:[11,250],75:[10,250]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 3, option: '追加'},
+				unit: 'mgNE',
+				label: "ナイアシン"
+			},
+			vitaminB6: {
+				male:	{2:[0.5,10],5:[0.6,15],7:[0.8,20],9:[0.9,25],11:[1.1,30],14:[1.4,40],17:[1.5,50],29:[1.4,55],49:[1.4,60],64:[1.4,55],74:[1.4,50],75:[1.4,50]},
+				female: {2:[0.5,10],5:[0.6,15],7:[0.7,20],9:[0.9,25],11:[1.1,30],14:[1.3,40],17:[1.3,45],29:[1.1,45],49:[1.1,45],64:[1.1,45],74:[1.1,40],75:[1.1,40]},
+				pregnant: {first: 0.2, middle: 0.2, last: 0.2, lactating: 0.3, option: '追加'},
+				unit: 'mg',
+				label: "ビタミンB6"
+			},
+			vitaminB12: {
+				male: {2:[0.9,0],5:[1.1,0],7:[1.3,0],9:[1.6,0],11:[1.9,0],14:[2.4,0],17:[2.4,0],29:[2.4,0],49:[2.4,0],64:[2.4,0],74:[2.4,0],75:[2.4,0]},
+				female: {2:[0.9,0],5:[1.0,0],7:[1.3,0],9:[1.5,0],11:[1.8,0],14:[2.3,0],17:[2.5,0],29:[2.4,0],49:[2.4,0],64:[2.4,0],74:[2.4,0],75:[2.4,0]},
+				pregnant: {first: 0.4, middle: 0.4, last: 0.4, lactating: 0.8, option: '追加'},
+				unit: 'μg',
+				label: "ビタミンB12"
+			},
+			folic_acid: {
+				male: {2:[90,200],5:[110,300],7:[140,400],9:[160,500],11:[190,700],14:[240,900],17:[240,900],29:[240,900],49:[240,1000],64:[240,1000],74:[240,900],75:[240,900]},
+				female: {2:[90,200],5:[110,300],7:[140,400],9:[160,500],11:[190,700],14:[240,900],17:[240,900],29:[240,900],49:[240,1000],64:[240,1000],74:[240,900],75:[240,900]},
+				pregnant: {first: 240, middle: 240, last: 240, lactating: 100, option: '追加'},
+				unit: 'μg',
+				label: "葉酸"
+			},
+			pantothenic_acid: {
+				male: {2:[3,0],5:[4,0],7:[5,0],9:[5,0],11:[6,0],14:[7,0],17:[7,0],29:[5,0],49:[5,0],64:[6,0],74:[6,0],75:[6,0]},
+				female: {2:[4,0],5:[4,0],7:[5,0],9:[5,0],11:[6,0],14:[6,0],17:[6,0],29:[5,0],49:[5,0],64:[5,0],74:[5,0],75:[5,0]},
+				pregnant: {first: 5, middle: 5, last: 5, lactating: 6, option: '置換'},
+				unit: 'mg',
+				label: "パントテン酸"
+			},
+			biotin: {
+				male: {2:[20,0],5:[20,0],7:[30,0],9:[30,0],11:[40,0],14:[50,0],17:[50,0],29:[50,0],49:[50,0],64:[50,0],74:[50,0],75:[50,0]},
+				female: {2:[20,0],5:[20,0],7:[30,0],9:[30,0],11:[40,0],14:[50,0],17:[50,0],29:[50,0],49:[50,0],64:[50,0],74:[50,0],75:[50,0]},
+				pregnant: {first: 50, middle: 50, last: 50, lactating: 50, option: '置換'},
+				unit: 'μg',
+				label: "ビオチン"
+			},
+			vitaminC: {
+				male: {2:[40,0],5:[50,0],7:[60,0],9:[70,0],11:[85,0],14:[100,0],17:[100,0],29:[100,0],49:[100,0],64:[100,0],74:[100,0],75:[100,0]},
+				female: {2:[40,0],5:[50,0],7:[60,0],9:[70,0],11:[85,0],14:[100,0],17:[100,0],29:[100,0],49:[100,0],64:[100,0],74:[100,0],75:[100,0]},
+				pregnant: {first: 10, middle: 10, last: 10, lactating: 45, option: '追加'},
+				unit: 'mg',
+				label: "ビタミンC"
+			},
+			vitaminD: {
+				male: {2:[3.0,20], 5:[3.5,30], 7:[4.5,40], 9:[5,40], 11:[6.5,60], 14:[8,80], 17:[9,90], 29:[8.5,100], 49:[8.5,100], 64:[8.5,100], 74:[8.5,100], 75:[8.5,100]},
+				female: {2:[3.5,25],5:[4.0,25],7:[5.0,20],9:[6.0,40],11:[8.0,60],14:[9.5,80],17:[8.5,90],29:[8.5,100],49:[8.5,100],64:[8.5,100],74:[8.5,100],75:[8.5,100]},
+				pregnant: {first: 8.5, middle: 8.5, last: 8.5, lactating: 8.5, option: '置換'},
+				unit: 'μg',
+				label: "ビタミンD"
+			},
+			vitaminE: {
+				male: {2:[3.0,150],5:[4.0,200],7:[5.0,300],9:[5.0,350],11:[5.5,450],14:[6.5,650],17:[7.0,750],29:[6.0,850],49:[6.0,900],64:[7.0,850],74:[7.0,850],75:[6.5,750]},
+				female: {2:[3.0,150],5:[4.0,200],7:[5.0,300],9:[5.0,350],11:[5.5,450],14:[6.0,600],17:[5.5,650],29:[5.0,650],49:[5.5,700],64:[6.0,700],74:[6.5,650],75:[6.5,650]},
+				pregnant: {first: 6.5, middle: 6.5, last: 6.5, lactating: 7, option: '置換'},
+				unit: 'mg',
+				label: "ビタミンE"
+			},
+			vitaminK: {
+				male: {2:[50,0],5:[60,0],7:[80,0],9:[90,0],11:[110,0],14:[140,0],17:[160,0],29:[150,0],49:[150,0],64:[150,0],74:[150,0],75:[150,0]},
+				female: {2:[60,0],5:[70,0],7:[90,0],9:[110,0],11:[140,0],14:[170,0],17:[150,0],29:[150,0],49:[150,0],64:[150,0],74:[150,0],75:[150,0]},
+				pregnant: {first: 150, middle: 150, last: 150, lactating: 150, option: '置換'},
+				unit: 'μg',
+				label: "ビタミンK"
+			}
+		},
+		mineral: {
+			Na: {
+				male: {2:[0,3.0],5:[0,3.5],7:[0,4.5],9:[0,5.0],11:[0,6.0],14:[0,7.0],17:[0,7.5],29:[1.5,7.5],49:[1.5,7.5],64:[1.5,7.5],74:[1.5,7.5],75:[1.5,7.5]},
+				female: {2:[0,3.0],5:[0,3.5],7:[0,4.5],9:[0,5.0],11:[0,6.0],14:[0,6.5],17:[0,6.5],29:[1.5,6.5],49:[1.5,6.5],64:[1.5,6.5],74:[1.5,6.5],75:[1.5,6.5]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 0, option: '追加'},
+				unit: 'g',
+				label: "食塩相当量"
+			},
+			K: {
+				male: {2:[900,0],5:[1400,0],7:[1800,0],9:[2000,0],11:[2200,0],14:[2400,0],17:[3000,0],29:[3000,0],49:[3000,0],64:[3000,0],74:[3000,0],75:[3000,0]},
+				female:{2:[900,0],5:[1400,0],7:[1800,0],9:[2000,0],11:[2000,0],14:[2400,0],17:[2600,0],29:[2600,0],49:[2600,0],64:[2600,0],74:[2600,0],75:[2600,0]},
+				pregnant: {first: 2600, middle: 2600, last: 2600, lactating: 2600, option: '置換'},
+				unit: 'mg',
+				label: "カリウム"
+			},
+			Ca: {
+				male: {2:[450,0],5:[600,0],7:[600,0],9:[650,0],11:[700,0],14:[1000,0],17:[800,0],29:[800,2500],49:[750,2500],64:[750,2500],74:[750,2500],75:[700,2500]},
+				female: {2:[400,0],5:[550,0],7:[550,0],9:[750,0],11:[750,0],14:[800,0],17:[650,0],29:[650,2500],49:[650,2500],64:[650,2500],74:[650,2500],75:[600,2500]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 0, option: '追加'},
+				unit: 'mg',
+				label: "カルシウム"
+			},
+			Mg: {
+				male: {2:[70,0],5:[100,0],7:[130,0],9:[170,0],11:[210,0],14:[290,0],17:[360,0],29:[340,0],49:[370,0],64:[370,0],74:[350,0],75:[320,0]},
+				female: {2:[70,0],5:[100,0],7:[130,0],9:[160,0],11:[220,0],14:[290,0],17:[310,0],29:[270,0],49:[290,0],64:[290,0],74:[280,0],75:[260,0]},
+				pregnant: {first: 40, middle: 40, last: 40, lactating: 0, option: '追加'},
+				unit: 'mg',
+				label: "マグネシウム"
+			},
+			P: {
+				male: {2:[500,0],5:[700,0],7:[900,0],9:[1000,0],11:[1100,0],14:[1200,0],17:[1200,0],29:[1000,3000],49:[1000,3000],64:[1000,3000],74:[1000,3000],75:[1000,3000]},
+				female: {2:[500,0],5:[700,0],7:[800,0],9:[1000,0],11:[1000,0],14:[1000,0],17:[900,0],29:[800,3000],49:[800,3000],64:[800,3000],74:[800,3000],75:[800,3000]},
+				pregnant: {first: 800, middle: 800, last: 800, lactating: 800, option: '置換'},
+				unit: 'mg',
+				label: "リン"
+			},
+			Fe: {
+				male: {2:[4.5,25],5:[5.5,25],7:[5.5,30],9:[7.0,35],11:[8.5,35],14:[10,40],17:[10,50],29:[7.5,50],49:[7.5,50],64:[7.5,50],74:[7.5,50],75:[7.0,50]},
+				female: {2:[4.5,20],5:[5.5,25],7:[5.5,30],9:[7.5,35],11:[12.0,35],14:[12.0,40],17:[10.5,40],29:[10.5,40],49:[10.5,40],64:[11,40],74:[6.0,40],75:[6.0,40]},
+				pregnant: {first: 2.5, middle: 15, last: 15, lactating: 2.5, option: '追加'},
+				unit: 'mg',
+				label: "鉄"
+			},
+			Zn: {
+				male: {2:[3,0],5:[4,0],7:[5,0],9:[6,0],11:[7,0],14:[10,0],17:[12,0],29:[11,40],49:[11,45],64:[11,45],74:[11,40],75:[10,40]},
+				female: {2:[3,0],5:[3,0],7:[4,0],9:[5,0],11:[6,0],14:[8,0],17:[8,0],29:[8,35],49:[8,35],64:[8,35],74:[8,35],75:[8,30]},
+				pregnant: {first: 2, middle: 2, last: 2, lactating: 4, option: '追加'},
+				unit: 'mg',
+				label: "亜鉛"
+			},
+			Cu: {
+				male: {2:[0.3,0],5:[0.4,0],7:[0.4,0],9:[0.5,0],11:[0.6,0],14:[0.8,0],17:[0.9,0],29:[0.9,7],49:[0.9,7],64:[0.9,7],74:[0.9,7],75:[0.8,7]},
+				female: {2:[0.3,0],5:[0.3,0],7:[0.4,0],9:[0.5,0],11:[0.6,0],14:[0.8,0],17:[0.7,0],29:[0.7,7],49:[0.7,7],64:[0.7,7],74:[0.7,7],75:[0.7,7]},
+				pregnant: {first: 0.1, middle: 0.1, last: 0.1, lactating: 0.6, option: '追加'},
+				unit: 'mg',
+				label: "銅"
+			},
+			Mo: {
+				male: {2:[10,0],5:[10,0],7:[15,0],9:[20,0],11:[20,0],14:[25,0],17:[30,0],29:[30,600],49:[30,600],64:[30,600],74:[30,600],75:[25,600]},
+				female: {2:[10,0],5:[10,0],7:[15,0],9:[15,0],11:[20,0],14:[25,0],17:[25,0],29:[25,500],49:[25,500],64:[25,500],74:[25,500],75:[25,500]},
+				pregnant: {first: 0, middle: 0, last: 0, lactating: 3, option: '追加'},
+				unit: 'μg',
+				label: "モリブデン"
+			},
+			Mn: {
+				male: {2:[1.5,0],5:[1.5,0],7:[2.0,0],9:[2.5,0],11:[3,0],14:[4,0],17:[4.5,0],29:[4,11],49:[4,11],64:[4,11],74:[4,11],75:[4,11]},
+				female: {2:[1.5,0],5:[1.5,0],7:[2.0,0],9:[2.5,0],11:[3,0],14:[4,0],17:[3.5,0],29:[3.5,11],49:[3.5,11],64:[3.5,11],74:[3.5,11],75:[3.5,11]},
+				pregnant: {first: 3.5, middle: 3.5, last: 3.5, lactating: 3.5, option: '置換'},
+				unit: 'mg',
+				label: "マンガン"
+			},
+			Se: {
+				male: {2:[10,100],5:[15,100],7:[15,150],9:[20,200],11:[25,250],14:[30,350],17:[35,400],29:[30,450],49:[30,450],64:[30,450],74:[30,450],75:[30,400]},
+				female: {2:[10,100],5:[10,100],7:[15,150],9:[20,200],11:[25,250],14:[30,300],17:[25,350],29:[25,350],49:[25,350],64:[25,350],74:[25,350],75:[25,350]},
+				pregnant: {first: 5, middle: 5, last: 5, lactating: 20, option: '追加'},
+				unit: 'μg',
+				label: "セレン"
+			},
+			I: {
+				male: {2:[50,300],5:[60,400],7:[75,550],9:[90,700],11:[110,900],14:[140,2000],17:[140,3000],29:[130,3000],49:[130,3000],64:[130,3000],74:[130,3000],75:[130,3000]},
+				female: {2:[50,300],5:[60,400],7:[75,550],9:[90,700],11:[110,900],14:[140,2000],17:[140,3000],29:[130,3000],49:[130,3000],64:[130,3000],74:[130,3000],75:[130,3000]},
+				pregnant: {first: 110, middle: 110, last: 110, lactating: 140, option: '追加'},
+				unit: 'μg',
+				label: "ヨウ素"
+			},
+			Cr: {
+				male: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[10,500],49:[10,500],64:[10,500],74:[10,500],75:[10,500]},
+				female: {2:[0,0],5:[0,0],7:[0,0],9:[0,0],11:[0,0],14:[0,0],17:[0,0],29:[10,500],49:[10,500],64:[10,500],74:[10,500],75:[10,500]},
+				pregnant: {first: 10, middle: 10, last: 10, lactating: 10, option: '置換'},
+				unit: 'μg',
+				label: "クロム"
+			},
+		},
+		/*amino_acid: { // アミノ酸は、通常欠損しない。（ヴィーガンはあり得る）
+			Trp:{dose:4,unit:'mg',label: "トリプトファン"}, Met:{dose:15,unit:'mg',label: "メチオニン"},
+			Phe:{dose:25,unit:'mg',label: "フェニルアラニン"}, Thr:{dose:15,unit:'mg',label: "スレオニン"},
+			Val:{dose:26,unit:'mg',label: "バリン"}, Leu:{dose:39,unit:'mg',label: "ロイシン"},
+			Ile:{dose:20,unit:'mg',label: "イソロイシン"}, His:{dose:10,unit:'mg',label: "ヒスチジン"}, Lys:{dose:45,unit:'mg',label: "リジン"}
+		}*/
+	};
+	//一食分(1日分)の必要量を保存
+	let need_nutrients = {};
+	//一食分(1日分)の上限量を保存
+	let limit_nutrients = {};
+
+	(()=>{
+		let rtn = `<table><tr><th>年齢</th><th>男</th><th>女</th></tr>`;
+		for (const age_num in dietaly_fiber_table.male) {
+			rtn += `<tr><td>～${age_num}</td><td>${dietaly_fiber_table.male[age_num]}</td><td>${dietaly_fiber_table.female[age_num]}</td></tr>`;
+		}
+		rtn += `</table>`;
+		$('#standard-nutrient').html(rtn);
+	})();
+
+	(()=>{
+		let rtn = `<p>ビタミン</p>`;
+		for (const category in nutrient_table.vitamin) {
+			const this_category = nutrient_table.vitamin[category];
+			rtn += `<h5>${this_category.label} (${category})</h5>`;
+			rtn += `<table><tr><th>年齢</th><th>男</th><th>女</th></tr>`;
+			//	console.log(category);
+			for (const age_num in this_category.male) {
+				rtn += `<tr><td>～${age_num}</td>
+					<td>${this_category.male[age_num][0]}～${this_category.male[age_num][1]}</td>
+					<td>${this_category.female[age_num][0]}～${this_category.female[age_num][1]}</td></tr>`;
+			}
+			rtn += `</table>`;
+			const pre_str = '置換' == this_category.pregnant.option ? `` : `+`;
+			rtn += `<table><tr><th>初期</th><th>中期</th><th>後期</th><th>授乳期</th></tr>
+				<tr><td>${pre_str}${this_category.pregnant.first}</td><td>${pre_str}${this_category.pregnant.middle}</td><td>${pre_str}${this_category.pregnant.last}</td><td>${pre_str}${this_category.pregnant.lactating}</td></tr></table>`;
+		}
+		$('#nutrient-table-vitamin').html(rtn);
+	})();
+
+	(()=>{
+		let rtn = `<p>ミネラル</p>`;
+		for (const category in nutrient_table.mineral) {
+			const this_category = nutrient_table.mineral[category];
+			rtn += `<h5>${this_category.label} (${category})</h5>`;
+			rtn += `<table><tr><th>年齢</th><th>男</th><th>女</th></tr>`;
+			for (const age_num in this_category.male) {
+				rtn += `<tr><td>～${age_num}</td>
+					<td>${this_category.male[age_num][0]}～${this_category.male[age_num][1]}</td>
+					<td>${this_category.female[age_num][0]}～${this_category.female[age_num][1]}</td></tr>`;
+			}
+			rtn += `</table>`;
+			const pre_str = '置換' == this_category.pregnant.option ? `` : `+`;
+			rtn += `<table><tr><th>初期</th><th>中期</th><th>後期</th><th>授乳期</th></tr>
+				<tr><td>${pre_str}${this_category.pregnant.first}</td><td>${pre_str}${this_category.pregnant.middle}</td><td>${pre_str}${this_category.pregnant.last}</td><td>${pre_str}${this_category.pregnant.lactating}</td></tr></table>`;
+		}
+		$('#nutrient-table-mineral').html(rtn);
+	})();
+
+	// 優れた栄養バランスのコース料理の生成のため、20歳～75歳で一番厳しい値を表示
+	(()=>{
+		// 推奨量、耐容上限量の枠を
+		let rtn = [/* {need:0,limit:0,name:"",label:"",unit:""}*/];
+		let fiber = {need:0,limit:0,name:"fiber",label:"食物繊維",unit:"g"};
+		for (const gender in dietaly_fiber_table) {
+			for (const age_num in dietaly_fiber_table[gender]) {
+				if (fiber.need < dietaly_fiber_table[gender][age_num] && 20 <= age_num) {
+					fiber.need = dietaly_fiber_table[gender][age_num];
+				}
+			}
+		}
+		rtn.push(fiber);
+
+		for (const big_category in nutrient_table) {
+			for (const a_nutrient_name in nutrient_table[big_category]) {
+				let hs = {need:0, limit:0, name:a_nutrient_name, label:nutrient_table[big_category][a_nutrient_name].label, unit: nutrient_table[big_category][a_nutrient_name].unit};
+				for (const gender of [`male`, `female`]) {
+					for (const age_num in nutrient_table[big_category][a_nutrient_name][gender]) {
+						if (age_num < 20) continue;
+						const nutrient_value = nutrient_table[big_category][a_nutrient_name][gender][age_num];
+						//console.log(nutrient_value, a_nutrient_name, gender, age_num);
+						if (hs.need < nutrient_value[0]) hs.need = nutrient_value[0] + 0;
+						if (0 == hs.limit || (0 != nutrient_value[1] && nutrient_value[1] < hs.limit)) hs.limit = nutrient_value[1] + 0;
+					}
+				}
+				rtn.push(hs);
+			}
+		}
+		console.log(JSON.stringify(rtn));
+		let table_html = `<table><tr><th>name</th><th>label</th><th>need</th><th>limit</th></tr>`;
+		for (const v of rtn) {
+			table_html += `<tr><td>${v.name}</td><td>${v.label}</td><td>${v.need}</td><td>${v.limit}</td></tr>`;
+		}
+		table_html += `</table>`;
+		$(`#conclusion-nutrients`).html(table_html);
+	})();
+
+	</script>
+</body>
