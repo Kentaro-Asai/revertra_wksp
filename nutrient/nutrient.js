@@ -302,7 +302,7 @@ $(function(){
 			weight: parseFloat($('#body-weight').val()),
 			height: parseFloat($('#body-height').val()),
 			age: parseInt($('#body-age').val()),
-			activation_level: $('input[name="activation-level"]:checked').val() || `activation_level_2`,
+			activation_level: $('input[name="activation-level"]:checked').attr('id') || `activation_level_2`,
 		};
 		bodyParameterView(body_parameter);
 		//memory your body
@@ -316,7 +316,7 @@ $(function(){
 		for (const age_num in standard_nutrient.calory[gender][body_parameter.activation_level]) {
 			const calory_value = standard_nutrient.calory[gender][body_parameter.activation_level][age_num];
 			wanted_energy = 100 < calory_value ? (calory_value + 0) : parseFloat(calory_value * body_parameter.weight);
-			if (body_parameter.age < age_num) break;
+			if (body_parameter.age <= age_num) break;
 		}
 		if ('gender-female' == body_parameter.gender && `` != body_parameter.pregnant_stage) {
 			wanted_energy += standard_nutrient.calory.pregnant[body_parameter.pregnant_stage];
@@ -341,9 +341,9 @@ $(function(){
 			if (body_parameter.age <= age_num) break;
 		}
 		if ('gender-female' == body_parameter.gender && `` != body_parameter.pregnant_stage) {
-			protein.recomend += standard_nutrient.protein[gender].pregnant[body_parameter.pregnant_stage];
-			protein.goal.need += standard_nutrient.protein[gender].pregnant[body_parameter.pregnant_stage];
-			protein.goal.limit += standard_nutrient.protein[gender].pregnant[body_parameter.pregnant_stage];
+			protein.recomend += standard_nutrient.protein.pregnant[body_parameter.pregnant_stage];
+			protein.goal.need += standard_nutrient.protein.pregnant[body_parameter.pregnant_stage];
+			protein.goal.limit += standard_nutrient.protein.pregnant[body_parameter.pregnant_stage];
 		}
 		your_nutrients.protein = {need: protein.recomend, limit: (protein.goal.limit < protein.recomend ? 0 : protein.goal.limit)};
 		$('#need-protein').html(protein.recomend + (0 < your_nutrients.protein.limit ? `～${your_nutrients.protein.limit}` : ''));
