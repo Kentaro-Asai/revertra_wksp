@@ -393,7 +393,17 @@ $(function(){
 		}
 		//必須アミノ酸
 		// 普通は不足しないからOK
-	}; 
+	};
+
+	const getWaterNutrient = (body_parameter)=>{
+		let need_water = 0;
+		const water_table = {29: 40, 55: 35, 56: 30};
+		for (let age_num in water_table) {
+			need_water = water_table[age_num];
+			if (body_parameter.age <= age_num) break;
+		}
+		return {total: need_water * body_parameter.weight, drink: need_water * body_parameter.weight * 2/5};
+	};
 	
 	// get body_parameter => view
 	(function bodyParameter() {
@@ -416,7 +426,9 @@ $(function(){
 			bodyParameterView(body_parameter);
 			// hide this input area.
 			$('#your-input-area').css('display', 'none');
-			$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm`);
+			const water = getWaterNutrient(body_parameter);
+			$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm
+				(水分総摂取量 ${water.total}ml, 飲料 ${water.drink} ml)`);
 		} else {
 			// there is nothing in localStorage, because first visit.
 			$('#your-abstract').css('display', 'none');
@@ -435,7 +447,9 @@ $(function(){
 		const body_parameter_str = localStorage.getItem('body_parameter');
 		if (!!body_parameter_str) {
 			const body_parameter = JSON.parse(body_parameter_str);
-			$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm`);
+			const water = getWaterNutrient(body_parameter);
+			$('#your-abstract').html(`${'gender-male' == body_parameter.gender ? '♂':'♀'} ${body_parameter.age}歳 身長 ${body_parameter.height}cm
+				(水分総摂取量 ${water.total}ml, 飲料 ${water.drink} ml)`);
 		}
 		$('#your-abstract').css('display','block');
 	});
@@ -951,7 +965,31 @@ $(function(){
 				rtn.push(a_material.name == changed_material.name ? changed_material : a_material);
 			}
 			localStorage.setItem('materials', JSON.stringify(rtn));
-			alert(changed_material.name+'\n素材は変更されました。')
+			// menu全部を変更するか確認
+			let is_contain = false;
+			let menus = JSON.parse(localStorage.getItem('menu'));
+			if (0 < menus.length) {
+				for (const i in menus) {
+					for (const k in menus[i].materials) {
+						if (changed_material.name == menus[i].materials[k].name) {
+							let the_material = {name: `${changed_material.name}`, weight: 0 + menus[i].materials[k].weight, nutrients: {}}; 
+							for (const nutrient_name in menus[i].materials[k].nutrients) {
+								the_material.nutrients[nutrient_name] = changed_material.nutrients[nutrient_name] / changed_material.weight * the_material.weight;
+							}
+							// 上書き
+							menus[i].materials[k] = Object.assign(the_material, {});
+							is_contain = true;
+							continue;
+						}
+					}
+				}
+			}
+			if (is_contain) {
+				localStorage.setItem('menu', JSON.stringify(menus));
+				alert(`${changed_material.name}\n素材は変更されました。\n(料理の中の${changed_material.name}の値も変更されました。)`);
+			} else {
+				alert(changed_material.name+'\n素材は変更されました。');
+			}
 		}
 	});
 
@@ -1052,7 +1090,7 @@ $(function(){
 
 	const getMenuInExplore = ()=>{
 		const menu_ary = JSON.parse(localStorage.getItem('menu'));
-		if (!menu_ary || 0 == menu_ary.length) return alert('メニューがありません。');
+		if (!menu_ary || 0 == menu_ary.length) return alert('料理がありません。');
 		let rtn = '<select><option>' + unselect_option + '</option>';
 		//1　== ary.length だとバグるからfor使う。menu_list_html += menu_ary.map(v => `<option>${v}</option>`).reduce((w, x)=> w + x);
 		for (let v of menu_ary) {
@@ -1072,7 +1110,7 @@ $(function(){
 
 	$('#explore-perfect-button-box > button').on('click', ()=>{
 		const menu_ary = JSON.parse(localStorage.getItem('menu'));
-		if (!menu_ary || 0 == menu_ary.length) return alert('メニューがありません。');
+		if (!menu_ary || 0 == menu_ary.length) return alert('料理がありません。');
 		const menu_list_html = getMenuInExplore();
 		$('#contain-menu-list').html(menu_list_html);
 		$('#not-contain-menu-list').html(menu_list_html);
@@ -1081,8 +1119,11 @@ $(function(){
 		$('#output-perfect').html('');
 	});
 
-	$('#contain-menu-list, #not-contain-menu-list').on('click', (e)=>{
+	$('#contain-menu-list, #not-contain-menu-list').on('change', (e)=>{
 		if (unselect_option != e.target.value && `` != e.target.parentElement.id) {
+			for (let v of $(`#${e.target.parentElement.id} select`)) {
+				if (v.value == unselect_option) return;
+			}
 			const menu_list_html = getMenuInExplore();
 			$('#'+e.target.parentElement.id).append(menu_list_html);
 		}
@@ -1127,8 +1168,8 @@ $(function(){
 					for (const v of survey_nutrients_ary) {
 						if (0 == serve.nutrients[v.name].need) continue;
 						const nutrient_rate = parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (serve.nutrients[v.name].need*serve.serving_rate));
-						if (0 < [`carbo`, `protein`, `oil`].filter(val => val == v.name)) {
-							// 糖質と脂質は考慮に入れない
+						if (0 < [`carbo`, `protein`, `oil`].filter(val => val == v.name).length) {
+							// 糖質とタンパク質と脂質は考慮に入れない
 						} else if (0 != serve.nutrients[v.name].limit && serve.nutrients[v.name].limit * 100 / serve.nutrients[v.name].need < v.value + nutrient_rate) {
 							// 過剰摂取になる場合、候補に入れないようにする
 							limit_over_flg = true;
@@ -1173,8 +1214,10 @@ $(function(){
 				}
 			}
 			if (iterator.selectable_menu != rtn.iterator.selectable_menu) {
+				//上書きしつつ、一つ後ろの料理に変更
 				rtn.menus[iterator.pattern][ rtn.menus[iterator.pattern].length - 1 ] = selectable_menus[rtn.iterator.selectable_menu];
 			} else {
+				//次の料理セットへ
 				rtn.iterator.pattern++;
 				rtn.iterator.selectable_menu = rtn.menus.length + 0;
 				if (selectable_menus.length <= rtn.menus.length) return rtn;
