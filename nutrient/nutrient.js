@@ -49,6 +49,22 @@ $(function(){
 		}
 	};
 	const nutrient_table = {
+		fatic_acid:{
+			n_3: {
+				male:	{2:[0.7,0],5:[1.1,0],7:[1.5,0],9:[1.5,0],11:[1.6,0],14:[1.9,0],17:[2.1,0],29:[2,0],49:[2,0],64:[2.2,0],74:[2.2,0],75:[2.1,0]},
+				female:	{2:[0.8,0],5:[1.0,0],7:[1.3,0],9:[1.3,0],11:[1.6,0],14:[1.6,0],17:[1.6,0],29:[1.6,0],49:[1.6,0],64:[1.9,0],74:[2.0,0],75:[1.8,0]},
+				pregnant: {first: 1.6, middle: 1.6, last: 1.6, lactating: 1.8, option: '置換'},
+				unit: 'g',
+				label: "n-3系脂肪酸"
+			},
+			n_6: {
+				male:	{2:[4,0],5:[6,0],7:[8,0],9:[8,0],11:[10,0],14:[11,0],17:[13,0],29:[11,0],49:[10,0],64:[10,0],74:[9,0],75:[8,0]},
+				female:	{2:[4,0],5:[6,0],7:[7,0],9:[7,0],11:[8,0],14:[9,0],17:[9,0],29:[8,0],49:[8,0],64:[8,0],74:[8,0],75:[7,0]},
+				pregnant: {first: 9, middle: 9, last: 9, lactating: 10, option: '置換'},
+				unit: 'g',
+				label: "n-6系脂肪酸"
+			}
+		},
 		vitamin: {
 			vitaminA: { //年齢:[目安or推奨, 上限]
 				male: 	{2:[400,600], 5:[450,700], 7:[400,950], 9:[500,1200], 11:[600,1500], 14:[800,2100], 17:[900,2500], 29:[850,2700], 49:[900,2700], 64:[850,2700], 74:[800,2700], 75:[800,2700]},
@@ -249,6 +265,8 @@ $(function(){
 		protein:{need:65, limit:157.5, name:"protein", label:"タンパク質", unit:"g"},
 		oil:{need:46.7, limit:105, name:"oil", label:"脂質", unit:"g"},
 		fiber:{need:21, limit:0, name:"fiber", label:"食物繊維", unit:"g"},
+		n_3:{need:2.2, limit:0, name:"n_3", label:"n-3系脂肪酸", unit:"g"},
+		n_6:{need:11, limit:0, name:"n_6", label:"n-6系脂肪酸", unit:"g"},
 		vitaminA:{need:900, limit:2700, name:"vitaminA", label:"ビタミンA", unit:"μgRAE"},
 		vitaminB1:{need:1.4, limit:0, name:"vitaminB1", label:"ビタミンB1", unit:"mg"},
 		vitaminB2:{need:1.6, limit:0, name:"vitaminB2", label:"ビタミンB2", unit:"mg"},
@@ -371,25 +389,17 @@ $(function(){
 		}
 		$('#need-fiber').html(need_fiber + '～');
 		your_nutrients.fiber = {need: need_fiber, limit: 0};
-		//ビタミン
-		for (let genre in nutrient_table.vitamin) {
-			let age_nutrient = [];
-			for (let i in nutrient_table.vitamin[genre][gender]) {
-				age_nutrient = nutrient_table.vitamin[genre][gender][i];
-				if (body_parameter.age <= i) break;
+		//ビタミン・ミネラル・脂肪酸
+		for (const big_genre in nutrient_table) {
+			for (const genre in nutrient_table[big_genre]) {
+				let age_nutrient = [];
+				for (let i in nutrient_table[big_genre][genre][gender]) {
+					age_nutrient = nutrient_table[big_genre][genre][gender][i];
+					if (body_parameter.age <= i) break;
+				}
+				$('#need-' + genre).html(age_nutrient[0] + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
+				your_nutrients[genre] = {need: age_nutrient[0], limit: age_nutrient[1]};
 			}
-			$('#need-' + genre).html(age_nutrient[0] + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
-			your_nutrients[genre] = {need: age_nutrient[0], limit: age_nutrient[1]};
-		}
-		//ミネラル
-		for (let genre in nutrient_table.mineral) {
-			let age_nutrient = [];
-			for (let i in nutrient_table.mineral[genre][gender]) {
-				age_nutrient = nutrient_table.mineral[genre][gender][i];
-				if (body_parameter.age <= i) break;
-			}
-			$('#need-' + genre).html((0 == age_nutrient[0] ? '' : age_nutrient[0]) + '～' + (0 == age_nutrient[1] ? '' : age_nutrient[1]));
-			your_nutrients[genre] = {need: age_nutrient[0], limit: age_nutrient[1]};
 		}
 		//必須アミノ酸
 		// 普通は不足しないからOK
@@ -973,7 +983,7 @@ $(function(){
 					for (const k in menus[i].materials) {
 						if (changed_material.name == menus[i].materials[k].name) {
 							let the_material = {name: `${changed_material.name}`, weight: 0 + menus[i].materials[k].weight, nutrients: {}}; 
-							for (const nutrient_name in menus[i].materials[k].nutrients) {
+							for (const nutrient_name in changed_material.nutrients) {
 								the_material.nutrients[nutrient_name] = changed_material.nutrients[nutrient_name] / changed_material.weight * the_material.weight;
 							}
 							// 上書き
@@ -1168,7 +1178,7 @@ $(function(){
 					for (const v of survey_nutrients_ary) {
 						if (0 == serve.nutrients[v.name].need) continue;
 						const nutrient_rate = parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (serve.nutrients[v.name].need*serve.serving_rate));
-						if (0 < [`carbo`, `protein`, `oil`].filter(val => val == v.name).length) {
+						if (0 < [`carbo`, `protein`, `oil`, `n_6`].filter(val => val == v.name).length) {
 							// 糖質とタンパク質と脂質は考慮に入れない
 						} else if (0 != serve.nutrients[v.name].limit && serve.nutrients[v.name].limit * 100 / serve.nutrients[v.name].need < v.value + nutrient_rate) {
 							// 過剰摂取になる場合、候補に入れないようにする
@@ -1262,7 +1272,7 @@ $(function(){
 					added_value += parseFloat( (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) );
 				}
 			}
-			if (0 < ['calory', 'carbo', 'protein', 'oil'].filter(v => v == a_nutrient_name).length) {
+			if (0 < ['calory', 'carbo', 'protein', 'oil', `n_6`].filter(v => v == a_nutrient_name).length) {
 				if (serve.nutrients[`calory`].need * serve.serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
 			}	else if (0 != serve.nutrients[a_nutrient_name].limit && serve.nutrients[a_nutrient_name].limit * serve.serving_rate <= added_value) {
 				comment = `栄養アンバランス`;
