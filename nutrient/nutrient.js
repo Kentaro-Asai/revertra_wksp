@@ -1202,101 +1202,110 @@ $(function(){
 	};
 
 	/**
-	 * 評価してすぐに次の検証するmenusを最新のパターンの位置に用意する。それを繰り返す(再帰関数)
-	 * 料理がABCの3種存在していた時、配列要素を一つずつ追加していって、後ろから取り除いていって、全組み合わせを試す（AB -> ABC -> AC -> BC）
+	 * 評価した後、すぐ後ろの料理(menus)を検証位置(rtn.menus)に用意する。それを繰り返す(再帰関数はコールスタック的にもダメ。)
+	 * 料理がABCの3種存在していた時、配列要素を一つずつ追加していって、後ろから取り除いていって、全組み合わせを試す（AB -> ABC -> AC -> BC -> C）
 	 */
-	const selectWholeMenu = (rtn, selectable_menus)=>{
-		// 現在の検索位置
-		const iterator = {pattern: rtn.iterator.pattern + 0, selectable_menu: rtn.iterator.selectable_menu + 0};
-		const comment = evaluateMenuNutrients(rtn);
-		if (`栄養アンバランス` == comment) { //失敗
-			//(一個前の料理を消して、)今のカーソル(iterator)位置の料理を入れる
-			//一番後ろを切るならsliceじゃなくてlength--
-			rtn.menus[iterator.pattern].length--;
-			rtn.iterator.selectable_menu++;
-			if (selectable_menus.length <= rtn.iterator.selectable_menu) {
-				const a_menu = rtn.menus[iterator.pattern][ rtn.menus[iterator.pattern].length - 1 ];
-				for (let i in selectable_menus) {
-					if (a_menu.name == selectable_menus[i].name) {
-						rtn.iterator.selectable_menu = parseInt(i) + 1;
+	async function selectWholeMenu(rtn, selectable_menus) {
+		//料理群の評価 → 栄養アンバランス、栄養不足で料理追加、メニュー完成 を返す
+		const evaluateMenuNutrients = (rtn)=>{
+			const menus = rtn.menus[rtn.menus.length - 1].concat([]);
+			const serve = getForServing();
+			let comment = `メニュー完成`;
+			let nutrient_score = 0;
+			// 現在含まれる栄養素を取得して100％に満たないものがあるか判定して、栄養素を返す
+			for (const a_nutrient_name in serve.nutrients) {
+				let added_value = 0;
+				for (const a_menu of menus) {
+					for (const a_material of a_menu.materials) {
+						added_value += parseFloat( (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) );
+					}
+				}
+				if (0 < ['calory', 'carbo', 'protein', 'oil', `n_6`].filter(v => v == a_nutrient_name).length) {
+					if (serve.nutrients[`calory`].need * serve.serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
+				}	else if (0 != serve.nutrients[a_nutrient_name].limit && serve.nutrients[a_nutrient_name].limit * serve.serving_rate <= added_value) {
+					comment = `栄養アンバランス`;
+				} else if (added_value <= serve.nutrients[a_nutrient_name].need * serve.serving_rate) {
+					if (`栄養アンバランス` != comment) {
+						comment = `栄養不足で料理追加`;
+						const score_point = parseFloat(100 * added_value / (serve.nutrients[a_nutrient_name].need * serve.serving_rate));
+						// scoreにはカロリー等は入れない
+						nutrient_score += 100 < score_point ? 100 : score_point;
+					}
+				}
+			}
+			if (`栄養不足で料理追加` == comment) {
+				for (let i in rtn.incompletes.score) {
+					if (rtn.incompletes.score[i] < nutrient_score) {
+						rtn.incompletes.menus.splice(i, 0, menus);
+						rtn.incompletes.menus.length--;
+						rtn.incompletes.score.splice(i, 0, nutrient_score);
+						rtn.incompletes.score.length--;
 						break;
 					}
 				}
 			}
-			if (iterator.selectable_menu != rtn.iterator.selectable_menu) {
+			return comment;
+		};
+		//料理の組み合わせを否定して、末端の別の料理を上書き
+		const nextMenu = (rtn, selectable_menus)=>{
+			//(一個前の料理を消して、)今のカーソル(iterator)位置の料理を入れる
+			rtn.iterator.selectable_menu++;
+			if (selectable_menus.length <= rtn.iterator.selectable_menu && 2 + rtn.candidate_menus.length < rtn.menus[rtn.iterator.pattern].length) {
+				//すでに一番後ろだった場合
+				rtn.menus[rtn.iterator.pattern].length--; //一番後ろを切る(× slice、○ length--)
+				const last_menu = rtn.menus[rtn.iterator.pattern][ rtn.menus[rtn.iterator.pattern].length - 1 ];
+				for (const i in selectable_menus) {
+					if (last_menu.name == selectable_menus[i].name) {
+						//次の料理を選択
+						rtn.iterator.selectable_menu = (selectable_menus.length <= parseInt(i) + 1) ? (selectable_menus.length + 0) : (parseInt(i) + 1);
+						break;
+					}
+				}
+			}
+			if (rtn.iterator.selectable_menu < selectable_menus.length) {
 				//上書きしつつ、一つ後ろの料理に変更
-				rtn.menus[iterator.pattern][ rtn.menus[iterator.pattern].length - 1 ] = selectable_menus[rtn.iterator.selectable_menu];
+				rtn.menus[rtn.iterator.pattern][ rtn.menus[rtn.iterator.pattern].length - 1 ] = selectable_menus[rtn.iterator.selectable_menu];
 			} else {
 				//次の料理セットへ
 				rtn.iterator.pattern++;
 				rtn.iterator.selectable_menu = rtn.menus.length + 0;
-				if (selectable_menus.length <= rtn.menus.length) return rtn;
+				if (selectable_menus.length <= rtn.menus.length) return false;
 				rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
-				rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+				rtn.menus[rtn.iterator.pattern].push(Object.assign(selectable_menus[rtn.iterator.selectable_menu], {}));
 			}
-		} else if (`栄養不足で料理追加` == comment) {
+			return true;
+		};
+		//栄養が足りないので単純に次の料理を追加
+		const addMenu = (rtn, selectable_menus)=>{
 			//新しい料理の組み合わせ（ひとつ前の登録されたmenu_aryの先頭をselectable_menusから取り除いて全通り）
 			rtn.iterator.selectable_menu++;
 			if (selectable_menus.length <= rtn.iterator.selectable_menu) {
 				// 用意されている料理が無くなったので、完成された料理を返す
-				if (selectable_menus.length <= iterator.pattern || selectable_menus.length <= rtn.menus.length) return rtn;
+				if (selectable_menus.length <= rtn.iterator.pattern || selectable_menus.length <= rtn.menus.length) return false;
 				rtn.iterator.pattern++;
-				rtn.iterator.selectable_menu = rtn.menus.length + 0;
+				rtn.iterator.selectable_menu = rtn.iterator.pattern + 0;
 				rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
-				rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+				rtn.menus[rtn.iterator.pattern].push(Object.assign(selectable_menus[rtn.iterator.selectable_menu], {}));
 			} else {
-				rtn.menus[iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
+				rtn.menus[rtn.iterator.pattern].push(Object.assign(selectable_menus[rtn.iterator.selectable_menu], {}));
 			}
-		} else if (`メニュー完成` == comment) {
-			rtn.perfect_menus.push(rtn.menus[iterator.pattern]);
-			rtn.iterator.pattern++;
-			if (selectable_menus.length <= rtn.iterator.pattern || selectable_menus.length <= rtn.menus.length) return rtn;
-			rtn.iterator.selectable_menu = rtn.menus.length + 0;
-			rtn.menus[rtn.iterator.pattern] = rtn.candidate_menus.concat([]);
-			rtn.menus[rtn.iterator.pattern].push(selectable_menus[rtn.iterator.selectable_menu]);
-		}
-		return selectWholeMenu(rtn, selectable_menus);
-	};
-
-	//料理群の評価 → 栄養アンバランス、栄養不足で料理追加、メニュー完成 を返す
-	const evaluateMenuNutrients = (rtn)=>{
-		const menus = rtn.menus[rtn.menus.length - 1];
-		const serve = getForServing();
-		let comment = `メニュー完成`;
-		let nutrient_score = 0;
-		// 現在含まれる栄養素を取得して100％に満たないものがあるか判定して、栄養素を返す
-		for (const a_nutrient_name in serve.nutrients) {
-			let added_value = 0;
-			for (const a_menu of menus) {
-				for (const a_material of a_menu.materials) {
-					added_value += parseFloat( (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) );
-				}
-			}
-			if (0 < ['calory', 'carbo', 'protein', 'oil', `n_6`].filter(v => v == a_nutrient_name).length) {
-				if (serve.nutrients[`calory`].need * serve.serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
-			}	else if (0 != serve.nutrients[a_nutrient_name].limit && serve.nutrients[a_nutrient_name].limit * serve.serving_rate <= added_value) {
-				comment = `栄養アンバランス`;
-			} else if (added_value <= serve.nutrients[a_nutrient_name].need * serve.serving_rate) {
-				if (`栄養アンバランス` != comment) {
-					comment = `栄養不足で料理追加`;
-					const score_point = parseFloat(100 * added_value / (serve.nutrients[a_nutrient_name].need * serve.serving_rate));
-					// scoreにはナトリウムとカロリーは入れない
-					nutrient_score += 100 < score_point ? 100 : score_point;
-				}
+			return true;
+		};
+		while (true) {
+			const comment = evaluateMenuNutrients(rtn);
+			if (`栄養アンバランス` == comment) { //失敗
+				const continue_flg = nextMenu(rtn, selectable_menus);
+				if (!continue_flg) break;
+			} else if (`栄養不足で料理追加` == comment) {
+				const continue_flg = addMenu(rtn, selectable_menus);
+				if (!continue_flg) break;
+			} else if (`メニュー完成` == comment) {
+				rtn.perfect_menus.push(rtn.menus[rtn.iterator.pattern].concat([]));
+				const continue_flg = nextMenu(rtn, selectable_menus);
+				if (!continue_flg) break;
 			}
 		}
-		if (`栄養不足で料理追加` == comment) {
-			for (let i in rtn.incompletes.score) {
-				if (rtn.incompletes.score[i] < nutrient_score) {
-					rtn.incompletes.menus.splice(i, 0, menus);
-					rtn.incompletes.menus.length--;
-					rtn.incompletes.score.splice(i, 0, nutrient_score);
-					rtn.incompletes.score.length--;
-					break;
-				}
-			}
-		}
-		return comment;
+		return rtn;
 	};
 
 	// return {unit: "ugRAE", label: "vitaminA"}
@@ -1440,15 +1449,15 @@ $(function(){
 	$('#explore-select-button, #explore-all-button').on('click', (e)=>{
 		let perfect_menus_ary = [];
 		let unperfect_menus_ary = [];
-		let menu_ary = JSON.parse(localStorage.getItem('menu'));
+		let selectable_menus = JSON.parse(localStorage.getItem('menu'));
 		const can_duplicate_menu_flg = $('#can-duplicate-menu-flg').prop('checked');
 		// make candidate menu course
-		let candidate_menu_ary = [];
+		let candidate_menus = [];
 		if (0 < $('#contain-menu-list select').length) {
 			for (let v of $('#contain-menu-list select')) {
-				for (let i in menu_ary) {
-					if (v.value == menu_ary[i].name) {
-						candidate_menu_ary.push(menu_ary[i]);
+				for (let i in selectable_menus) {
+					if (v.value == selectable_menus[i].name) {
+						candidate_menus.push(selectable_menus[i]);
 						break;
 					}
 				}
@@ -1456,9 +1465,9 @@ $(function(){
 		}
 		if (0 < $('#not-contain-menu-list select').length) {
 			for (let v of $('#not-contain-menu-list select')) {
-				for (let i in menu_ary) {
-					if (v.value == menu_ary[i].name) {
-						menu_ary.splice(i, 1);
+				for (let i in selectable_menus) {
+					if (v.value == selectable_menus[i].name) {
+						selectable_menus.splice(i, 1);
 						break;
 					}
 				}
@@ -1466,22 +1475,28 @@ $(function(){
 		}
 		if (`explore-all-button` == e.target.id) {
 			let rtn = {
-				menus: [candidate_menu_ary.concat([])],
+				menus: [candidate_menus.concat([])],
 				perfect_menus: [],
 				incompletes: {menus: [{}, {}, {}], score: [0, 0, 0]},
 				iterator: {pattern: 0, selectable_menu: 0},
-				candidate_menus: candidate_menu_ary.concat([])
+				candidate_menus: candidate_menus.concat([])
 			};
-			if (3 < menu_ary.length) {
-				rtn = selectWholeMenu(rtn, menu_ary);
-				$('#output-perfect').html(0 < rtn.perfect_menus.length ? displayPerfectMenus(rtn.perfect_menus) : '<p>検索しましたが、1つも発見できませんでした。</p>' + displayPerfectMenus(rtn.incompletes.menus));
+			if (3 < selectable_menus.length) {
+				$(`#loading`).css(`padding`, `calc(${window.innerHeight / 2}px - 1rem) 0 0`).css('top', `${window.scrollY}px`).css(`display`, `block`);
+				setTimeout(()=>{ //この位置じゃないとレンダリングうまくいかない
+					selectWholeMenu(rtn, selectable_menus).then(val => {
+						$('#output-perfect').html(0 < val.perfect_menus.length ? displayPerfectMenus(val.perfect_menus) : '<p>検索しましたが、1つも発見できませんでした。</p>' + displayPerfectMenus(val.incompletes.menus));
+						$(`#loading`).css(`display`, `none`);
+						fitWindowSize();
+					});
+				}, 0);
 			} else {
 				$('#output-perfect').html('<p>料理の数が少なすぎます。</p>');
 			}
 		} else {
 			// 全料理をチェック
-			for (const a_menu of menu_ary) {
-				let check_menu_ary = candidate_menu_ary.concat([]); //concatしないと同一になってしまう
+			for (const a_menu of selectable_menus) {
+				let check_menu_ary = candidate_menus.concat([]); //concatしないと同一になってしまう
 				// 重複しないようにする時、採用する料理に入っているものを選ばない
 				if (!can_duplicate_menu_flg && 0 < check_menu_ary.length) {
 					can_continue_flg = false;
@@ -1497,9 +1512,9 @@ $(function(){
 				// 選択可能な料理の配列を用意
 				let selectable_menu_ary = [];
 				if (can_duplicate_menu_flg) {
-					selectable_menu_ary = menu_ary.concat([]);
+					selectable_menu_ary = selectable_menus.concat([]);
 				} else {
-					for (let v of menu_ary) {
+					for (let v of selectable_menus) {
 						let is_exist_flg = false;
 						if (0 < check_menu_ary.length) {
 							for (let w of check_menu_ary) {
@@ -1537,7 +1552,7 @@ $(function(){
 			}
 			// display nutrients
 			$('#output-perfect').html(0 < perfect_menus_ary.length ? displayPerfectMenus(perfect_menus_ary) : ('<p>検索しましたが、1つも発見できませんでした。</p>'+displayPerfectMenus(unperfect_menus_ary)) );
+			fitWindowSize();
 		}
-		fitWindowSize();
 	});
 });

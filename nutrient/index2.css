@@ -645,6 +645,17 @@ main #menu-creator, main #material-creator {
   background-color: #eee;
   cursor: pointer;
 }
+#explore-perfect .explore-terminal .caution-message {
+  margin: 1rem 0 0.5rem;
+  text-align: center;
+}
+#explore-perfect .explore-terminal .caution-message small {
+  font-size: 0.8rem;
+}
+#explore-perfect .explore-terminal .caution-message small span {
+  color: #522;
+  font-weight: bold;
+}
 #explore-perfect #output-perfect article {
   background-color: #334;
   border-radius: 1rem;
@@ -812,4 +823,49 @@ main #menu-creator, main #material-creator {
 footer p {
   margin: 0.5rem;
   font-size: 0.8rem;
+}
+
+#loading {
+  display: none;
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+#loading p {
+  background-color: whitesmoke;
+  width: 7rem;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+#loading p img {
+  width: 5rem;
+  height: 5rem;
+  display: block;
+  margin: 0.2rem auto 0.4rem;
+  -webkit-animation: rotation 2s linear 0s infinite normal none running;
+          animation: rotation 2s linear 0s infinite normal none running;
+}
+
+@-webkit-keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }/*# sourceMappingURL=index2.css.map */

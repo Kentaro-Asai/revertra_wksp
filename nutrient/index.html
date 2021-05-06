@@ -5,7 +5,7 @@
 	<meta name="description" content="あなたの栄養のメモを支援します。その日のカロリーと栄養分を見えるようにします。">
 	<meta name="keywords" content="カロリー,栄養管理">
 	<script src="../jq.js"></script>
-	<link rel="stylesheet" href="index2.css?v=2" type="text/css">
+	<link rel="stylesheet" href="index2.css?v=3" type="text/css">
 	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
 	<title>栄養管理メモ</title>
 </head>
@@ -250,6 +250,9 @@
 					<button id="explore-select-button">選出で実行</button>
 					<button id="explore-all-button">総当たりで実行</button>
 				</p>
+				<p class="caution-message">
+					<small>料理の数が多いと時間がかかります（25種で10秒ほど）<br>待ち時間を気にするなら、<span>採用しない料理</span>を増やしてください。</small>
+				</p>
 			</div>
 			<div id="output-perfect"></div>
 		</section>
@@ -264,7 +267,10 @@
 			<br>データはあなたのWebブラウザに保存します(webStorage)。<br>
 			2020年版の基礎栄養学の値に変更しました(4/2)。
 		</p>
-</footer>
-	<script src="nutrient.js?v=9"></script>
+	</footer>
+	<div id="loading">
+		<p><img src="circle_icon.svg" /><span>calculating</span></p>
+	</div>
+	<script src="nutrient.js?v=10"></script>
 </body>
 </html>
