@@ -688,17 +688,17 @@ $(function(){
 				}
 			}
 		}
-		//栄養分を表示
+		//栄養分を表示(a_nutrient_rateを*3することで一日分 → 一食分)
 		for (let category in standard_nutrient) {
 			const a_nutrient_value = maxNumberDisplay(nutrient_add_up[category] / serving, 6);
-			const a_nutrient_rate = !!your_nutrients[category].need ? maxNumberDisplay(100 * a_nutrient_value / your_nutrients[category].need, 2) : '-';
+			const a_nutrient_rate = !!your_nutrients[category].need ? maxNumberDisplay(100 * a_nutrient_value / your_nutrients[category].need * 3, 2) : '-';
 			rtn += `<dt>${standard_nutrient[category].label}(${standard_nutrient[category].unit})</dt>
 				<dd class="${category}">${a_nutrient_value} (${a_nutrient_rate}%)</dd>`;
 		}
 		for (let genre in nutrient_table) {
 			for (let nutrient_name in nutrient_table[genre]) {
 				const a_nutrient_value = maxNumberDisplay(nutrient_add_up[nutrient_name] / serving, 6);
-				const a_nutrient_rate = !!your_nutrients[nutrient_name].need ? maxNumberDisplay(100 * a_nutrient_value / your_nutrients[nutrient_name].need, 2) : '-';
+				const a_nutrient_rate = !!your_nutrients[nutrient_name].need ? maxNumberDisplay(100 * a_nutrient_value / your_nutrients[nutrient_name].need * 3, 2) : '-';
 				rtn += `<dt>${nutrient_table[genre][nutrient_name].label} (${nutrient_table[genre][nutrient_name].unit})</dt>
 					<dd class="${nutrient_name}">${a_nutrient_value} (${a_nutrient_rate}%)</dd>`;
 			}
@@ -1224,7 +1224,7 @@ $(function(){
 					if (serve.nutrients[`calory`].need * serve.serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
 				}	else if (0 != serve.nutrients[a_nutrient_name].limit && serve.nutrients[a_nutrient_name].limit * serve.serving_rate <= added_value) {
 					comment = `栄養アンバランス`;
-				} else if (added_value <= serve.nutrients[a_nutrient_name].need * serve.serving_rate) {
+				} else {
 					if (`栄養アンバランス` != comment) {
 						comment = `栄養不足で料理追加`;
 						const score_point = parseFloat(100 * added_value / (serve.nutrients[a_nutrient_name].need * serve.serving_rate));
