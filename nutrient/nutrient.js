@@ -813,10 +813,10 @@ $(function(){
 		if (!menu_str) return;
 		let menu_ary = JSON.parse(menu_str);
 		//料理表示
-		let selected_menu = [];
+		let selected_menus = [];
 		for (let v of $('#select-menu ul select')) {
 			if (unselect_option == v.value) continue;
-			selected_menu.push(v.value);
+			selected_menus.push(v.value);
 		}
 		//一旦、栄養を0に設定する
 		for (let k in standard_nutrient) {
@@ -828,26 +828,19 @@ $(function(){
 			}
 		}
 		//栄養を加算しまくる
-		for (let v of selected_menu) {
-			for (let a_menu of menu_ary) {
-				if (!menu_ary.serving) menu_ary.serving = 1; //互換性確保
-				if (v == a_menu.name) {
-					for (let i=0; i < a_menu.materials.length; i++) {
-						for (let k in standard_nutrient) {
-							const additional_value = isNaN(a_menu.materials[i].nutrients[k]) ? 0 : (a_menu.materials[i].nutrients[k] / menu_ary.serving);
-							const added_value = isNaN($('#intake-' + k).html()) ? 0 : $('#intake-' + k).html();
-							$('#intake-' + k).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
-						}
-						for (let genre in nutrient_table) {
-							for (let nutrient_name in nutrient_table[genre]) {
-								const additional_value = isNaN(a_menu.materials[i].nutrients[nutrient_name]) ? 0 : (a_menu.materials[i].nutrients[nutrient_name] / menu_ary.serving);
-								const added_value = isNaN($('#intake-' + nutrient_name).html()) ? 0 : $('#intake-' + nutrient_name).html();
-								$('#intake-'+nutrient_name).html(maxNumberDisplay(parseFloat(additional_value) + parseFloat(added_value), 6));
-							}
-						}
+		for (let v of $('.nutrient-table span')) {
+			if (`need-` == v.id.substr(0, 5)) continue;
+			const nutrient_name = v.id.substr(`intake-`.length);
+			let added_value = 0;
+			for (const selected_menu_name of selected_menus) {
+				for (let a_menu of menu_ary) {			
+					if (a_menu.name != selected_menu_name) continue;
+					for (let i in a_menu.materials) {
+						added_value += (a_menu.materials[i].nutrients[nutrient_name] || 0) / (a_menu.serving || 1);
 					}
 				}
 			}
+			$(`#${v.id}`).html(maxNumberDisplay(parseFloat(added_value), 6));
 		}
 		//色を変更
 		for (let v of $('#your-nutrient li > p')) {
@@ -879,7 +872,7 @@ $(function(){
 		}
 		if (!exist_unselect) {
 			const sel_menu_str = menu_ary.map(v => '<option>'+v.name+'</option>').reduce((w, x) => w+x);
-			const added_sel = '<li><select class="'+e.target.className+'"><option>'+unselect_option+'</option>'+sel_menu_str+'</select></li>';
+			const added_sel = `<li><select class="${e.target.className}"><option>${unselect_option}</option>${sel_menu_str}</select></li>`;
 			$('#' + e.target.className.substr(0, e.target.className.indexOf('-')) + '-list').append(added_sel);
 		}
 	});
