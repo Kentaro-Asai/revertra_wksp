@@ -586,7 +586,7 @@ main{
 	}
 	.explore-terminal{
 		padding: 0 0 1rem;
-		div{
+		div:first-child{
 			p{
 				display: inline-block;
 				margin: 0.5rem 1rem 0.3rem;
@@ -638,19 +638,33 @@ main{
 			}
 		}
 		.explore-button-box{
-			margin: 0.5rem 0;
+			margin: 1rem 0 0.5rem;
 			text-align: center;
-			#explore-select-button, #explore-all-button{
-				display: inline-block;
-				font-size: 1.2rem;
-				border-radius: 1.2rem;
-				margin: 1.5rem 1rem 0;
-				width: 12rem;
-				height: 2.5rem;
-				color: #114;
-				border: solid 2px #559;
-				background-color: #eee;
-				cursor: pointer;
+			display: flex;
+			align-items: flex-end;
+			justify-content: center;
+			p:first-child{
+				background: radial-gradient(#ccd, #dde);
+			}
+			p{
+				margin: 0.5rem 0;
+				label{
+					margin: 0;
+					padding: 0.5rem;
+					display: block;
+				}
+				#explore-select-button, #explore-all-button{
+					display: inline-block;
+					font-size: 1.2rem;
+					border-radius: 1.2rem;
+					margin: 0.5rem 1rem 0;
+					width: 12rem;
+					height: 2.5rem;
+					color: #114;
+					border: solid 2px #559;
+					background-color: #eee;
+					cursor: pointer;
+				}
 			}
 		}
 		.caution-message{

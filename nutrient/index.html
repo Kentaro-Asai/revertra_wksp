@@ -5,7 +5,7 @@
 	<meta name="description" content="あなたの栄養のメモを支援します。その日のカロリーと栄養分を見えるようにします。">
 	<meta name="keywords" content="カロリー,栄養管理">
 	<script src="../jq.js"></script>
-	<link rel="stylesheet" href="index2.css?v=3" type="text/css">
+	<link rel="stylesheet" href="index2.css?v=4" type="text/css">
 	<link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
 	<title>栄養管理メモ</title>
 </head>
@@ -242,14 +242,17 @@
 						<label><input type="radio" name="for-serving" id="everyone-one-serving"  data-serve="1/3" />一食分</label>
 					</p>
 				</div>
-				<h6>採用する料理 (<label><input type="checkbox" id="can-duplicate-menu-flg" />被り有り</label>)</h6>
+				<h6>採用する料理</h6>
 				<p id="contain-menu-list"></p>
 				<h6>採用しない料理</h6>
 				<p id="not-contain-menu-list"></p>
-				<p class="explore-button-box">
-					<button id="explore-select-button">選出で実行</button>
-					<button id="explore-all-button">総当たりで実行</button>
-				</p>
+				<div class="explore-button-box">
+					<p>
+						<label><input type="checkbox" id="can-duplicate-menu-flg" />料理の重複あり</label>
+						<button id="explore-select-button">選出で実行</button>
+					</p>
+					<p><button id="explore-all-button">総当たりで実行</button></p>
+				</div>
 				<p class="caution-message">
 					<small>料理の数が多いと時間がかかります（25種で10秒ほど）<br>待ち時間を気にするなら、<span>採用しない料理</span>を増やしてください。</small>
 				</p>
@@ -271,6 +274,7 @@
 	<div id="loading">
 		<p><img src="circle_icon.svg" /><span>calculating</span></p>
 	</div>
-	<script src="nutrient.js?v=12"></script>
+	<script src="perfect_nutrient.js"></script>
+	<script src="nutrient.js?v=13"></script>
 </body>
 </html>

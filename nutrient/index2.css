@@ -580,7 +580,7 @@ main #menu-creator, main #material-creator {
 #explore-perfect .explore-terminal {
   padding: 0 0 1rem;
 }
-#explore-perfect .explore-terminal div p {
+#explore-perfect .explore-terminal div:first-child p {
   display: inline-block;
   margin: 0.5rem 1rem 0.3rem;
   width: 14rem;
@@ -588,13 +588,13 @@ main #menu-creator, main #material-creator {
   border-radius: 0.5rem;
   text-align: center;
 }
-#explore-perfect .explore-terminal div p span {
+#explore-perfect .explore-terminal div:first-child p span {
   display: inline-block;
   width: 14rem;
   font-size: 1rem;
   padding: 0 0 0.3rem;
 }
-#explore-perfect .explore-terminal div p label {
+#explore-perfect .explore-terminal div:first-child p label {
   margin: 0 0.5rem;
   padding: 0.5rem;
 }
@@ -630,14 +630,28 @@ main #menu-creator, main #material-creator {
   border-radius: 0.5rem;
 }
 #explore-perfect .explore-terminal .explore-button-box {
-  margin: 0.5rem 0;
+  margin: 1rem 0 0.5rem;
   text-align: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
-#explore-perfect .explore-terminal .explore-button-box #explore-select-button, #explore-perfect .explore-terminal .explore-button-box #explore-all-button {
+#explore-perfect .explore-terminal .explore-button-box p:first-child {
+  background: radial-gradient(#ccd, #dde);
+}
+#explore-perfect .explore-terminal .explore-button-box p {
+  margin: 0.5rem 0;
+}
+#explore-perfect .explore-terminal .explore-button-box p label {
+  margin: 0;
+  padding: 0.5rem;
+  display: block;
+}
+#explore-perfect .explore-terminal .explore-button-box p #explore-select-button, #explore-perfect .explore-terminal .explore-button-box p #explore-all-button {
   display: inline-block;
   font-size: 1.2rem;
   border-radius: 1.2rem;
-  margin: 1.5rem 1rem 0;
+  margin: 0.5rem 1rem 0;
   width: 12rem;
   height: 2.5rem;
   color: #114;
