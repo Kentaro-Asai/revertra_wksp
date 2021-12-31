@@ -17,7 +17,7 @@ header("Content-type: text/html");
 <body>
 	<header>
 		<h1><a href="index.php">浅井健太郎の趣味の部屋</a></h1>
-		<p>便利ソフト詰め合わせにしていく予定です</p>
+		<p>便利ソフト詰め合わせにしていく方針です</p>
 		<nav class="clearfix">
 			<ul>
 				<?= $ob->mklabels() ?>

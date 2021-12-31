@@ -55,7 +55,9 @@ fs.readFile('scrapy.json', 'utf-8', (err, data) => {
 					}
 					if (!!v.evolve && v.evolve.length) {
 						for (let ev of v.evolve) {
-							connection.query(`INSERT INTO evolve (BEFORE_NO, AFTER_NO, EVOLVE_NAME) VALUES (${ev.before_no}, ${ev.after_no}, "${ev.evolve_name}")`);
+							connection.query('DELETE FROM evolve WHERE `BEFORE_NO` = ' + v.no + ' AND `AFTER_NO` = ' + ev.after_no, (delete_error, res)=>{
+								connection.query(`INSERT INTO evolve (BEFORE_NO, AFTER_NO, EVOLVE_NAME) VALUES (${ev.before_no}, ${ev.after_no}, "${ev.evolve_name}")`);
+							});
 						}
 					}
 				});

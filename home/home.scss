@@ -1,0 +1,129 @@
+$main-color: #390;
+$contents-background-color: #ddd;
+body {
+	font-family: "ubuntu", "Arial", "Meiryo";
+	background-color: #666;
+	margin: 0 auto;
+}
+
+header{
+	margin: 0 auto;
+	padding: 1rem 1rem 0;
+	width: 70rem;
+	background-color: $contents-background-color;
+	
+	h1{
+		border: ridge 0.5rem #250;
+		background-color: $main-color;
+		margin: 0;
+		padding: 0;
+		a{
+			text-decoration: none;
+			text-align: center;
+			color: wheat;
+			display: block;
+			font-size: 2rem;
+		}
+	}
+	p{
+		background-color: $main-color;
+		color: wheat;
+		text-align: center;
+		margin: 1rem 4rem;
+		padding: 0.5rem;
+		border-radius: 1rem;
+	}
+	nav{
+		margin: 0.2rem 0 0;
+		padding: 0.2rem;
+		border: solid 0.1rem $main-color;
+		ul{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: flex;
+			align-items: stretch;
+			justify-content: space-around;
+			li{
+				margin: 0;
+				padding: 0.3rem 1rem;
+				border-left: solid 0.1rem wheat;
+				border-right: solid 0.1rem wheat;
+				background: linear-gradient(0deg, #5b2, #180);
+				color: wheat;
+				cursor: pointer;
+				text-align: center;
+			}
+		}
+	}
+}
+
+main{
+	width: 70rem;
+	background-color: $contents-background-color;
+	margin: 0 auto;
+	padding: 1rem;
+	display: flex;
+	align-items: stretch;
+
+	#sidebar{
+		list-style: none;
+		flex-basis: 30%;
+		margin: 1rem 0 0;
+    padding: 1rem;
+		li{
+			cursor: pointer;
+    	margin: 0.5rem 0;
+    	padding: 0.5rem 0;
+  	  color: wheat;
+	    background: linear-gradient(0deg, #4a1, #280);
+	    text-align: center;
+	    text-shadow: 1px 1px 1px darkslategrey;
+	    border-top: solid 1px slategray;
+	    border-bottom: solid 1px slategray;
+	    border-radius: 1.5rem;
+		}
+	}
+	#article-box{
+		flex-basis: 70%;
+		min-height: 100px;
+		h6{
+			background-color: #490;
+			margin: 1rem;
+			padding: 0.3rem 0 0.3rem 2.5rem;
+			color: wheat;
+			font-size: 1.2rem;
+			font-weight: normal;
+			border-radius: 0.5rem;
+			position: relative;
+		}
+		h6::before{
+			content: '';
+			position: absolute;
+			top: 0.3rem;
+			left: 0.7rem;
+			width: 1.1rem;
+			height: 1.7rem;
+			background-color: #260;
+			border-radius: 0.3rem;
+		}
+		p{
+			margin: 1rem 3rem;
+			padding: 0;
+			color: #222;
+		}
+	}
+}
+
+footer{
+	width: 70rem;
+	background-color: $contents-background-color;
+	margin: 0 auto;
+	padding: 1rem;
+	p{
+		margin: 0;
+		padding: 1rem;
+		text-align: center;
+		color: #aaa;
+	}
+}

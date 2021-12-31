@@ -637,6 +637,19 @@ main{
 				border-radius: 0.5rem;
 			}
 		}
+		#contain-nutrient-list{
+			margin: 0.5rem;
+			padding: 0.5rem 1rem;
+			border-radius: 1rem;
+			background: radial-gradient(#447, #77a);
+			label{
+				display: inline-block;
+				width: 8rem;
+				margin: 0.25rem 0.1rem 0.25rem;
+				font-size: 0.9rem;
+				color: #cce;
+			}
+		}
 		.explore-button-box{
 			margin: 1rem 0 0.5rem;
 			text-align: center;

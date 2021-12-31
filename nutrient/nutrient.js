@@ -1248,6 +1248,20 @@ $(function(){
 		}
 	});
 
+	(()=>{
+		const default_excludings = [`carbo`, `protein`, `oil`, `n_6`];
+		let rtn = "";
+		for (const a_nutrient_name in standard_nutrient) {
+			rtn += `<label><input type="checkbox" name="${a_nutrient_name}" ${default_excludings.includes(a_nutrient_name) ? "" : "checked"}>${standard_nutrient[a_nutrient_name].label}</label>`;
+		}
+		for (const category in nutrient_table) {
+			for (const a_nutrient_name in nutrient_table[category]) {
+				rtn += `<label><input type="checkbox" name="${a_nutrient_name}" ${default_excludings.includes(a_nutrient_name) ? "" : "checked"}>${nutrient_table[category][a_nutrient_name].label}</label>`;
+			}
+		}
+		$('#contain-nutrient-list').html(rtn);	
+	})();
+
 	//素材の色変え、素材の値を挿入
 	$('#explore-perfect').on('click', '.material-nutrients li', (e)=>{
 		const pattern = e.currentTarget.parentElement.dataset.pattern;
@@ -1271,11 +1285,16 @@ $(function(){
 	});
 
 	$('#explore-select-button, #explore-all-button').on('click', (e)=>{
+		let excluding_nutrients = [];
+		for (let label_tag of document.getElementById(`contain-nutrient-list`).children) {
+			if (!label_tag.children[0].checked) excluding_nutrients.push(label_tag.children[0].name);
+		}
 		const pn = new PerfectNutrient(
 			getForServing(),
 			[...document.getElementById(`contain-menu-list`).children].map(v => v.value),
 			[...document.getElementById(`not-contain-menu-list`).children].map(v => v.value),
-			$('#can-duplicate-menu-flg').prop('checked')
+			$('#can-duplicate-menu-flg').prop('checked'),
+			excluding_nutrients
 		);
 		if (`explore-all-button` == e.target.id) {
 			$(`#loading`).css(`padding`, `calc(${window.innerHeight / 2}px - 1rem) 0 0`).css('top', `${window.scrollY}px`).css(`display`, `block`);

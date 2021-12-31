@@ -31,7 +31,7 @@ header p{
 section{
 	width:800px;
 	margin: 10px 0;
-	padding: 0 0 0 100px;
+	padding: 0 0 0 calc((100% - 800px) / 2);
 }
 h4{
 	background: linear-gradient(0deg, #222 2px, #555 2px) repeat;

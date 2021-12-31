@@ -24,6 +24,14 @@ class PdScraper:
 				print(f"dict of {k}: {v}")
 		else:
 			print(type(anyd))
+
+	def looseInt(self, anyd, mns_no):
+		rtn = 0
+		try:
+			rtn = int(anyd)
+		except ValueError:
+			print(f"looseInt: {anyd} in mns_no: {mns_no}")
+		return rtn
 		
 	# 「,」を外す
 	def explodeComma(self, html_txt, mns_no):
@@ -135,8 +143,8 @@ class PdScraper:
 			if "スキル" == title:
 				rtn["skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
 				hs = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(2) > strong').text()
-				rtn["skill_turn"] = int(hs[hs.find("：")+1 : hs.find("（")])
-				rtn["skill_max_turn"] = int(hs[hs.find("（")+1 : hs.find("）")]) if hs[hs.find("（")+1 : hs.find("）")].isdecimal() else 0
+				rtn["skill_turn"] = self.looseInt(hs[hs.find("：")+1 : hs.find("（")], rtn["no"])
+				rtn["skill_max_turn"] = self.looseInt(hs[hs.find("（")+1 : hs.find("）")], rtn["no"]) if hs[hs.find("（")+1 : hs.find("）")].isdecimal() else 0
 			elif "リーダースキル" == title:
 				rtn["leader_skill"] = d(f'.monster > div:nth-child({indent_div}) > p:nth-child(3)').text()
 			elif '覚醒スキル' == title:

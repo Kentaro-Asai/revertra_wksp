@@ -10,7 +10,7 @@ import os
 
 files = os.listdir('./img/')
 
-for number in range(1, 73 + 1):
+for number in range(1, 87 + 1):
 	r = requests.get('https://pd.appbank.net/kakusei/' + str(number))
 	if 200 == r.status_code:
 		d = pq(r.text)

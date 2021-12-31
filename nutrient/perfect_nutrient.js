@@ -4,13 +4,15 @@ class PerfectNutrient {
 			getForServing(),
 			[...document.getElementById(`contain-menu-list`).children].map(v => v.value),
 			[...document.getElementById(`not-contain-menu-list`).children].map(v => v.value),
-			$('#can-duplicate-menu-flg').prop('checked')
+			$('#can-duplicate-menu-flg').prop('checked'),
+			excluding_nutrients
 		)
 	*/
-	constructor(serving, adopted_menus, unadopted_menus, can_duplicate_menu_flg){
+	constructor(serving, adopted_menus, unadopted_menus, can_duplicate_menu_flg, excluding_nutrients){
 		this.serving_rate = serving.serving_rate;
 		this.nutrients = serving.nutrients;
 		this.can_duplicate_menu_flg = can_duplicate_menu_flg;
+		this.excluding_nutrients = excluding_nutrients;
 		this.selectable_menus = JSON.parse(localStorage.getItem('menu'));
 		this.adopted_menus = [];
 		if (0 < adopted_menus.length) {
@@ -61,8 +63,10 @@ class PerfectNutrient {
 						added_value += parseFloat( (a_material.nutrients[a_nutrient_name] || 0) / (a_menu.serving || 1) );
 					}
 				}
-				if (0 < ['calory', 'carbo', 'protein', 'oil', `n_6`].filter(v => v == a_nutrient_name).length) {
-					if (this.nutrients[`calory`].need * this.serving_rate * 1.2 < added_value) comment = `栄養アンバランス`;
+				if (this.excluding_nutrients.includes(a_nutrient_name)) {
+					if (0 != this.nutrients[a_nutrient_name].limit && this.nutrients[a_nutrient_name].limit * this.serving_rate <= added_value) comment = `栄養アンバランス`;
+				}	else if (`calory` == a_nutrient_name && this.nutrients[`calory`].need * this.serving_rate * 1.2 < added_value) {
+					comment = `栄養アンバランス`;
 				}	else if (0 != this.nutrients[a_nutrient_name].limit && this.nutrients[a_nutrient_name].limit * this.serving_rate <= added_value) {
 					comment = `栄養アンバランス`;
 				} else {
@@ -191,7 +195,7 @@ class PerfectNutrient {
 					}
 				}
 				survey_nutrients_ary.push({value: added_value, name: a_nutrient_name});
-				if (added_value < 100 && 0 == [`calory`, `carbo`, `protein`, `oil`].filter(v => v == a_nutrient_name).length) enough_flg = false;
+				if (added_value < 100 && !this.excluding_nutrients.includes(a_nutrient_name)) enough_flg = false;
 			}
 			// ソート
 			if (0 < survey_nutrients_ary.length) {
@@ -214,16 +218,22 @@ class PerfectNutrient {
 						for (const v of survey_nutrients_ary) {
 							if (0 == this.nutrients[v.name].need) continue;
 							const nutrient_rate = parseFloat(100 * (a_material.nutrients[v.name] || 0) / (a_menu.serving || 1) / (this.nutrients[v.name].need*this.serving_rate));
-							if (0 < [`carbo`, `protein`, `oil`, `n_6`].filter(val => val == v.name).length) {
+							/*if (this.excluding_nutrients.includes(v.name)) {
 								// 糖質とタンパク質と脂質は考慮に入れない
-							} else if (0 != this.nutrients[v.name].limit && this.nutrients[v.name].limit * 100 / this.nutrients[v.name].need < v.value + nutrient_rate) {
+								if (['calory', 'carbo', 'protein', 'oil', `n_6`].includes(v.name)) {
+									if (`calory` == v.name && 1.2 * 100 <= v.value + nutrient_rate) limit_over_flg = true;
+									else if (0 != this.nutrients[v.name].limit && this.nutrients[v.name].limit * 100 / this.nutrients[v.name].need < v.value + nutrient_rate) limit_over_flg = true;
+								}
+							} else*/ if (0 != this.nutrients[v.name].limit && this.nutrients[v.name].limit * 100 / this.nutrients[v.name].need < v.value + nutrient_rate) {
 								// 過剰摂取になる場合、候補に入れないようにする
 								limit_over_flg = true;
 							} else if (`calory` == v.name && 1.2 * 100 <= v.value + nutrient_rate) {
 								limit_over_flg = true;
 							} else {
 								// 不足している分だけを評価する
-								if (v.value < 100) evaluation.value += (100 < v.value + nutrient_rate) ? (100 - v.value) : nutrient_rate;
+								if (v.value < 100 && !this.excluding_nutrients.includes(v.name)) {
+									evaluation.value += (100 < v.value + nutrient_rate) ? (100 - v.value) : nutrient_rate;
+								}
 							}
 						}
 					}
