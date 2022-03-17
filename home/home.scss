@@ -1,4 +1,4 @@
-$main-color: #390;
+$main-color: #370;
 $contents-background-color: #ddd;
 body {
 	font-family: "ubuntu", "Arial", "Meiryo";
@@ -49,7 +49,7 @@ header{
 				padding: 0.3rem 1rem;
 				border-left: solid 0.1rem wheat;
 				border-right: solid 0.1rem wheat;
-				background: linear-gradient(0deg, #5b2, #180);
+				background: linear-gradient(0deg, #592, #140);
 				color: wheat;
 				cursor: pointer;
 				text-align: center;
@@ -73,10 +73,10 @@ main{
     padding: 1rem;
 		li{
 			cursor: pointer;
-    	margin: 0.5rem 0;
+    	margin: 0.8rem 0;
     	padding: 0.5rem 0;
   	  color: wheat;
-	    background: linear-gradient(0deg, #4a1, #280);
+	    background: linear-gradient(0deg, #481, #240);
 	    text-align: center;
 	    text-shadow: 1px 1px 1px darkslategrey;
 	    border-top: solid 1px slategray;
@@ -88,7 +88,7 @@ main{
 		flex-basis: 70%;
 		min-height: 100px;
 		h6{
-			background-color: #490;
+			background-color: #470;
 			margin: 1rem;
 			padding: 0.3rem 0 0.3rem 2.5rem;
 			color: wheat;
@@ -104,7 +104,7 @@ main{
 			left: 0.7rem;
 			width: 1.1rem;
 			height: 1.7rem;
-			background-color: #260;
+			background-color: #230;
 			border-radius: 0.3rem;
 		}
 		p{

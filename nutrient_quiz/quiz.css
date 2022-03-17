@@ -1,0 +1,200 @@
+@charset "UTF-8";
+body {
+  font-family: "ubuntu", "Arial", "Meiryo";
+  background-color: #666;
+  margin: 0 auto;
+}
+
+header {
+  margin: 0 auto;
+  padding: 1rem 1rem 0;
+  width: 70rem;
+  background-color: #ddd;
+}
+header > p {
+  margin: 0;
+  padding: 1rem 0;
+  text-align: center;
+}
+header h1 {
+  border: ridge 0.5rem #250;
+  background-color: #370;
+  margin: 0;
+  padding: 0;
+}
+header h1 a {
+  text-decoration: none;
+  text-align: center;
+  color: wheat;
+  display: block;
+  font-size: 2rem;
+}
+header #hide-toggle-button {
+  position: relative;
+  padding: 0 3rem;
+  background-color: #ccc;
+  cursor: pointer;
+}
+header #hide-toggle-button.rotate:before {
+  content: "▼";
+  position: absolute;
+  top: 0.1rem;
+  left: 1rem;
+  transform: rotate(-90deg);
+}
+header #hide-toggle-button.non-rotate:before {
+  content: "▼";
+  position: absolute;
+  top: 0.1rem;
+  left: 1rem;
+  transform: rotate(0deg);
+}
+header #hide-box {
+  display: none;
+  background-color: #ccc;
+}
+header h4 {
+  margin: 2rem 1rem 0.5rem;
+  padding: 0rem;
+  font-size: 1rem;
+  color: wheat;
+  text-shadow: 1px 1px 1px black;
+  font-weight: normal;
+}
+header dl {
+  display: block;
+  overflow: auto;
+  margin: 1rem auto;
+  padding: 0rem 1rem 1rem;
+  width: 59rem;
+}
+header dl dt {
+  float: left;
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0 0 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  width: 7rem;
+  border-left: solid 0.5rem black;
+  border-bottom: solid 1px black;
+}
+header dl dd {
+  float: left;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  width: 5.5rem;
+  border-bottom: solid 1px black;
+}
+header #foods {
+  margin: 0;
+  padding: 0rem 0 1rem;
+  overflow: auto;
+}
+header #foods p {
+  float: left;
+  width: 10rem;
+  margin: 0.5rem 1rem;
+}
+
+main {
+  margin: 0 auto;
+  padding: 1rem 1rem 0;
+  width: 70rem;
+  background-color: #ddd;
+  /* #answers */
+}
+main h6 {
+  margin: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  text-shadow: 1px 1px 1px grey;
+}
+main > p {
+  margin: 0;
+  padding: 1rem 0;
+}
+main .candidate-values {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main .candidate-values span {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  display: block;
+  width: 7rem;
+  text-align: center;
+  background-color: #ccc;
+  border: solid 2px black;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+main .candidate-nutrients {
+  overflow: auto;
+}
+main .candidate-nutrients span {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  display: block;
+  float: left;
+  width: 7rem;
+  text-align: center;
+  background-color: #ccc;
+  border: solid 2px black;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+main dl.answer-parameter {
+  background-color: black;
+  color: #aaa;
+  overflow: auto;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  width: 58rem;
+  margin: 0 auto;
+}
+main dl.answer-parameter dt {
+  float: left;
+  width: 7rem;
+  height: 2rem;
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0.7rem 0 0 0.5rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+  background-color: #333;
+  font-size: 1rem;
+}
+main dl.answer-parameter dd {
+  float: left;
+  width: 6rem;
+  height: 2.2rem;
+  line-height: 1.2rem;
+  text-align: center;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0.2rem 0 0.3rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: #333;
+}
+main #view-result, main #next-question {
+  display: block;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 20rem;
+  font-size: 1rem;
+  border: solid 2px black;
+  background-color: #ccc;
+  color: #222;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #ddd;
+  width: 72rem;
+  margin: 0 auto;
+  height: 10rem;
+}
+footer p {
+  margin: 0;
+}/*# sourceMappingURL=quiz.css.map */

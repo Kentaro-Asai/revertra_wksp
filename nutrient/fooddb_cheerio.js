@@ -4,7 +4,7 @@
  node fooddb_cheerio.js
  */
 //urlの値を毎回変更して使います
-let url = "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=01_01064_6&MODE=0";
+let url = "https://fooddb.mext.go.jp/details/details.pl?ITEM_NO=06_06019_6";
 if (0 < url.indexOf(`&MODE`)) {
 	url = url.substr(0, url.indexOf(`&MODE`));
 }
