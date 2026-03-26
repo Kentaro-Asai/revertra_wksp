@@ -20,18 +20,26 @@ $(()=>{
 				{label: "気にならない", point: {type1:1, type2:1, type3:0, type4:1, type5:2, type6:0, type7:0, type8:1, type9:0}},
 			]
 		},
-		{question: "人前で自然体か",
+		{question: "人を前にして",
 			answer: [
-				{label: "自然体でいられる", point: {type1:1, type2:2, type3:0, type4:0, type5:0, type6:1, type7:2, type8:2, type9:0}},
-				{label: "自分を演出する", point: {type1:0, type2:0, type3:1, type4:2, type5:1, type6:0, type7:0, type8:0, type9:1}},
+				{label: "自然体でいられる", point: {type1:1, type2:1, type3:0, type4:0, type5:0, type6:0, type7:2, type8:1, type9:0}},
+				{label: "カッコつける", point: {type1:0, type2:0, type3:2, type4:0, type5:1, type6:0, type7:0, type8:2, type9:0}},
+				{label: "人見知りする", point: {type1:0, type2:0, type3:0, type4:2, type5:2, type6:2, type7:0, type8:0, type9:1}},
 			]
 		},
 		{question: "意思決定で選びがちなのは？",
 			answer: [
-				{label: "自分の気持ち", point: {type1:0, type2:2, type3:0, type4:2, type5:0, type6:0, type7:1, type8:0, type9:0}},
+				{label: "自分の気持ち", point: {type1:0, type2:2, type3:0, type4:2, type5:0, type6:0, type7:1, type8:1, type9:0}},
 				{label: "周りの人の気持ち", point: {type1:0, type2:0, type3:1, type4:2, type5:1, type6:1, type7:0, type8:0, type9:2}},
-				{label: "論理", point: {type1:2, type2:0, type3:0, type4:1, type5:2, type6:1, type7:0, type8:1, type9:0}},
-				{label: "勘", point: {type1:0, type2:1, type3:0, type4:2, type5:0, type6:0, type7:0, type8:2, type9:0}},
+				{label: "論理（理屈）", point: {type1:2, type2:0, type3:1, type4:0, type5:2, type6:1, type7:0, type8:1, type9:0}},
+				{label: "勘", point: {type1:0, type2:1, type3:1, type4:2, type5:0, type6:0, type7:0, type8:2, type9:0}},
+			]
+		},
+		{question: "何に従うか？",
+			answer: [
+				{label: "人", point: {type1:0, type2:2, type3:1, type4:2, type5:0, type6:0, type7:0, type8:2, type9:0}},
+				{label: "ルール", point: {type1:2, type2:0, type3:0, type4:0, type5:0, type6:1, type7:0, type8:0, type9:2}},
+				{label: "論理", point: {type1:0, type2:0, type3:1, type4:0, type5:2, type6:1, type7:2, type8:0, type9:0}},
 			]
 		},/*
 		{question: "負の感情の処理について",
@@ -48,28 +56,49 @@ $(()=>{
 				{label: "マイペースにいきたい", point: {type1:0, type2:0, type3:0, type4:2, type5:2, type6:0, type7:0, type8:0, type9:2}},
 			]
 		},
-		{question: "普段の妄想",
+		{question: "励まし方",
+			answer: [
+				{label: "同調・同情", point: {type1:0, type2:2, type3:0, type4:1, type5:0, type6:1, type7:0, type8:0, type9:2}},
+				{label: "理屈・理解", point: {type1:2, type2:0, type3:1, type4:0, type5:2, type6:2, type7:0, type8:0, type9:0}},
+				{label: "アドバイス", point: {type1:0, type2:0, type3:2, type4:1, type5:1, type6:0, type7:2, type8:2, type9:0}},
+			]
+		},
+		{question: "落ち込んだ時",
+			answer: [
+				{label: "あまり落ち込まない", point: {type1:0, type2:0, type3:1, type4:0, type5:0, type6:0, type7:2, type8:2, type9:0}},
+				{label: "結構ひきずる", point: {type1:2, type2:1, type3:1, type4:0, type5:1, type6:2, type7:0, type8:0, type9:2}},
+				{label: "時系列順に思い出して理解する", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:0, type7:0, type8:0, type9:0}},
+			]
+		},
+		/*{question: "普段の妄想",
 			answer: [
 				{label: "過去を思い返す", point: {type1:0, type2:2, type3:2, type4:2, type5:0, type6:0, type7:0, type8:0, type9:0}},
 				{label: "大体今に集中", point: {type1:2, type2:0, type3:1, type4:0, type5:0, type6:0, type7:0, type8:2, type9:2}},
 				{label: "未来を見ている", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:2, type7:2, type8:0, type9:0}},
 			]
-		},
-		{question: "普段のあなたの様子",
+		},*/
+		{question: "普段の様子",
 			answer: [
-				{label: "元気が無いと言われる", point: {type1:0, type2:0, type3:0, type4:1, type5:2, type6:2, type7:0, type8:0, type9:0}},
-				{label: "元気と言われる", point: {type1:1, type2:1, type3:1, type4:0, type5:0, type6:0, type7:2, type8:2, type9:1}},
-				{label: "気持ちにムラがある", point: {type1:0, type2:0, type3:0, type4:2, type5:0, type6:0, type7:1, type8:0, type9:0}},
+				{label: "元気が無いと言われる", point: {type1:2, type2:0, type3:0, type4:1, type5:2, type6:2, type7:0, type8:0, type9:0}},
+				{label: "元気と言われる", point: {type1:0, type2:1, type3:0, type4:0, type5:0, type6:0, type7:2, type8:2, type9:1}},
+				{label: "気持ちにムラがある", point: {type1:0, type2:0, type3:2, type4:2, type5:0, type6:0, type7:1, type8:0, type9:0}},
 			]
 		},
-		{question: "望む方向性",
+		{question: "決断",
+			answer: [
+				{label: "人の反応が気になる", point: {type1:0, type2:2, type3:0, type4:2, type5:0, type6:0, type7:0, type8:0, type9:2}},
+				{label: "素早く決められる", point: {type1:1, type2:0, type3:2, type4:0, type5:1, type6:0, type7:1, type8:2, type9:0}},
+				{label: "なかなか決められない", point: {type1:1, type2:0, type3:0, type4:1, type5:2, type6:2, type7:0, type8:0, type9:0}},
+			]
+		},
+		/*{question: "望む方向性",
 			answer: [
 				{label: "注目されて認められたい", point: {type1:0, type2:2, type3:2, type4:2, type5:0, type6:0, type7:1, type8:1, type9:0}},
-				{label: "心の平穏", point: {type1:0, type2:0, type3:0, type4:0, type5:0, type6:2, type7:0, type8:0, type9:2}},
+				{label: "心の平穏", point: {type1:0, type2:0, type3:0, type4:0, type5:1, type6:2, type7:0, type8:0, type9:2}},
 				{label: "楽しみたい", point: {type1:0, type2:0, type3:0, type4:0, type5:0, type6:0, type7:2, type8:0, type9:0}},
-				{label: "正しくありたい", point: {type1:2, type2:0, type3:0, type4:0, type5:1, type6:0, type7:0, type8:1, type9:0}},
+				{label: "正しくありたい", point: {type1:2, type2:0, type3:0, type4:0, type5:1, type6:1, type7:0, type8:1, type9:0}},
 			]
-		},
+		},*/
 		{question: "人との付き合い方",
 			answer: [
 				{label: "本音でぶつかり合いたい", point: {type1:0, type2:0, type3:1, type4:0, type5:0, type6:0, type7:1, type8:2, type9:0}},
@@ -78,32 +107,39 @@ $(()=>{
 				{label: "人とべったり", point: {type1:0, type2:2, type3:0, type4:1, type5:0, type6:0, type7:0, type8:0, type9:0}},
 			]
 		},
-		{question: "エネルギーの消費どころ",
+		{question: "エネルギーを使いたいところ",
 			answer: [
 				{label: "好奇心・アイデア", point: {type1:0, type2:0, type3:2, type4:2, type5:2, type6:1, type7:1, type8:0, type9:0}},
 				{label: "ルール遵守", point: {type1:2, type2:0, type3:0, type4:0, type5:1, type6:2, type7:0, type8:0, type9:2}},
-				{label: "外向性", point: {type1:0, type2:2, type3:0, type4:0, type5:2, type6:0, type7:1, type8:2, type9:0}},
+				{label: "人と会う", point: {type1:0, type2:2, type3:1, type4:0, type5:0, type6:0, type7:2, type8:2, type9:0}},
 			]
 		},
 		{question: "心の向き",
 			answer: [
-				{label: "内向的", point: {type1:1, type2:0, type3:0, type4:2, type5:2, type6:2, type7:0, type8:0, type9:2}},
-				{label: "外向的", point: {type1:1, type2:2, type3:2, type4:0, type5:0, type6:0, type7:2, type8:2, type9:0}},
+				{label: "陰キャ", point: {type1:1, type2:0, type3:0, type4:2, type5:2, type6:2, type7:0, type8:0, type9:1}},
+				{label: "陽キャ", point: {type1:1, type2:2, type3:2, type4:0, type5:0, type6:0, type7:2, type8:2, type9:1}},
 			]
 		},
 		{question: "人生の成功の仕方",
 			answer: [
-				{label: "趣味の充実", point: {type1:0, type2:0, type3:1, type4:0, type5:0, type6:0, type7:1, type8:2, type9:0}},
-				{label: "仕事での成功", point: {type1:0, type2:0, type3:2, type4:0, type5:0, type6:2, type7:0, type8:0, type9:0}},
-				{label: "居心地の良い一人の空間", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:0, type7:0, type8:0, type9:0}},
-				{label: "人間関係の充実", point: {type1:1, type2:2, type3:0, type4:2, type5:0, type6:0, type7:0, type8:0, type9:2}},
+				{label: "趣味の充実", point: {type1:0, type2:0, type3:1, type4:0, type5:1, type6:0, type7:1, type8:0, type9:0}},
+				{label: "仕事での成功", point: {type1:0, type2:0, type3:2, type4:0, type5:0, type6:2, type7:0, type8:1, type9:0}},
+				{label: "居心地の良い一人の空間", point: {type1:0, type2:0, type3:0, type4:1, type5:2, type6:0, type7:0, type8:0, type9:1}},
+				{label: "人間関係の充実", point: {type1:1, type2:2, type3:0, type4:2, type5:0, type6:0, type7:1, type8:2, type9:2}},
+			]
+		},
+		{question: "惹かれるもの",
+			answer:[
+				{label: "魅力的な人", point: {type1:0, type2:2, type3:1, type4:1, type5:0, type6:0, type7:1, type8:2, type9:0}},
+				{label: "楽しそうなもの", point: {type1:0, type2:0, type3:2, type4:0, type5:0, type6:2, type7:2, type8:0, type9:0}},
+				{label: "興味深いもの", point: {type1:0, type2:0, type3:1, type4:0, type5:2, type6:1, type7:0, type8:0, type9:0}},
 			]
 		},
 		/*{question: "時間",
 			answer: [
-				{label: "本音でぶつかり合いたい", point: {type1:0, type2:0, type3:1, type4:0, type5:0, type6:0, type7:1, type8:2, type9:0}},
-				{label: "追従したい", point: {type1:0, type2:0, type3:0, type4:0, type5:0, type6:2, type7:0, type8:0, type9:2}},
-				{label: "基本単独行動", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:0, type7:0, type8:0, type9:0}},
+				{label: "気になる", point: {type1:0, type2:0, type3:1, type4:0, type5:2, type6:2, type7:1, type8:2, type9:0}},
+				{label: "気付いたら過ぎてる", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:2, type7:0, type8:0, type9:2}},
+				{label: "", point: {type1:0, type2:0, type3:0, type4:0, type5:2, type6:0, type7:0, type8:0, type9:0}},
 			]
 		},*/
 	];
