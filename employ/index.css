@@ -27,6 +27,12 @@ header p{
 	font-size: 0.8rem;
 	margin: 1rem 0 0.8rem;
 }
+header img{
+	width: 1.5rem;
+	height: 1.5rem;
+	vertical-align: middle;
+	margin: 0 0.3rem;
+}
 #question-output{
 	display: block;
 }
@@ -127,6 +133,7 @@ header p{
 	color: #444;
 	font-size: 1rem;
 	padding: 0.1rem 0.3rem;
+	text-align: center;
 }
 .question-result-table tr:nth-child(2n){
 	background-color: #ccd;
